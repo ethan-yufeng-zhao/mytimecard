@@ -1,0 +1,44 @@
+<?php
+	// JSON/JSON_ACTION_update_template_name.php?edit_template_id=34&edit_template_last_user=jcubic&edit_template_name=updated_name
+	require_once('..'.DIRECTORY_SEPARATOR.'base.php');
+	require_once('..'.DIRECTORY_SEPARATOR.'DB'.DIRECTORY_SEPARATOR.'db.php');
+
+	$arr = array();
+
+	if(isset($_GET['edit_template_id']) && strlen($_GET['edit_template_id']) > 0 && is_numeric($_GET['edit_template_id']) && isset($_GET['edit_template_last_user']) && strlen($_GET['edit_template_last_user']) > 0 && isset($_GET['edit_template_name']) && strlen($_GET['edit_template_name']) > 0) {
+		$template_id = $_GET['edit_template_id'];
+		$template_name = $_GET['edit_template_name'];
+		$template_when_modified = time();
+		$template_last_user = $_GET['edit_template_last_user'];
+
+		$updatestring = '';
+		$db_pdo = db_connect();
+
+		$updatestring = "UPDATE tcs.template SET ";
+		$updatestring .= " template_name = '".$template_name."', ";
+		if ($GLOBALS['DB_TYPE'] == 'pgsql'){
+			$updatestring .= " template_when_modified = '".date('Y-m-d H:i:s', $template_when_modified)."', ";
+		} else {
+			$updatestring .= " template_when_modified = ".$template_when_modified.", ";
+		}
+		$updatestring .= " template_last_user = '".$template_last_user."' ";
+		$updatestring .= " WHERE template_id = ". $template_id.";";
+
+		if(db_update($db_pdo, $updatestring)){
+			$arr['success'] = true;
+			$arr['message'] = 'Template name has been changed';
+		} else {
+			$arr['success'] = false;
+			$arr['error'] = 'Database execute failed';
+		}
+		// Close connection to DB
+		$db_pdo = null;
+	} else {
+		$arr['success'] = false;
+		$arr['error'] = 'invalid GET values passed to remove template';
+	}
+
+	header('Content-Type: application/json');
+	echo(json_encode($arr));
+
+?>

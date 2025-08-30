@@ -1,0 +1,34 @@
+<div class="container">
+    <h4 style="color:red;">Attention {{userName}},</h4>
+    <p>You are receiving this e-mail because the below certifications are expiring soon.</p>
+    <p>For a listing of all your certifications log onto the Online <a href="http://jfabweb3.jfab.aosmd.com/Training_Cert_System/index.php">Training and Certification System</a>.</p>
+    <p>For questions or concerns please contact <a href="mailto:Michael.Wright@jfab.aosmd.com">Michael Wright</a> or <a href="mailto:Mike.Weiby@jfab.aosmd.com">Mike Weiby</a>.</p>
+    <table style="{{table_style}}">
+        <thead>
+            <tr>
+                <th style="{{th_style}}">Cert Name</th>
+                <th style="{{th_style}}">Description</th>
+                <th style="{{th_style}}">Expiration</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#certs}}
+            <tr>
+                <td style="{{td_style}}">{{cert_name}}</td>
+                <td style="{{td_style}}">{{cert_description}}</td>
+                <td style="{{td_style}}">{{calculated_expire_ymd}} - ( {{calculated_days_until_expire}} days )</td>
+            </tr>
+            {{/certs}}
+        </tbody>
+    </table>
+<p>&nbsp;</p>
+
+{{#has_notes}}
+<h4 style="color:red;">Notes:</h4>
+<ul>
+    {{#notes}}
+    <li>{{{.}}}</li> {{! Notes may contain html }}
+    {{/notes}}
+</ul>
+{{/has_notes}}
+</div>{{! /.container }}

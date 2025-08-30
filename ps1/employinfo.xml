@@ -1,0 +1,2718 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employeeinfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<employee>
+		<samaccountname>aaron.jones</samaccountname>
+		<personname>Jones, Aaron B</personname>
+		<employeenumber>US1254</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>Diffusion-Engineering - 731</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>731</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>aburt</samaccountname>
+		<personname>Burt, Aaron L</personname>
+		<employeenumber>US1133</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Anderson.Lor</samaccountname>
+		<personname>Lor, Anderson</personname>
+		<employeenumber>170165</employeenumber>
+		<managersamaccountname>jhogg</managersamaccountname>
+		<manager>John Hogg</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>andrea.gonzalez</samaccountname>
+		<personname>Gonzalez, Andrea</personname>
+		<employeenumber>170154</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Soudy Southasarn</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Andrew.Cosio</samaccountname>
+		<personname>Cosio, Andrew</personname>
+		<employeenumber>170172</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Clarence Small</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Andrew.Lundfelt</samaccountname>
+		<personname>Lundfelt, Andrew</personname>
+		<employeenumber>US1266</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>aperez</samaccountname>
+		<personname>Perez, Anthony D</personname>
+		<employeenumber>US1158</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>aarciaga</samaccountname>
+		<personname>Arciaga, Amy A</personname>
+		<employeenumber>US1020</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>arosenbe</samaccountname>
+		<personname>Rosenberg, Andrew Todd</personname>
+		<employeenumber>US1229</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>asmith</samaccountname>
+		<personname>Smith, Andrew B</personname>
+		<employeenumber>US1086</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>atanner</samaccountname>
+		<personname>Tanner, Adam D</personname>
+		<employeenumber>US1102</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>avongtho</samaccountname>
+		<personname>Vongthong, Acksone</personname>
+		<employeenumber>US1169</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>awakefie</samaccountname>
+		<personname>Wakefield, Andrew B</personname>
+		<employeenumber>US1134</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bbarge</samaccountname>
+		<personname>Barge, Brian K</personname>
+		<employeenumber>US1041</employeenumber>
+		<managersamaccountname>wdoyle</managersamaccountname>
+		<manager>Doyle, Arthur W (Willie)</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bcranfor</samaccountname>
+		<personname>Cranford, Gregory Brandon (Brandon Cranford)</personname>
+		<employeenumber>US1225</employeenumber>
+		<managersamaccountname>miwright</managersamaccountname>
+		<manager>Wright, Mike</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ben.xue</samaccountname>
+		<personname>Xue, Hongyong (Ben)</personname>
+		<employeenumber>US1014</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Thin Film-Engineering - 734</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>734</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bgurman</samaccountname>
+		<personname>Gurman, Boris</personname>
+		<employeenumber>US1183</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>blayne</samaccountname>
+		<personname>Layne, Robert B (Brandon)</personname>
+		<employeenumber>US1069</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>blebedev</samaccountname>
+		<personname>Lebedev, Boris A</personname>
+		<employeenumber>US1028</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bmcgucki</samaccountname>
+		<personname>Mcguckin, Bonnie E</personname>
+		<employeenumber>US1118</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bmclarty</samaccountname>
+		<personname>McLarty, Bradley Jay</personname>
+		<employeenumber>US1238</employeenumber>
+		<managersamaccountname>kuilong.wang</managersamaccountname>
+		<manager>Wang, Kuilong</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bmoore</samaccountname>
+		<personname>Moore, Benjamin T (Ben)</personname>
+		<employeenumber>US1079</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>boudomde</samaccountname>
+		<personname>Oudomdeth, Bounmy</personname>
+		<employeenumber>US1095</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bret.manso</samaccountname>
+		<personname>Manso, Bret</personname>
+		<employeenumber>170156</employeenumber>
+		<managersamaccountname>jhogg</managersamaccountname>
+		<manager>John Hogg</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Brett.Rodakowski</samaccountname>
+		<personname>Rodakowski, Brett</personname>
+		<employeenumber>170163</employeenumber>
+		<managersamaccountname>sen.tran</managersamaccountname>
+		<manager>Sen Tran</manager>
+		<organization>EPI-Production - 710</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>710</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Brian.Baldwin</samaccountname>
+		<personname>Baldwin, Brian</personname>
+		<employeenumber>170144</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Jeff Shoberg</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Brian.Slaughter</samaccountname>
+		<personname>Slaughter, Brian</personname>
+		<employeenumber>170170</employeenumber>
+		<managersamaccountname>gwestby</managersamaccountname>
+		<manager>Greg Westby</manager>
+		<organization>Warehouse - 751</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>751</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>broberso</samaccountname>
+		<personname>Roberson, Billy V</personname>
+		<employeenumber>US1175</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>broberts</samaccountname>
+		<personname>Roberts, Ben</personname>
+		<employeenumber>170106</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Dave Mooney</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bschorr</samaccountname>
+		<personname>Schorr, Brian P</personname>
+		<employeenumber>US1010</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>Thin Film-Engineering - 734</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>734</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>bshinpau</samaccountname>
+		<personname>Shinpaugh, Bonnie</personname>
+		<employeenumber>US1090</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Wafer Probe-Production - 716</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>716</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cbartlet</samaccountname>
+		<personname>Bartlett, Christopher Scott (Chris)</personname>
+		<employeenumber>US1209</employeenumber>
+		<managersamaccountname>steven.nyman</managersamaccountname>
+		<manager>Nyman, Steven (Steve)</manager>
+		<organization>Facility-Water - 792</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>792</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cbryant</samaccountname>
+		<personname>Bryant, Cory S</personname>
+		<employeenumber>US1224</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>CC.Shing</samaccountname>
+		<personname>Shing, Chichang</personname>
+		<employeenumber>US1256</employeenumber>
+		<managersamaccountname>wenjun.li</managersamaccountname>
+		<manager>Li, Wenjun (Winston)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cdelasal</samaccountname>
+		<personname>De Las Alas, Carlos G</personname>
+		<employeenumber>US1230</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cgraves</samaccountname>
+		<personname>Graves, Christopher R (Chris)</personname>
+		<employeenumber>US1128</employeenumber>
+		<managersamaccountname>gpetitt</managersamaccountname>
+		<manager>Petitt, Gary A</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>chambers</samaccountname>
+		<personname>Chambers, Eric</personname>
+		<employeenumber>US1018</employeenumber>
+		<managersamaccountname>dwestfal</managersamaccountname>
+		<manager>Westfall, David O (Dave)</manager>
+		<organization>Fab Planning - 750</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>750</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cheiden</samaccountname>
+		<personname>Heiden, Charles G (Chuck)</personname>
+		<employeenumber>US1052</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>chicks</samaccountname>
+		<personname>Hicks, Carrie Ann</personname>
+		<employeenumber>170104</employeenumber>
+		<managersamaccountname>jhogg</managersamaccountname>
+		<manager>John Hogg</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>chogg</samaccountname>
+		<personname>Hogg, Catina L</personname>
+		<employeenumber>US1130</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>chooper</samaccountname>
+		<personname>Hooper, Craig G</personname>
+		<employeenumber>US1204</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>CMP-Maintenance - 725</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>725</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>clom</samaccountname>
+		<personname>Lom, Chantha</personname>
+		<employeenumber>US1001</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Litho-Engineering - 732</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>732</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>colleen.lindsay</samaccountname>
+		<personname>Lindsey, Colleen</personname>
+		<employeenumber>170159</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Kim Nguyen</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ConTrong.Bui</samaccountname>
+		<personname>Bui, Con Trong</personname>
+		<employeenumber>170126</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Kit Hulse</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cshupe</samaccountname>
+		<personname>Shupe Jr, Charles L (Charlie)</personname>
+		<employeenumber>US1009</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>csmall</samaccountname>
+		<personname>Small, Clarence S</personname>
+		<employeenumber>US1017</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>csolano</samaccountname>
+		<personname>Solano, Claudia E</personname>
+		<employeenumber>US1107</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>csturgeo</samaccountname>
+		<personname>Sturgeon, Chad T</personname>
+		<employeenumber>US1100</employeenumber>
+		<managersamaccountname>jstrys</managersamaccountname>
+		<manager>Strys, John R</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cte</samaccountname>
+		<personname>Te, Chhay L</personname>
+		<employeenumber>US1053</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cwachner</samaccountname>
+		<personname>Wachner, Concordia M (Cora)</personname>
+		<employeenumber>US1096</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cwalsh</samaccountname>
+		<personname>Walsh, Cindi L</personname>
+		<employeenumber>US1065</employeenumber>
+		<managersamaccountname>wenjun.li</managersamaccountname>
+		<manager>Li, Wenjun (Winston)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>cwiebe</samaccountname>
+		<personname>Wiebe, Christopher P</personname>
+		<employeenumber>US1085</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>Thin Film-Engineering - 734</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>734</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dana.latondre</samaccountname>
+		<personname>LaTondre, Dana</personname>
+		<employeenumber>US1262</employeenumber>
+		<managersamaccountname>mweiby</managersamaccountname>
+		<manager>Weiby, Michael C (Mike)</manager>
+		<organization>Factory DCC/QS - 762</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>762</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>daniel.seggerman</samaccountname>
+		<personname>Seggerman, Daniel</personname>
+		<employeenumber>170135</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Gloria Vallejo</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Darrell.Cone</samaccountname>
+		<personname>Cone, Darrell</personname>
+		<employeenumber>170171</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Jeff Shoberg</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dasher</samaccountname>
+		<personname>Asher, Deniece M (Denise)</personname>
+		<employeenumber>US1111</employeenumber>
+		<managersamaccountname>wdoyle</managersamaccountname>
+		<manager>Doyle, Arthur W (Willie)</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>david.mcdonald</samaccountname>
+		<personname>McDonald, David</personname>
+		<employeenumber>US1247</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dbacon</samaccountname>
+		<personname>Bacon, Derrick Scott</personname>
+		<employeenumber>US1239</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dcameron</samaccountname>
+		<personname>Cameron, Deborah A</personname>
+		<employeenumber>US1164</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dcessna</samaccountname>
+		<personname>Cessna, David B</personname>
+		<employeenumber>US1081</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dfransen</samaccountname>
+		<personname>Fransen, Dane Eric</personname>
+		<employeenumber>US1241</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dglover</samaccountname>
+		<personname>Glover, Daimon M</personname>
+		<employeenumber>US1093</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dhebda</samaccountname>
+		<personname>Hebda, David</personname>
+		<employeenumber>US1155</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dher</samaccountname>
+		<personname>Her, Dave K</personname>
+		<employeenumber>US1147</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>djorgens</samaccountname>
+		<personname>Jorgenson, Donnie</personname>
+		<employeenumber>US1249</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dkennedy</samaccountname>
+		<personname>Kennedy, Dean A</personname>
+		<employeenumber>US1023</employeenumber>
+		<managersamaccountname>jlue</managersamaccountname>
+		<manager>Lue, Jeng H</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dkopf</samaccountname>
+		<personname>Kopf, Debra Ann (Debbie)</personname>
+		<employeenumber>US1182</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dlaakso</samaccountname>
+		<personname>Laakso, Dave C</personname>
+		<employeenumber>US1172</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dle</samaccountname>
+		<personname>Le, Doi V</personname>
+		<employeenumber>US1154</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dlee</samaccountname>
+		<personname>Lee, Dana M</personname>
+		<employeenumber>US1178</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dlovato</samaccountname>
+		<personname>Lovato, David</personname>
+		<employeenumber>US1213</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dmacdona</samaccountname>
+		<personname>MacDonald, Danny W</personname>
+		<employeenumber>US1123</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dmooney</samaccountname>
+		<personname>Mooney, David B (Dave)</personname>
+		<employeenumber>US1140</employeenumber>
+		<managersamaccountname>csturgeo</managersamaccountname>
+		<manager>Sturgeon, Chad T</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dnemkovi</samaccountname>
+		<personname>Nemkovich, Dave M (Dave)</personname>
+		<employeenumber>US1199</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Don.Berg</samaccountname>
+		<personname>Berg, Don</personname>
+		<employeenumber>170167</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Kim Nguyen</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dowens</samaccountname>
+		<personname>Owens, David W</personname>
+		<employeenumber>US1055</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>drisley</samaccountname>
+		<personname>Risley, Duane A (Drew)</personname>
+		<employeenumber>US1146</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dsimko</samaccountname>
+		<personname>Simko, Donna J</personname>
+		<employeenumber>US1109</employeenumber>
+		<managersamaccountname>sreed</managersamaccountname>
+		<manager>Reed, Scott L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dsimon</samaccountname>
+		<personname>Simon, David M</personname>
+		<employeenumber>US1060</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dwestfal</samaccountname>
+		<personname>Westfall, David O (Dave)</personname>
+		<employeenumber>US1165</employeenumber>
+		<manager>Chen, John</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>dzia</samaccountname>
+		<personname>Zia, Darek</personname>
+		<employeenumber>US1006</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>Thin Film-Engineering - 734</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>734</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ecunning</samaccountname>
+		<personname>Cunningham, Emanuel J (Manu)</personname>
+		<employeenumber>US1137</employeenumber>
+		<managersamaccountname>csturgeo</managersamaccountname>
+		<manager>Sturgeon, Chad T</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ed.lobaugh</samaccountname>
+		<personname>Lobaugh, Ed</personname>
+		<employeenumber>170136</employeenumber>
+		<managersamaccountname>gpetitt</managersamaccountname>
+		<manager>Gary Petitt</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ed.trivett</samaccountname>
+		<personname>Trivett, James ED (ED)</personname>
+		<employeenumber>US1246</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>emcgrath</samaccountname>
+		<personname>Mcgrath, Salvacion O (Emily)</personname>
+		<employeenumber>US1103</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>emiller</samaccountname>
+		<personname>Miller, Eric J</personname>
+		<employeenumber>US1077</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>erin.sinclair</samaccountname>
+		<personname>Sinclair, Erin</personname>
+		<employeenumber>170133</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Brian Barge</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>fvu</samaccountname>
+		<personname>Vu, Frank</personname>
+		<employeenumber>US1003</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>gcaleen</samaccountname>
+		<personname>Caleen, Gregory Scott</personname>
+		<employeenumber>US1188</employeenumber>
+		<managersamaccountname>cbartlet</managersamaccountname>
+		<manager>Bartlett, Christopher Scott (Chris)</manager>
+		<organization>Facility-Water - 792</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>792</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>gerald.dietze</samaccountname>
+		<personname>Dietze, Gerald R</personname>
+		<employeenumber>US1248</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>EPI-Maintenance - 720</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>720</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ghagen</samaccountname>
+		<personname>Hagen, Glenn S</personname>
+		<employeenumber>US1135</employeenumber>
+		<managersamaccountname>sreed</managersamaccountname>
+		<manager>Reed, Scott L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>gpetitt</samaccountname>
+		<personname>Petitt, Gary A</personname>
+		<employeenumber>US1008</employeenumber>
+		<managersamaccountname>wenjun.li</managersamaccountname>
+		<manager>Li, Wenjun (Winston)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Grant.Saltzgaber</samaccountname>
+		<personname>Saltzgaber, Grant</personname>
+		<employeenumber>US1267</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Litho-Engineering - 732</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>732</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>grelojo</samaccountname>
+		<personname>Relojo Jr, Gincezar L</personname>
+		<employeenumber>US1114</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Wafer Probe-Production - 716</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>716</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>gvallejo</samaccountname>
+		<personname>Vallejo, Gloriana Carol</personname>
+		<employeenumber>US1202</employeenumber>
+		<managersamaccountname>csturgeo</managersamaccountname>
+		<manager>Sturgeon, Chad T</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>gwen.rabe</samaccountname>
+		<personname>Rabe, Gwen</personname>
+		<employeenumber>170128</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Soudy Southasarn</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>gwestby</samaccountname>
+		<personname>Westby, Gregory M</personname>
+		<employeenumber>US1024</employeenumber>
+		<managersamaccountname>dwestfal</managersamaccountname>
+		<manager>Westfall, David O (Dave)</manager>
+		<organization>Procurement - 753</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>753</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>gwilliam</samaccountname>
+		<personname>Williams, Gilbert Dean (Dean)</personname>
+		<employeenumber>US1205</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>hchung</samaccountname>
+		<personname>Chung, Hung J</personname>
+		<employeenumber>US1101</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>hhall</samaccountname>
+		<personname>Hall, Holly</personname>
+		<employeenumber>US1251</employeenumber>
+		<managersamaccountname>sen.tran</managersamaccountname>
+		<manager>Tran, Sen Van</manager>
+		<organization>EPI-Production - 710</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>710</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>hhubbard</samaccountname>
+		<personname>Hubbard, Helen Kiyoko</personname>
+		<employeenumber>US1234</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>hitran</samaccountname>
+		<personname>Tran, Hiep D</personname>
+		<employeenumber>US1145</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>hkohnke</samaccountname>
+		<personname>Kohnke, Herbert William (Herb)</personname>
+		<employeenumber>US1185</employeenumber>
+		<managersamaccountname>cbartlet</managersamaccountname>
+		<manager>Bartlett, Christopher Scott (Chris)</manager>
+		<organization>Facility-Water - 792</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>792</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>hvang</samaccountname>
+		<personname>Vang, Hao X</personname>
+		<employeenumber>US1151</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>icoffey</samaccountname>
+		<personname>Coffey, Iva Lynn</personname>
+		<employeenumber>US1083</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>iduzha</samaccountname>
+		<personname>Duzha, Irina Y</personname>
+		<employeenumber>US1108</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Southasarn, Southavone (Soudy)</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>igamble</samaccountname>
+		<personname>Gamble, Ian W</personname>
+		<employeenumber>US1034</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Litho-Engineering - 732</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>732</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>james.gilmore</samaccountname>
+		<personname>Gilmore, James</personname>
+		<employeenumber>170148</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Jeremy Hergert</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jarbuckl</samaccountname>
+		<personname>Arbuckle, Jeffrey</personname>
+		<employeenumber>170102</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Jeremy Hergert</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jburke</samaccountname>
+		<personname>Burke, Jay J</personname>
+		<employeenumber>US1035</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jconnett</samaccountname>
+		<personname>Connett, James M (Jim)</personname>
+		<employeenumber>US1062</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jcubic</samaccountname>
+		<personname>Cubic, Jason E</personname>
+		<employeenumber>US1094</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jdeporte</samaccountname>
+		<personname>Deporter, Jean F</personname>
+		<employeenumber>US1120</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Wafer Probe-Production - 716</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>716</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jeff.shull</samaccountname>
+		<personname>Shull, Jeff</personname>
+		<employeenumber>US1264</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jennifer.white</samaccountname>
+		<personname>White, Jennifer Lea</personname>
+		<employeenumber>US1242</employeenumber>
+		<manager>Sun, Steve</manager>
+		<organization>HR - 772</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>772</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jfriedri</samaccountname>
+		<personname>Friedrich, Julie E</personname>
+		<employeenumber>US1143</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jglenzin</samaccountname>
+		<personname>Glenzinski, Jeffrey M</personname>
+		<employeenumber>US1067</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jhergert</samaccountname>
+		<personname>Hergert, Jeremy L</personname>
+		<employeenumber>US1061</employeenumber>
+		<managersamaccountname>wdoyle</managersamaccountname>
+		<manager>Doyle, Arthur W (Willie)</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jhicks</samaccountname>
+		<personname>Hicks, Jerry W</personname>
+		<employeenumber>US1116</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jhills</samaccountname>
+		<personname>Hills, John R</personname>
+		<employeenumber>US1144</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jhogg</samaccountname>
+		<personname>Hogg, John A</personname>
+		<employeenumber>US1125</employeenumber>
+		<managersamaccountname>wdoyle</managersamaccountname>
+		<manager>Doyle, Arthur W (Willie)</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jiher</samaccountname>
+		<personname>Her, Jim</personname>
+		<employeenumber>US1148</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jjacobso</samaccountname>
+		<personname>Jacobson, Jasper R</personname>
+		<employeenumber>US1208</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jjensen</samaccountname>
+		<personname>Jensen, Jody L</personname>
+		<employeenumber>US1056</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jjohnson</samaccountname>
+		<personname>Johnson, John</personname>
+		<employeenumber>170112</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Brian Barge</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jkerbo</samaccountname>
+		<personname>Kerbo, James L</personname>
+		<employeenumber>US1029</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jlevenha</samaccountname>
+		<personname>Levenhagen, James A</personname>
+		<employeenumber>US1207</employeenumber>
+		<managersamaccountname>sen.tran</managersamaccountname>
+		<manager>Tran, Sen Van</manager>
+		<organization>EPI-Production - 710</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>710</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jlue</samaccountname>
+		<personname>Lue, Jeng H</personname>
+		<employeenumber>US1113</employeenumber>
+		<manager>Chen, John</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jmarion</samaccountname>
+		<personname>Marion, Joshua Kenneth (Josh)</personname>
+		<employeenumber>US1200</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jmartine</samaccountname>
+		<personname>Martinez Jr, Johnny</personname>
+		<employeenumber>US1016</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jmcghie</samaccountname>
+		<personname>McGhie, John Reynold</personname>
+		<employeenumber>US1181</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jmendoza</samaccountname>
+		<personname>Mendoza, Joseph</personname>
+		<employeenumber>170082</employeenumber>
+		<managersamaccountname>jhogg</managersamaccountname>
+		<manager>John Hogg</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jmoeller</samaccountname>
+		<personname>Moeller, John C</personname>
+		<employeenumber>US1190</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Southasarn, Southavone (Soudy)</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jnegrete</samaccountname>
+		<personname>Negrete Vazquez, Jose Guadalupe</personname>
+		<employeenumber>US1210</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>CMP-Maintenance - 725</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>725</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jopierce</samaccountname>
+		<personname>Pierce, Joseph M</personname>
+		<employeenumber>US1080</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jose.beadle</samaccountname>
+		<personname>Beadle, Jose</personname>
+		<employeenumber>170129</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Gloria Vallejo</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Joseph.Wedge</samaccountname>
+		<personname>Wedge, Joseph</personname>
+		<employeenumber>170161</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Kim Nguyen</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>joshua.krettler</samaccountname>
+		<personname>Krettler, Joshua</personname>
+		<employeenumber>170132</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Jeremy Hergert</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jporter</samaccountname>
+		<personname>Porter, Joseph R (Joe)</personname>
+		<employeenumber>US1179</employeenumber>
+		<managersamaccountname>rpeterso</managersamaccountname>
+		<manager>Peterson, Ricky L (Rick)</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jrichmon</samaccountname>
+		<personname>Richmond, Jerry L</personname>
+		<employeenumber>US1176</employeenumber>
+		<managersamaccountname>gwestby</managersamaccountname>
+		<manager>Westby, Gregory M</manager>
+		<organization>Warehouse - 751</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>751</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jsalisbu</samaccountname>
+		<personname>Salisbury, Jason Cade</personname>
+		<employeenumber>US1136</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jseaman</samaccountname>
+		<personname>Seaman, Jeff M</personname>
+		<employeenumber>US1068</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jshoberg</samaccountname>
+		<personname>Shoberg, Jeffrey P</personname>
+		<employeenumber>US1049</employeenumber>
+		<managersamaccountname>steven.nyman</managersamaccountname>
+		<manager>Nyman, Steven (Steve)</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jstrys</samaccountname>
+		<personname>Strys, John R</personname>
+		<employeenumber>US1106</employeenumber>
+		<managersamaccountname>jlue</managersamaccountname>
+		<manager>Lue, Jeng H</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jturner</samaccountname>
+		<personname>Turner, Jason M</personname>
+		<employeenumber>US1233</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>jwhang</samaccountname>
+		<personname>Whang, Jonathon Lewis</personname>
+		<employeenumber>US1180</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kbeebe</samaccountname>
+		<personname>Beebe, Kip V</personname>
+		<employeenumber>US1105</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>khulse</samaccountname>
+		<personname>Hulse, Kristoffer G (Kit)</personname>
+		<employeenumber>US1198</employeenumber>
+		<managersamaccountname>jstrys</managersamaccountname>
+		<manager>Strys, John R</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>khuynh</samaccountname>
+		<personname>Huynh, Khang H</personname>
+		<employeenumber>US1161</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>khvang</samaccountname>
+		<personname>Vang, Khou</personname>
+		<employeenumber>US1167</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kim.nguyen</samaccountname>
+		<personname>Nguyen, Kim C</personname>
+		<employeenumber>US1088</employeenumber>
+		<managersamaccountname>wdoyle</managersamaccountname>
+		<manager>Doyle, Arthur W (Willie)</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kirby.jones</samaccountname>
+		<personname>Jones, Kirby</personname>
+		<employeenumber>US1255</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>EPI-Engineering - 730</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>730</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kmai</samaccountname>
+		<personname>Mai, Kim Van</personname>
+		<employeenumber>US1211</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>knewsom</samaccountname>
+		<personname>Newsom, Kevin</personname>
+		<employeenumber>US1063</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kpatel</samaccountname>
+		<personname>Patel, Kamini</personname>
+		<employeenumber>US1004</employeenumber>
+		<managersamaccountname>chambers</managersamaccountname>
+		<manager>Chambers, Eric</manager>
+		<organization>Fab Planning - 750</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>750</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kpfeifer</samaccountname>
+		<personname>Pfeifer, Kevin D</personname>
+		<employeenumber>US1075</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Litho-Engineering - 732</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>732</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kuilong.wang</samaccountname>
+		<personname>Wang, Kuilong</personname>
+		<employeenumber>US1012</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>kvue</samaccountname>
+		<personname>Vue, Kae Koua</personname>
+		<employeenumber>US1047</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>lhall</samaccountname>
+		<personname>Hall, Lori</personname>
+		<employeenumber>US1250</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>lkinerk</samaccountname>
+		<personname>Kinerk, Loren T</personname>
+		<employeenumber>US1170</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>lsailor</samaccountname>
+		<personname>Sailor, Lisa</personname>
+		<employeenumber>170119</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Soudy Southasarn</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>lvan</samaccountname>
+		<personname>Van, Larry C</personname>
+		<employeenumber>US1177</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>lvanmoor</samaccountname>
+		<personname>Van Moorleghem, Liza M</personname>
+		<employeenumber>US1051</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>lwall</samaccountname>
+		<personname>Wall, Lance R</personname>
+		<employeenumber>US1019</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Wafer Probe-Maintenance - 726</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>726</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>lwells</samaccountname>
+		<personname>Wells, Larry J</personname>
+		<employeenumber>US1038</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mahrendt</samaccountname>
+		<personname>Ahrendt, Marc W</personname>
+		<employeenumber>US1026</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Mai.Her</samaccountname>
+		<personname>Her, Mai Chee</personname>
+		<employeenumber>170164</employeenumber>
+		<managersamaccountname>jhogg</managersamaccountname>
+		<manager>John Hogg</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>marc.lowry</samaccountname>
+		<personname>Lowry, Marc J</personname>
+		<employeenumber>US1253</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>EPI-Engineering - 730</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>730</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mbielby</samaccountname>
+		<personname>Bielby, Monty D</personname>
+		<employeenumber>US1059</employeenumber>
+		<managersamaccountname>sen.tran</managersamaccountname>
+		<manager>Tran, Sen Van</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mdunning</samaccountname>
+		<personname>Dunning, Mary Alice</personname>
+		<employeenumber>US1236</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mejones</samaccountname>
+		<personname>Jones, Melissa A (Mel)</personname>
+		<employeenumber>US1084</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mgeyer</samaccountname>
+		<personname>Geyer, Michael Wiley</personname>
+		<employeenumber>US1228</employeenumber>
+		<managersamaccountname>sen.tran</managersamaccountname>
+		<manager>Tran, Sen Van</manager>
+		<organization>EPI-Production - 710</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>710</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mgroover</samaccountname>
+		<personname>Groover, Mariabella M</personname>
+		<employeenumber>US1005</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>miwright</samaccountname>
+		<personname>Wright, Mike</personname>
+		<employeenumber>US1162</employeenumber>
+		<managersamaccountname>jstrys</managersamaccountname>
+		<manager>Strys, John R</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mjagne</samaccountname>
+		<personname>Jagne, Mbye</personname>
+		<employeenumber>US1168</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>Thin Film-Engineering - 734</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>734</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mlorm</samaccountname>
+		<personname>Lorm, Montique L (Montie)</personname>
+		<employeenumber>US1160</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mpaul</samaccountname>
+		<personname>Paul, Michelle M</personname>
+		<employeenumber>US1127</employeenumber>
+		<managersamaccountname>miwright</managersamaccountname>
+		<manager>Wright, Mike</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mpiper</samaccountname>
+		<personname>Piper, Marcus W</personname>
+		<employeenumber>US1220</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>msalee</samaccountname>
+		<personname>Salee, Matthew J (Matt)</personname>
+		<employeenumber>US1159</employeenumber>
+		<managersamaccountname>chambers</managersamaccountname>
+		<manager>Chambers, Eric</manager>
+		<organization>Fab Planning - 750</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>750</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mtsang</samaccountname>
+		<personname>Tsang, Wai Ming (Ming)</personname>
+		<employeenumber>US1218</employeenumber>
+		<managersamaccountname>wenjun.li</managersamaccountname>
+		<manager>Li, Wenjun (Winston)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mvoice</samaccountname>
+		<personname>Voice, Michael J (Mike)</personname>
+		<employeenumber>US1141</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mweiby</samaccountname>
+		<personname>Weiby, Michael C (Mike)</personname>
+		<employeenumber>US1110</employeenumber>
+		<managersamaccountname>jlue</managersamaccountname>
+		<manager>Lue, Jeng H</manager>
+		<organization>EHNS - 781</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>781</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mwertz</samaccountname>
+		<personname>Wertz, Michael D (Mac)</personname>
+		<employeenumber>US1066</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>mylene.torralba</samaccountname>
+		<personname>Torralba, Mylene</personname>
+		<employeenumber>170139</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Dave Mooney</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ndouglas</samaccountname>
+		<personname>Douglass, Nancy J</personname>
+		<employeenumber>US1064</employeenumber>
+		<managersamaccountname>miwright</managersamaccountname>
+		<manager>Wright, Mike</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ngould</samaccountname>
+		<personname>Gould, Nancy R</personname>
+		<employeenumber>US1131</employeenumber>
+		<managersamaccountname>miwright</managersamaccountname>
+		<manager>Wright, Mike</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>nnguyen</samaccountname>
+		<personname>Nguyen, Ngoc Mike</personname>
+		<employeenumber>US1259</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>nsalas</samaccountname>
+		<personname>Salas, Norman Gerardo</personname>
+		<employeenumber>US1025</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ocampbel</samaccountname>
+		<personname>Campbell, Olain J (Oly)</personname>
+		<employeenumber>US1073</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>oolson</samaccountname>
+		<personname>Olson, Olaf C</personname>
+		<employeenumber>US1002</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Litho-Engineering - 732</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>732</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>opan</samaccountname>
+		<personname>Pan, Ohm-Guo</personname>
+		<employeenumber>US1015</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>pao.yang</samaccountname>
+		<personname>Yang, Pao</personname>
+		<employeenumber>US1074</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>pdas</samaccountname>
+		<personname>Das, Pronab Kumar</personname>
+		<employeenumber>US1195</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Litho-Engineering - 732</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>732</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>pgreen</samaccountname>
+		<personname>Green, Patricia M</personname>
+		<employeenumber>US1031</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Factory DCC/QS - 762</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>762</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>pguthrie</samaccountname>
+		<personname>Guthrie, Patrick L</personname>
+		<employeenumber>US1222</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>plor</samaccountname>
+		<personname>Lor, Pahoua</personname>
+		<employeenumber>US1166</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>preeves</samaccountname>
+		<personname>Reeves, Patti J</personname>
+		<employeenumber>US1126</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Ray.Fisher</samaccountname>
+		<personname>Fisher, Ray</personname>
+		<employeenumber>170173</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Clarence Small</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rbeck</samaccountname>
+		<personname>Beck, Richard D</personname>
+		<employeenumber>US1091</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rbillick</samaccountname>
+		<personname>Billick Jr., Robert D (Bob)</personname>
+		<employeenumber>US1139</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Southasarn, Southavone (Soudy)</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rchamber</samaccountname>
+		<personname>Chambers, Ricky Anthony</personname>
+		<employeenumber>US1240</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Southasarn, Southavone (Soudy)</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rdriver</samaccountname>
+		<personname>Driver, Rick</personname>
+		<employeenumber>US1252</employeenumber>
+		<managersamaccountname>gpetitt</managersamaccountname>
+		<manager>Petitt, Gary A</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rharris</samaccountname>
+		<personname>Harris, Robert W</personname>
+		<employeenumber>US1186</employeenumber>
+		<managersamaccountname>cbartlet</managersamaccountname>
+		<manager>Bartlett, Christopher Scott (Chris)</manager>
+		<organization>Facility-Water - 792</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>792</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rmckenzi</samaccountname>
+		<personname>Mckenzie, Richard G (Rick)</personname>
+		<employeenumber>US1054</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rmiller</samaccountname>
+		<personname>Miller, Bernadine R (Renee)</personname>
+		<employeenumber>US1121</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Robert.Cooper</samaccountname>
+		<personname>Cooper, Robert (Bob)</personname>
+		<employeenumber>US1261</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>robert.hankel</samaccountname>
+		<personname>Hankel, Robert</personname>
+		<employeenumber>170158</employeenumber>
+		<managersamaccountname>sreed</managersamaccountname>
+		<manager>Scott Reed</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>robert.teach</samaccountname>
+		<personname>Teach, Robert</personname>
+		<employeenumber>170130</employeenumber>
+		<managersamaccountname>jhogg</managersamaccountname>
+		<manager>John Hogg</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>robin.cooley</samaccountname>
+		<personname>Cooley, Robin</personname>
+		<employeenumber>US1245</employeenumber>
+		<managersamaccountname>jennifer.white</managersamaccountname>
+		<manager>White, Jennifer Lea</manager>
+		<organization>HR - 772</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>772</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ronald.diaz</samaccountname>
+		<personname>Diaz, Ronald</personname>
+		<employeenumber>170134</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Brian Barge</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Ronald.Griffith</samaccountname>
+		<personname>Griffith, Ronald</personname>
+		<employeenumber>US1270</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>roriza</samaccountname>
+		<personname>Oriza, Rommel Obog</personname>
+		<employeenumber>US1214</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rpeterso</samaccountname>
+		<personname>Peterson, Ricky L (Rick)</personname>
+		<employeenumber>US1196</employeenumber>
+		<managersamaccountname>steven.nyman</managersamaccountname>
+		<manager>Nyman, Steven (Steve)</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rraymond</samaccountname>
+		<personname>Raymond, Robert Reid (Reid)</personname>
+		<employeenumber>US1193</employeenumber>
+		<managersamaccountname>dkennedy</managersamaccountname>
+		<manager>Kennedy, Dean A</manager>
+		<organization>Fab Automation-Maintenance - 729</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>729</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rsmith</samaccountname>
+		<personname>Smith, Roger R</personname>
+		<employeenumber>US1174</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rsnyder</samaccountname>
+		<personname>Snyder, Randy L</personname>
+		<employeenumber>US1007</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rsommer</samaccountname>
+		<personname>Sommer, Ricky L (Rick)</personname>
+		<employeenumber>US1089</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rtycksen</samaccountname>
+		<personname>Tycksen, Richard Allen</personname>
+		<employeenumber>US1217</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>CMP-Maintenance - 725</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>725</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>rvilhaue</samaccountname>
+		<personname>Vilhauer, Russel K</personname>
+		<employeenumber>US1124</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>Thin Film-Engineering - 734</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>734</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Ryan.Frederick</samaccountname>
+		<personname>Frederick, Ryan</personname>
+		<employeenumber>US1265</employeenumber>
+		<managersamaccountname>ben.xue</managersamaccountname>
+		<manager>Xue, Hongyong (Ben)</manager>
+		<organization>Diffusion-Engineering - 731</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>731</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>saaron</samaccountname>
+		<personname>Aaron, Sheri</personname>
+		<employeenumber>US1260</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sbakshi</samaccountname>
+		<personname>Bakshi, Shekhar</personname>
+		<employeenumber>US1058</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sbogaard</samaccountname>
+		<personname>Bogaard, Sean P</personname>
+		<employeenumber>US1138</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Southasarn, Southavone (Soudy)</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sbonatha</samaccountname>
+		<personname>Bonathan, Shanti E</personname>
+		<employeenumber>US1201</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Barge, Brian K</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>scimpan</samaccountname>
+		<personname>Cimpan, Simion</personname>
+		<employeenumber>US1215</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>scolfelt</samaccountname>
+		<personname>Colfelt, Stephen J (Steve)</personname>
+		<employeenumber>US1046</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sen.tran</samaccountname>
+		<personname>Tran, Sen Van</personname>
+		<employeenumber>US0288</employeenumber>
+		<managersamaccountname>csturgeo</managersamaccountname>
+		<manager>Sturgeon, Chad T</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>shane.hannon</samaccountname>
+		<personname>Hannon, Shane</personname>
+		<employeenumber>170143</employeenumber>
+		<managersamaccountname>bbarge</managersamaccountname>
+		<manager>Brian Barge</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Sheila.Paaso</samaccountname>
+		<personname>Paaso, Sheila K</personname>
+		<employeenumber>US1072</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>shur</samaccountname>
+		<personname>Hur, Sara Z</personname>
+		<employeenumber>US1104</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>skelly</samaccountname>
+		<personname>Kelly, Susan K</personname>
+		<employeenumber>US1098</employeenumber>
+		<managersamaccountname>sreed</managersamaccountname>
+		<manager>Reed, Scott L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>snickles</samaccountname>
+		<personname>Nickles, Steven</personname>
+		<employeenumber>170111</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Manu Cunningham</manager>
+		<organization>Etch-Production - 713</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>713</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>snop</samaccountname>
+		<personname>Nop, Sophal</personname>
+		<employeenumber>US1149</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sramamoo</samaccountname>
+		<personname>Ramamoorthy, Sekar</personname>
+		<employeenumber>US1022</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sreed</samaccountname>
+		<personname>Reed, Scott L</personname>
+		<employeenumber>US1119</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sroland</samaccountname>
+		<personname>Roland, Sandra Kay</personname>
+		<employeenumber>US1044</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ssandstr</samaccountname>
+		<personname>Sandstrom, Scott</personname>
+		<employeenumber>US1257</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Vallejo, Gloriana Carol</manager>
+		<organization>Wafer Probe-Production - 716</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>716</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ssar</samaccountname>
+		<personname>Sar, Saneeda</personname>
+		<employeenumber>US1036</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Wafer Probe-Production - 716</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>716</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sschlenk</samaccountname>
+		<personname>Schlenker, Shaun</personname>
+		<employeenumber>US1070</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ssoum</samaccountname>
+		<personname>Soum, Saveth</personname>
+		<employeenumber>US1032</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Wafer Probe-Production - 716</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>716</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ssouthav</samaccountname>
+		<personname>Southasarn, Southavone (Soudy)</personname>
+		<employeenumber>US1076</employeenumber>
+		<managersamaccountname>csturgeo</managersamaccountname>
+		<manager>Sturgeon, Chad T</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>sstout</samaccountname>
+		<personname>Stout, Scott Allen</personname>
+		<employeenumber>US1212</employeenumber>
+		<managersamaccountname>wenjun.li</managersamaccountname>
+		<manager>Li, Wenjun (Winston)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Steve.Kennedy</samaccountname>
+		<personname>Kennedy, Steven</personname>
+		<employeenumber>US1268</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>steven.nyman</samaccountname>
+		<personname>Nyman, Steven (Steve)</personname>
+		<employeenumber>US1244</employeenumber>
+		<managersamaccountname>jlue</managersamaccountname>
+		<manager>Lue, Jeng H</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>stheriot</samaccountname>
+		<personname>Theriot, Shaun</personname>
+		<employeenumber>US1258</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>stricari</samaccountname>
+		<personname>Tricarico, Sara Jill</personname>
+		<employeenumber>US1226</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tbailey</samaccountname>
+		<personname>Bailey, Tony A</personname>
+		<employeenumber>US1082</employeenumber>
+		<managersamaccountname>csmall</managersamaccountname>
+		<manager>Small, Clarence S</manager>
+		<organization>Litho-Maintenance - 722</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>722</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tbarnard</samaccountname>
+		<personname>Barnard, Tommy W</personname>
+		<employeenumber>US1156</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>terence.huang</samaccountname>
+		<personname>Huang, Shih-Chang (Terence)</personname>
+		<employeenumber>US0271</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>thildahl</samaccountname>
+		<personname>Hildahl, Thomas T</personname>
+		<employeenumber>US1194</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>thtran</samaccountname>
+		<personname>Tran, Thuy</personname>
+		<employeenumber>170089</employeenumber>
+		<managersamaccountname>gvallejo</managersamaccountname>
+		<manager>Gloria Vallejo</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>thunde</samaccountname>
+		<personname>Hunde, Tesfaye B (Tes)</personname>
+		<employeenumber>US1122</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Thin Film-Maintenance - 724</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>724</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>Timothy.Kiefel</samaccountname>
+		<personname>Kiefel, Timothy (Tim)</personname>
+		<employeenumber>US1243</employeenumber>
+		<managersamaccountname>gwestby</managersamaccountname>
+		<manager>Westby, Gregory M</manager>
+		<organization>Procurement - 753</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>753</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tmcadams</samaccountname>
+		<personname>Mcadams, Terry J</personname>
+		<employeenumber>US1163</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tnolan</samaccountname>
+		<personname>Nolan, Timothy James (Tim)</personname>
+		<employeenumber>US1192</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>toreis</samaccountname>
+		<personname>Reis, Toni</personname>
+		<employeenumber>170114</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Soudy Southasarn</manager>
+		<organization>Diffusion-Production - 711</organization>
+		<employeetype>Temp</employeetype>
+		<areanumber>711</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tovuong</samaccountname>
+		<personname>Vuong, Toan T</personname>
+		<employeenumber>US1132</employeenumber>
+		<managersamaccountname>dmooney</managersamaccountname>
+		<manager>Mooney, David B (Dave)</manager>
+		<organization>CMP-Production - 715</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>715</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tpeak</samaccountname>
+		<personname>Peak, Tim L</personname>
+		<employeenumber>US1057</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Diffusion-Maintenance - 721</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>721</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tpitts</samaccountname>
+		<personname>Pitts Jr, Thomas S</personname>
+		<employeenumber>US1040</employeenumber>
+		<managersamaccountname>jshoberg</managersamaccountname>
+		<manager>Shoberg, Jeffrey P</manager>
+		<organization>Facility - 790</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>790</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>troyse</samaccountname>
+		<personname>Royse, Tony G</personname>
+		<employeenumber>US1013</employeenumber>
+		<managersamaccountname>gwestby</managersamaccountname>
+		<manager>Westby, Gregory M</manager>
+		<organization>Warehouse - 751</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>751</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>trtran</samaccountname>
+		<personname>Tran, Trung D</personname>
+		<employeenumber>US1152</employeenumber>
+		<managersamaccountname>chogg</managersamaccountname>
+		<manager>Hogg, John A</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tvang</samaccountname>
+		<personname>Vang, Thomas H</personname>
+		<employeenumber>US1087</employeenumber>
+		<managersamaccountname>kim.nguyen</managersamaccountname>
+		<manager>Nguyen, Kim C</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tvuong</samaccountname>
+		<personname>Vuong, Tuan T</personname>
+		<employeenumber>US1153</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>twagner</samaccountname>
+		<personname>Wagner, Travis William</personname>
+		<employeenumber>US1235</employeenumber>
+		<managersamaccountname>jhergert</managersamaccountname>
+		<manager>Hergert, Jeremy L</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>tyi</samaccountname>
+		<personname>Yi, Tae Yong</personname>
+		<employeenumber>US1231</employeenumber>
+		<managersamaccountname>ssouthav</managersamaccountname>
+		<manager>Southasarn, Southavone (Soudy)</manager>
+		<organization>Litho-Production - 712</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>712</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>vinguyen</samaccountname>
+		<personname>Nguyen, Vi H</personname>
+		<employeenumber>US1115</employeenumber>
+		<managersamaccountname>sbakshi</managersamaccountname>
+		<manager>Bakshi, Shekhar</manager>
+		<organization>Etch-Engineering - 733</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>733</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>wdoyle</samaccountname>
+		<personname>Doyle, Arthur W (Willie)</personname>
+		<employeenumber>US1011</employeenumber>
+		<managersamaccountname>jstrys</managersamaccountname>
+		<manager>Strys, John R</manager>
+		<organization>Management - 770</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>770</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>wenjun.li</samaccountname>
+		<personname>Li, Wenjun (Winston)</personname>
+		<employeenumber>US0290</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>william.morrison</samaccountname>
+		<personname>Morrison, William (Bill)</personname>
+		<employeenumber>US1263</employeenumber>
+		<managersamaccountname>wenjun.li</managersamaccountname>
+		<manager>Li, Wenjun (Winston)</manager>
+		<organization>Integration Engineering - 741</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>741</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>winston.wu</samaccountname>
+		<personname>Wu, Winston Wenchieh</personname>
+		<employeenumber>US1184</employeenumber>
+		<manager>Yang, Yi-Chang (Willy)</manager>
+		<organization>Litho-Engineering - 732</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>732</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>wlocke</samaccountname>
+		<personname>Locke Jr, William Edward (Bill)</personname>
+		<employeenumber>US1187</employeenumber>
+		<managersamaccountname>cbartlet</managersamaccountname>
+		<manager>Bartlett, Christopher Scott (Chris)</manager>
+		<organization>Facility-Water - 792</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>792</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>wwaier</samaccountname>
+		<personname>Waier, Wayne W</personname>
+		<employeenumber>US1092</employeenumber>
+		<managersamaccountname>ecunning</managersamaccountname>
+		<manager>Cunningham, Emanuel J (Manu)</manager>
+		<organization>Thin Film-Production - 714</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>714</areanumber>
+	</employee>
+	<employee>
+		<samaccountname>ychand</samaccountname>
+		<personname>Chand, Yatish</personname>
+		<employeenumber>US1021</employeenumber>
+		<managersamaccountname>khulse</managersamaccountname>
+		<manager>Hulse, Kristoffer G (Kit)</manager>
+		<organization>Etch-Maintenance - 723</organization>
+		<employeetype>JSI</employeetype>
+		<areanumber>723</areanumber>
+	</employee>
+</employeeinfo>

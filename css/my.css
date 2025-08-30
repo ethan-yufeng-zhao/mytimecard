@@ -1,0 +1,62 @@
+body {
+    font-family: Consolas, Monospace, sans-serif;
+    font-size: 16px;
+    /*background: url('../watermark.png') no-repeat center center fixed;*/
+    /*background-size: cover;*/
+    /*opacity: 1;*/
+    /*color: #000;*/
+    /*background: url('../watermark.png') repeat;*/
+    /*background-size: 64px 64px;*/
+    /*color: #000;*/
+}
+.watermark-text {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem; /* Adjust font size */
+    color: rgba(0, 0, 0, 0.1); /* Transparent black text */
+    z-index: -1; /* Sends the text behind other content */
+    white-space: nowrap;
+    pointer-events: none; /* Makes the text non-interactive */
+}
+.container {
+    width: 75%;
+    max-width: 1900px;
+    padding: 1px;
+    margin: 0 auto;
+}
+/*.tablesorter tr th:nth-child(2) {*/
+/*        width: 300px;*/
+/*}*/
+/*.tablesorter tr td:nth-child(2) {*/
+/*    font-weight: bold;*/
+/*    white-space: nowrap;*/
+/*}*/
+
+/*a[target="_blank"] {*/
+/*    display: inline-block;*/
+/*    font-weight: bold;*/
+/*    color: #333;*/
+/*    text-decoration: none;*/
+/*    padding: 5px 10px;*/
+/*    border: 1px solid #333;*/
+/*}*/
+a[target="_blank"]:hover {
+    /*background-color: #333;*/
+    color: #0d3349;
+}
+.hltext {
+    color: purple;
+}
+.edit-proficiency-icon {
+    cursor: pointer;
+    /*border: 1px solid #337ab7;*/
+    /*padding: 4px;*/
+    /*border-radius: 2px;*/
+    /*color: #337ab7;*/
+}
+.modal-dialog.wider-modal {
+    width: 50%;
+    /*max-width: 90%; !* Or any percentage or pixel value you want *!*/
+}

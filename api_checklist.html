@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API CHECKLIST</title>
+    <link type="text/css" href="css/simple.css" rel="stylesheet">
+</head>
+<body>
+
+<table border=2>
+
+  <cation>API CHECKLIST</cation>
+
+  <thead>
+  <tr>
+    <th>
+      No.
+    </th>
+
+    <th>
+      Type
+    </th>
+
+    <th>
+      MYSQL
+    </th>
+
+    <th>
+      PGSQL
+    </th>
+
+    <th>
+      API
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+
+  <tr>
+    <td>#1</td>
+    <td>Insert</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+<!--    <td>[&#10004;]</td>-->
+<!--    <td>[&#x2718;]</td>-->
+<!--    <td>×</td>    -->
+    <td>
+      <a href="JSON/JSON_ACTION_add_cert.php">
+        JSON/JSON_ACTION_add_cert.php
+      </a> <strong>&nbsp;&nbsp;(POST)</strong>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#2</td>
+    <td>Insert</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_add_cert_to_template.php?template_id=56&cert_id=12">
+        JSON/JSON_ACTION_add_cert_to_template.php?template_id=56&cert_id=12
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#3</td>
+    <td>Insert</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_add_template.php?template_name=test 4 name&template_last_user=jcubic">
+        JSON/JSON_ACTION_add_template.php?template_name=test 4 name&template_last_user=jcubic
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#4</td>
+    <td>Insert</td>
+    <td>[&#x2717;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="disable" href="">
+        JSON/JSON_ACTION_add_user.php?user_samaccountname=ethan.zhao
+      </a> <em>&nbsp;&nbsp;(LDAP)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#5</td>
+    <td>Insert</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_add_user_cert.php?cert_id=11&user_id=438&user_cert_last_user=jcubic&user_cert_date_granted=2023-05-05">
+        JSON/JSON_ACTION_add_user_cert.php?cert_id=11&user_id=438&user_cert_last_user=jcubic&user_cert_date_granted=2023-05-05
+      </a> <em>(MYSQL)</em>
+      <br>
+      <a href="JSON/JSON_ACTION_add_user_cert.php?cert_id=1&user_id=sstout&user_cert_last_user=jcubic&user_cert_date_granted=2023-05-05">
+        JSON/JSON_ACTION_add_user_cert.php?cert_id=1&user_id=sstout&user_cert_last_user=jcubic&user_cert_date_granted=2023-05-05
+      </a> <em>(PGSQL)</em>
+<!--      <a href="JSON/JSON_ACTION_add_user_cert.php?add_user_cert=1&cert_id=6&add_user_cert_cert_name=BiMedEval&add_user_cert_username=jcubic&user_id=1&user_cert_last_user=jcubic&user_cert_date_granted=10%2F10%2F2013">-->
+<!--        JSON/JSON_ACTION_add_user_cert.php?add_user_cert=1&cert_id=6&add_user_cert_cert_name=BiMedEval&add_user_cert_username=jcubic&user_id=1&user_cert_last_user=jcubic&user_cert_date_granted=10%2F10%2F2013-->
+<!--      </a>-->
+    </td>
+  </tr>
+
+  <tr>
+    <td>#6</td>
+    <td>Insert</td>
+    <td>[&#x2713;]</td>
+    <td>[&nbsp;&nbsp;&nbsp;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_add_user_to_template.php?template_id=41&user_id=1">
+        JSON/JSON_ACTION_add_user_to_template.php?template_id=41&user_id=1
+      </a> <em>(ONLY MYSQL)</em>
+      <br>
+      <a href="JSON/JSON_ACTION_add_user_to_template.php?template_id=41&user_id=sstout">
+        JSON/JSON_ACTION_add_user_to_template.php?template_id=41&user_id=sstout
+      </a> <em>(PGSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#7</td>
+    <td>Insert</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_ACTION_add_warning.php?cert_id=300&warning_number_of_days=21&warning_last_user=jcubic">
+        JSON/JSON_ACTION_add_warning.php?cert_id=300&warning_number_of_days=21&warning_last_user=jcubic
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td>#8</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_delete_cert.php?cert_id=333&delete_cert=0&cert_last_user=jcubic">
+        JSON/JSON_ACTION_delete_cert.php?cert_id=333&delete_cert=0&cert_last_user=jcubic
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#9</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_delete_template.php?remove_template_id=54&remove_template_last_user=jcubic">
+        JSON/JSON_ACTION_delete_template.php?remove_template_id=54&remove_template_last_user=jcubic
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#10</td>
+    <td>Delete</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_ACTION_delete_template_cert_links.php?template_cert_links_id=426">
+        JSON/JSON_ACTION_delete_template_cert_links.php?template_cert_links_id=426
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#11</td>
+    <td>Delete</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_ACTION_delete_template_user_links.php?template_user_links_id=4363">
+        JSON/JSON_ACTION_delete_template_user_links.php?template_user_links_id=4363
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#12</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&nbsp;&nbsp;&nbsp;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_delete_user_cert.php?user_cert_id=1314&user_cert_last_user=jcubic">
+        JSON/JSON_ACTION_delete_user_cert.php?user_cert_id=1314&user_cert_last_user=jcubic
+      </a>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td>#13</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_ACTION_delete_warning.php?warning_id=671&delete_warning=0&warning_last_user=jcubic">
+        JSON/JSON_ACTION_delete_warning.php?warning_id=671&delete_warning=0&warning_last_user=jcubic
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#14</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_ACTION_mark_user_inactive.php?user_id=1">
+        JSON/JSON_ACTION_mark_user_inactive.php?user_id=1
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#15</td>
+    <td>Update</td>
+    <td>[&#x2717;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="disable" href="JSON/JSON_ACTION_ldap_sync_user.php">
+        JSON/JSON_ACTION_ldap_sync_user.php
+      </a> <em>&nbsp;&nbsp;(LDAP)</em>
+      <br>
+      <a class="disable" href="">
+        JSON/JSON_ACTION_ldap_sync_user.php?user_id=1
+      </a> <em>&nbsp;&nbsp;(LDAP)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#16</td>
+    <td>Update</td>
+    <td>[&#x2717;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="disable" href="">
+        JSON/JSON_ACTION_sync_departments.php
+      </a> <em>&nbsp;&nbsp;(LDAP)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#17</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_update_cert.php">
+        JSON/JSON_ACTION_update_cert.php
+      </a> <strong>&nbsp;&nbsp;(POST)</strong>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#18</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_ACTION_update_notification.php?cert_id=1&user_cert_id=1&notification_sent_date=1690788651">
+        JSON/JSON_ACTION_update_notification.php?cert_id=1&user_cert_id=1&notification_sent_date=1690788651
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#19</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_ACTION_update_template_name.php?edit_template_id=54&edit_template_last_user=jcubic&edit_template_name=IT Test Name">
+        JSON/JSON_ACTION_update_template_name.php?edit_template_id=54&edit_template_last_user=jcubic&edit_template_name=IT Test Name
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#20</td>
+    <td>Update</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_ACTION_update_user.php?user_samaccountname=jcubic&user_firstname=John&user_lastname=Clinton&user_email=john.clinton@jfab.aosmd.com&user_supervisor_id=137">
+        JSON/JSON_ACTION_update_user.php?user_samaccountname=jcubic&user_firstname=John&user_lastname=Clinton&user_email=john.clinton@jfab.aosmd.com&user_supervisor_id=137
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#21</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_all_certs.php">
+        JSON/JSON_all_certs.php
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#22</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_all_templates.php">
+        JSON/JSON_all_templates.php
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#23</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_all_users.php">
+        JSON/JSON_all_users.php
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#24</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&nbsp;&nbsp;&nbsp;]</td>
+    <td>
+      <a href="JSON/JSON_all_users_certs.php">
+        JSON/JSON_all_users_certs.php
+      </a> <em>&nbsp;&nbsp;(It's very big & slow.)</em>
+      <br>
+      <a href="JSON/JSON_all_users_certs.php?template_id=3">
+        JSON/JSON_all_users_certs.php?template_id=3
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#25</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&nbsp;&nbsp;&nbsp;]</td>
+    <td>
+      <a href="JSON/JSON_all_users_department_templates.php">
+        JSON/JSON_all_users_department_templates.php
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#26</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&nbsp;&nbsp;&nbsp;]</td>
+    <td>
+      <a href="JSON/JSON_all_users_templates.php">
+        JSON/JSON_all_users_templates.php
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#27</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_cert_by_cert_id.php?cert_id=1">
+        JSON/JSON_cert_by_cert_id.php?cert_id=1
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#28</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_certs_by_user_id.php?user_id=40">
+        JSON/JSON_certs_by_user_id.php?user_id=40
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#29</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_get_one_user_info.php?user_samaccountname=jburke">
+        JSON/JSON_get_one_user_info.php?user_samaccountname=jburke
+      </a>
+      <br>
+      <a href="JSON/JSON_get_one_user_info.php?user_id=40">
+        JSON/JSON_get_one_user_info.php?user_id=40
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#30</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&nbsp;&nbsp;&nbsp;]</td>
+    <td>
+      <a href="JSON/JSON_team_users.php?user_supervisor_id=5">
+        JSON/JSON_team_users.php?user_supervisor_id=5
+      </a> <em> (MYSQL) </em>
+      <br>
+      <a href="JSON/JSON_team_users.php?user_supervisor_id=ssouthav">
+        JSON/JSON_team_users.php?user_supervisor_id=ssouthav
+      </a> <em> (PGSQL) </em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#31</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_team_users_certs.php?user_supervisor_id=5">
+        JSON/JSON_team_users_certs.php?user_supervisor_id=5
+      </a> <em> (MYSQL) </em>
+      <br>
+      <a href="JSON/JSON_team_users_certs.php?user_supervisor_id=ssouthav">
+        JSON/JSON_team_users_certs.php?user_supervisor_id=ssouthav
+      </a> <em> (PGSQL) </em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#32</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_team_users_templates.php?user_supervisor_id=5">
+        JSON/JSON_team_users_templates.php?user_supervisor_id=5
+      </a> <em> (MYSQL) </em>
+      <br>
+      <a href="JSON/JSON_team_users_templates.php?user_supervisor_id=ssouthav">
+        JSON/JSON_team_users_templates.php?user_supervisor_id=ssoutchav
+      </a> <em> (PGSQL) </em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#33</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_template_info_by_template_id.php?template_id=50">
+        JSON/JSON_template_info_by_template_id.php?template_id=50
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#34</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_template_info_by_user_id.php?user_id=228">
+        JSON/JSON_template_info_by_user_id.php?user_id=228
+      </a> <em>(MYSQL)</em>
+      <br>
+      <a href="JSON/JSON_template_info_by_user_id.php?user_id=sstout">
+        JSON/JSON_template_info_by_user_id.php?user_id=sstout
+      </a> <em>(PGSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#35</td>
+    <td>Query</td>
+    <td>[&#x2717;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="disable" href="JSON/JSON_todays_email_work.php">
+        JSON/JSON_todays_email_work.php
+      </a> <em>&nbsp;&nbsp;(Something goes wrong.)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#36</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_todays_notifications.php">
+        JSON/JSON_todays_notifications.php
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#37</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_user_cert_history.php?user_id=40&cert_id=1">
+        JSON/JSON_user_cert_history.php?user_id=40&cert_id=1
+      </a> <em>(MYSQL)</em>
+      <br>
+      <a href="JSON/JSON_user_cert_history.php?user_id=sstout&cert_id=1">
+        JSON/JSON_user_cert_history.php?user_id=sstout&cert_id=1
+      </a> <em>(PGSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#38</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2717;]</td>
+    <td>
+      <a class="abandoned" href="JSON/JSON_user_notifications.php?user_id=48">
+        JSON/JSON_user_notifications.php?user_id=48
+      </a> <em>&nbsp;&nbsp;(ONLY MYSQL)</em>
+    </td>
+  </tr>
+
+  <tr>
+    <td>#39</td>
+    <td>Query</td>
+    <td>[&#x2713;]</td>
+    <td>[&#x2713;]</td>
+    <td>
+      <a href="JSON/JSON_users_in_template_by_template_id.php?template_id=2">
+        JSON/JSON_users_in_template_by_template_id.php?template_id=2
+      </a>
+    </td>
+  </tr>
+
+
+  </tbody>
+
+<!--  <tfoot>-->
+<!--  <tr>-->
+<!--    <td>IT: Ethan</td>-->
+<!--  </tr>-->
+<!--  </tfoot>-->
+
+</table>
+
+</body>
+</html>

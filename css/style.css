@@ -1,0 +1,56 @@
+html {
+	background: #5f6d7a; /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzVmNmQ3YSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5MmEwYWQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  #5f6d7a 0%, #92a0ad 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5f6d7a), color-stop(100%,#92a0ad)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #5f6d7a 0%,#92a0ad 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #5f6d7a 0%,#92a0ad 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #5f6d7a 0%,#92a0ad 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #5f6d7a 0%,#92a0ad 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5f6d7a', endColorstr='#92a0ad',GradientType=0 ); /* IE6-8 */
+
+	background-repeat:no-repeat; /* keeps short content from causing the gradient to repeat all over the page and look bad */
+	background-color:#92a0ad; /* If there is short content this will make the gradient at the top of the page appear to fade better */
+	/*
+	background: #D5DADD url(img/bg-html.jpg) top left repeat-x;
+	margin-bottom: 1px;
+	overflow-y: scroll;
+	height: 100%;
+	*/
+}
+
+body { background: url(img/bg-html.jpg) no-repeat; }
+
+
+a									{ text-decoration: none; }
+ul									{ list-style: none; }
+
+
+/*
+	LEVEL ONE
+*/
+ul.dropdown                         { position: relative; padding: 0px; float:right; margin:0px; }
+ul.dropdown li                      { font-weight: bold; float: left; zoom: 1; background: #FFFFFF; }
+ul.dropdown a:hover		            { color: #000; }
+ul.dropdown a:active                { color: #ffa500; }
+ul.dropdown li a                    { display: block; padding: 4px 8px; border-right: 1px solid #333; color: #222; }
+ul.dropdown li:last-child a         { border-right: none; } /* Doesn't work in IE */
+ul.dropdown li.hover,
+ul.dropdown li:hover                { background: #F3D673; color: black; position: relative; }
+ul.dropdown li.hover a              { color: black; }
+
+/*
+	LEVEL TWO
+*/
+ul.dropdown ul 						{ width: 220px; visibility: hidden; position: absolute; top: 100%; left: 0; padding: 0px; }
+ul.dropdown ul li 					{ font-weight: normal; background: #8dbdd8; color: #000; border-bottom: 1px solid #ccc; float: none; }
+
+                                    /* IE 6 & 7 Needs Inline Block */
+ul.dropdown ul li a					{ border-right: none; width: 100%; display: inline-block; padding-right: 0px;}
+
+/*
+	LEVEL THREE
+*/
+ul.dropdown ul ul 					{ left: 100%; top: 0; padding: 0px; padding-right: 0px;}
+ul.dropdown li:hover > ul 			{ visibility: visible; }

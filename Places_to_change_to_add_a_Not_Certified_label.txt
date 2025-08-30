@@ -1,0 +1,21 @@
+Pages to be modified:
+
+
+    index.php
+        ~ Line 244
+        ~ Line 330
+
+    all_users_certs.php
+        ~ Line 128
+
+    user_cert_history.php
+        ~ Line 228
+
+    team_users_certs.php
+        ~ Line 134
+
+    template_audit.php
+        ~ Line 200
+
+
+
