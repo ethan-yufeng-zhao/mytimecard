@@ -5,7 +5,7 @@
     set_the_cookies();
 
     if (DEBUG) {
-        $_SERVER["REMOTE_USER"] = "\\sstout"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
+        $_SERVER["REMOTE_USER"] = "\\ethan.zhao"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
 //	if(!isset($_SERVER["REMOTE_USER"]) || $_SERVER["REMOTE_USER"] == '') {
 //		header('HTTP/1.1 401 Unauthorized');
 //		header('WWW-Authenticate: Negotiate');
@@ -127,7 +127,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Training Certification System</title>
+	<title>My Timecard Report</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -287,8 +287,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand visible-xs visible-sm" href="<?php echo($mybaseurl); ?>/index.php" title="Training Certification System">TCS</a>
-            <a class="navbar-brand visible-md visible-lg" href="<?php echo($mybaseurl); ?>/index.php">Training Certification System</a>
+            <a class="navbar-brand visible-xs visible-sm" href="<?php echo($mybaseurl); ?>/index.php" title="My Timecard Report">MTR</a>
+            <a class="navbar-brand visible-md visible-lg" href="<?php echo($mybaseurl); ?>/index.php">My Timecard Report</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
