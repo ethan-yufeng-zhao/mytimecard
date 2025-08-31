@@ -15,6 +15,7 @@ $start_time = $_GET['start_time'] ?? date('Y-m-01');
 $end_time = $_GET['end_time'] ?? date('Y-m-t');
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays = count($workdaysList);
+$vacationHours = $_GET['vacation_hours'] ?? 0;
 
 $querystring='';
 $db_pdo = db_connect();
@@ -94,20 +95,18 @@ foreach ($arr as $user => $value ) {
             $noShowDays[] = $wday;
         }
     }
-    $grandTotalHours = round($grandTotalSeconds / 3600, 2);
-    // add vacation hours
-    $vacationHours = 4;
-    $grandTotalHours += $vacationHours;
+    $workHours = round($grandTotalSeconds / 3600, 2);
+    $total_hours = $workHours + $vacationHours;
     $actualWorkdays = count($workedDays);
-    $noShowDays     = max($workDays - $actualWorkdays, 0);
-    $averageHours = $workDays > 0 ? round($grandTotalHours / $workDays, 2) : 0;
+    $averageHours = $workDays > 0 ? round($total_hours / $workDays, 2) : 0;
 
-    $arr[$user]['summary']['total_hours'] = $grandTotalHours;
+    $arr[$user]['summary']['work_hours'] = $workHours;
     $arr[$user]['summary']['workdays'] = $workDays;
     $arr[$user]['summary']['actual_workdays'] = $actualWorkdays;
     $arr[$user]['summary']['no_show_days'] = $noShowDays;
     $arr[$user]['summary']['weekend_days'] = $weekendDays;
     $arr[$user]['summary']['vacation_hours'] = $vacationHours;
+    $arr[$user]['summary']['total_hours'] = $total_hours;
     $arr[$user]['summary']['average_hours'] = $averageHours;
 }
 
