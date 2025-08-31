@@ -5,7 +5,7 @@
     set_the_cookies();
 
     if (DEBUG) {
-        $_SERVER["REMOTE_USER"] = "\\ethan.zhao"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
+        $_SERVER["REMOTE_USER"] = "\\sstout"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
 //	if(!isset($_SERVER["REMOTE_USER"]) || $_SERVER["REMOTE_USER"] == '') {
 //		header('HTTP/1.1 401 Unauthorized');
 //		header('WWW-Authenticate: Negotiate');

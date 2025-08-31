@@ -153,7 +153,7 @@
 		echo('</tr></table><p>');
 
 		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
-			echo('<a data-toggle="modal" href="#modal_cert_picker_data" class="btn btn-primary btn-sm hidden-print">Grant '.$requested_user['user_samaccountname'].' a new Certification</a>&nbsp;&nbsp;');
+			echo('<a data-toggle="modal" href="#modal_cert_picker_data" class="btn btn-primary btn-sm hidden-print">Report missing data for '.$requested_user['user_samaccountname'].' </a>&nbsp;&nbsp;');
 		}
         echo("<a href='javascript:void(0);' onclick='$(\"#savetoexcelform\").submit();' class='btn btn-primary btn-sm hidden-print'>Save to Excel</a></p>");
         echo("<form action='SaveToExcel.php' name='savetoexcelform' id='savetoexcelform' method='post' target='_blank' onsubmit='return saveToExcel();'>\n");
@@ -162,7 +162,7 @@
         echo("</form>");
 
 		$certs = array();
-		$json = json_decode(file_get_contents(request_json_api('/JSON/JSON_certs_by_user_id.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
+		$json = json_decode(file_get_contents(request_json_api('/JSON/JSON_mytimecard?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
 
 		if($json != null && count($json) > 0) {
 			foreach ($json as $key => $value) {
@@ -229,45 +229,32 @@
 			echo("<thead>");
 			echo("<tr>");
 
-//            echo("<th>");
-//            echo("No.");
-//            echo("</th>");
-
             echo("<th>");
-            echo("Cert Id");
+            echo("Date");
             echo("</th>");
 
 			echo("<th>");
-			echo("Cert Name");
+			echo("Time on Site");
 			echo("</th>");
 
 			echo("<th>");
-			echo("Description");
+			echo("Time in Building");
 			echo("</th>");
 
             echo("<th>");
-            echo("Grant Date");
-            echo("</th>");
-
-			echo("<th>");
-			// echo("Expiration");
-			echo("Status");
-			echo("</th>");
-
-            echo("<th>");
-            echo("In Template");
+            echo("Time out of Building");
             echo("</th>");
 
             echo("<th>");
-            echo("Cert Points");
+            echo("Time in Fab");
             echo("</th>");
 
             echo("<th>");
-            echo("Proficiency");
+            echo("Time in Subfab");
             echo("</th>");
 
             echo("<th>");
-            echo("Points");
+            echo("Time in Facilities");
             echo("</th>");
 
 			echo("</tr>\n");
@@ -363,185 +350,6 @@
 			echo('<p>No certifications assigned to: "'.$requested_user['user_samaccountname'].'"</p>');
 			echo('</div>');
 		}
-
-        /**
-         * Templates
-         */
-//        if ($GLOBALS['DB_TYPE'] == 'pgsql'){
-//            $json = json_decode(file_get_contents(request_json_api('/JSON/JSON_template_info_by_user_id.php?user_id='.$requested_user['user_samaccountname']) , false, getContextCookies()), true);
-//        } else {
-        $json = json_decode(file_get_contents(request_json_api('/JSON/JSON_template_info_by_user_id.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
-//        }
-		if($json['count'] > 0) {
-			foreach ($json['items'] as $templates) {
-                $count_template = 0;
-				echo('<table><tr>');
-				echo('<td><h2 style="margin:0px;">');
-				echo('Template: ');
-				echo($templates['template_name']);
-				echo('</h2></td>');
-				echo('</tr></table>');
-				if($templates['certcount'] > 0) {
-					echo("<table class='table_col_2_with_labels'>");
-					echo("<thead>");
-					echo("<tr>");
-
-                    echo("<th>");
-                    echo("No.");
-                    echo("</th>");
-
-                    echo("<th>");
-                    echo("Cert Id");
-                    echo("</th>");
-
-					echo("<th>");
-					echo("Cert Name");
-					echo("</th>");
-
-					echo("<th>");
-					echo("Description");
-					echo("</th>");
-
-					echo("<th>");
-					echo("Status");
-					echo("</th>");
-
-                    echo("<th>");
-                    echo("Points");
-                    echo("</th>");
-
-					echo("</tr>\n");
-					echo("</thead>");
-
-					echo("<tbody>\n");
-					foreach ($templates['certs'] as $value) {
-						echo('<tr>');
-
-                        echo('<td>');
-                        echo(++$count_template);
-                        echo("</td>\n");
-
-                        echo('<td>');
-                        echo($value['cert_id']);
-                        echo("</td>\n");
-
-						echo('<td>');
-						echo($value['cert_name']);
-						echo("</td>\n");
-
-						echo('<td>');
-						echo($value['cert_description']);
-						echo("</td>\n");
-
-						echo('<td>');
-						if(isset($certs[$value['cert_id']])) {
-							if($certs[$value['cert_id']]['cert_never_expires'] == 0) {
-								echo($certs[$value['cert_id']]['calculated_expire_ymd']);
-
-								if(intval($certs[$value['cert_id']]['calculated_days_until_expire']) < -31) {
-									echo('<span style="display:none;">||||</span> <span class="label label-danger">Expired</span>');
-								} elseif(intval($certs[$value['cert_id']]['calculated_days_until_expire']) < 0) {
-									echo('<span style="display:none;">||||</span> <span class="label" style="background-color:#E17572;">Now Due</span>');
-								} elseif(intval($certs[$value['cert_id']]['calculated_days_until_expire']) < 31) {
-									echo('<span style="display:none;">||||</span> <span class="label label-warning">'.$certs[$value['cert_id']]['calculated_days_until_expire'].' days</span>');
-								} else {
-									echo('<span style="display:none;">||||</span> <span class="label label-success">'.$certs[$value['cert_id']]['calculated_days_until_expire'].' days</span>'); // The 4 bars are for parsing in javascript.  Content comes before them.
-								}
-
-							} else {
-								echo('does not expire');
-							}
-							if($certs[$value['cert_id']]['user_cert_exception'] == 1) {
-								echo('<span style="display:none;">||||</span> <span class="label label-danger">Exception</span>');
-							}
-						} else {
-							echo('Needed<span style="display:none;">||||</span> <span class="glyphicon glyphicon-exclamation-sign text-danger"></span>');
-						}
-						echo("</td>\n");
-
-                        echo('<td>');
-                        echo($value['cert_points']);
-                        echo("</td>");
-
-						echo("</tr>\n");
-					}
-					echo("</tbody>");
-					echo("</table>\n");
-				} else {
-					echo('<div class="alert alert-warning">');
-					echo('<p><strong>Notice:</strong> The "'.$templates['template_name'].'" Template currently has no Certifications assigned to it.</p>');
-					echo('</div>');
-				}
-			}
-		}
-
-        /**
-         * Notifications
-         */
-        $count_notification = 0;
-		$json = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_notifications.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
-		if($json['count'] > 0){
-			echo('<hr>');
-			echo('<table><tr>');
-			echo('<td><h2 style="margin:0px;">');
-			echo('Notifications Sent by e-mail');
-			echo('</h2></td>');
-			echo('</tr></table>');
-
-			echo("<table class='tablesorter' style='width:95%; margin-left:2em;'>");
-			echo("<thead>");
-			echo("<tr>");
-
-            echo("<th>");
-            echo("No.");
-            echo("</th>");
-
-			echo("<th>");
-			echo("Cert");
-			echo("</th>");
-
-			echo("<th>");
-			echo("Description");
-			echo("</th>");
-
-			echo("<th>");
-			echo("Notification Sent");
-			echo("</th>");
-
-			echo("</tr>\n");
-			echo("</thead>");
-
-			echo("<tbody>\n");
-
-
-			foreach ($json['items'] as $key => $value) {
-				echo('<tr>');
-
-                echo('<td>');
-                echo(++$count_notification);
-                echo("</td>\n");
-
-				echo('<td>');
-				echo($value['cert_name']);
-				echo("</td>\n");
-
-				echo('<td>');
-				echo($value['cert_description']);
-				echo("</td>\n");
-
-				echo('<td>');
-				echo($value['notification_sent_date_YMD']);
-				echo("</td>\n");
-
-				echo("</tr>\n");
-
-			}
-			echo("</tbody>");
-
-			echo("</table>\n");
-		}
-		unset($json);
-		// echo('</div>');
 
 
         /**
