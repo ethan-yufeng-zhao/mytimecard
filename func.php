@@ -188,7 +188,7 @@ function getWorkdays($start_time, $end_time) {
     $end   = new DateTime($end_time);
     $end->setTime(23, 59, 59);
 
-    $workdays = 0;
+    $workdaysList = [];
     $period = new DatePeriod($start, new DateInterval('P1D'), $end);
 
     foreach ($period as $date) {
@@ -199,9 +199,9 @@ function getWorkdays($start_time, $end_time) {
         $holidays = HOLIDAYS[$year] ?? [];
 
         if ($weekday < 6 && !in_array($datestr, $holidays)) {
-            $workdays++;
+            $workdaysList[] = $datestr;
         }
     }
 
-    return $workdays;
+    return $workdaysList;
 }
