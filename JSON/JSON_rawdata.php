@@ -11,8 +11,8 @@ $arr = array();
 
 
 $user_id = $_GET['user_id'] ?? '';
-$start_time = $_GET['start_time'] ?? date('Y-m-01');
-$end_time = $_GET['end_time'] ?? date('Y-m-t');
+$start_time = $_GET['start_time'] ?? date('Y-m-01', strtotime('first day of last month')); //date('Y-m-01');
+$end_time = $_GET['end_time'] ?? date('Y-m-01'); //date('Y-m-t');
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays = count($workdaysList);
 $vacationHours = $_GET['vacation_hours'] ?? 0;
@@ -21,7 +21,7 @@ $querystring='';
 $db_pdo = db_connect();
 
 $querystring = "SELECT id, extsysid, identitytype, identitydivision, sourcename, trx_timestamp";
-$querystring .= " FROM hr.acm_rpt_alltrx WHERE trx_timestamp >= '".$start_time."' and trx_timestamp <= '".$end_time."'";
+$querystring .= " FROM hr.acm_rpt_alltrx WHERE trx_timestamp >= '".$start_time."' and trx_timestamp < '".$end_time."'";
 if ($user_id) {
     $querystring .= " and extsysid = '".$user_id."'";
 }
