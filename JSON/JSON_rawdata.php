@@ -56,30 +56,49 @@ foreach ($arr as $user => $value ) {
     $employeetype = $value['meta']['employeetype'];
     $shifttype = $value['meta']['shifttype'];
 
-    $grandTotalSeconds = 0;
+    $totalTos = 0;
+    $totalTib = 0;
+    $totalTob = 0;
+
     $workedDays = [];   // track which days had records
     $weekendDays = [];  // track weekends with hours
     $noShowDays = [];
 
     foreach($value['rawdata'] as $day => $events) {
-        $totalSeconds = 0;
+        $dayTos = 0;
+        $dayTib = 0;
+        $dayTob = 0;
+
         $inTime = null;
+        $firstonsite = 0;
+        $lastonsite = 0;
 
         foreach ($events as $event) {
+            if ($firstonsite===0) $firstonsite = strtotime($event['trx_timestamp']);
+            $lastonsite = strtotime($event['trx_timestamp']);
             $ts = strtotime($event['trx_timestamp']);
             $source = strtolower($event['sourcename']);
 
             if (strpos($source, 'in') !== false) {
                 $inTime = $ts;
             } elseif (strpos($source, 'out') !== false && $inTime !== null) {
-                $totalSeconds += ($ts - $inTime);
+                $dayTib += ($ts - $inTime);
                 $inTime = null; // reset
             }
         }
-        if ($totalSeconds > 0) {
-            $hours = round($totalSeconds / 3600, 2);
-            $arr[$user]['data'][$day] = $hours;
-            $grandTotalSeconds += $totalSeconds;
+        if ($dayTib > 0) {
+            $dayTos = round(($lastonsite - $firstonsite) / 3600, 2);
+            $arr[$user]['data'][$day]['tos'] = $dayTos;
+            $totalTos += $dayTos;
+
+            $dayTib = round($dayTib / 3600, 2);
+            $arr[$user]['data'][$day]['tib'] = $dayTib;
+            $totalTib += $dayTib;
+
+            $dayTob = round($dayTos - $dayTib, 2);
+            $arr[$user]['data'][$day]['tob'] = $dayTob;
+            $totalTob += $dayTob;
+
             $workedDays[$day] = true;
 
             // check if weekend
@@ -95,18 +114,23 @@ foreach ($arr as $user => $value ) {
             $noShowDays[] = $wday;
         }
     }
-    $workHours = round($grandTotalSeconds / 3600, 2);
-    $total_hours = $workHours + $vacationHours;
-    $actualWorkdays = count($workedDays);
-    $averageHours = $workDays > 0 ? round($total_hours / $workDays, 2) : 0;
 
-    $arr[$user]['summary']['work_hours'] = $workHours;
     $arr[$user]['summary']['workdays'] = $workDays;
-    $arr[$user]['summary']['actual_workdays'] = $actualWorkdays;
+    $arr[$user]['summary']['actual_workdays'] = count($workedDays);
     $arr[$user]['summary']['no_show_days'] = $noShowDays;
     $arr[$user]['summary']['weekend_days'] = $weekendDays;
     $arr[$user]['summary']['vacation_hours'] = $vacationHours;
+
+    $arr[$user]['summary']['total_tos']       = round($totalTos, 2);
+    $arr[$user]['summary']['total_tib']       = round($totalTib, 2);
+    $arr[$user]['summary']['total_tob']       = round($totalTob, 2);
+    $arr[$user]['summary']['avg_tos']         = $workDays > 0 ? round($totalTos / $workDays, 2) : 0;
+    $arr[$user]['summary']['avg_tib']         = $workDays > 0 ? round($totalTib / $workDays, 2) : 0;
+    $arr[$user]['summary']['avg_tob']         = $workDays > 0 ? round($totalTob / $workDays, 2) : 0;
+
+    $total_hours = $arr[$user]['summary']['total_tib'] + $vacationHours;
     $arr[$user]['summary']['total_hours'] = $total_hours;
+    $averageHours = $workDays > 0 ? round($total_hours / $workDays, 2) : 0;
     $arr[$user]['summary']['average_hours'] = $averageHours;
 }
 
