@@ -161,7 +161,7 @@
         echo("<a href='javascript:void(0);' onclick='$(\"#savetoexcelform\").submit();' class='btn btn-primary btn-sm hidden-print'>Save to Excel</a></td></tr></table>");
         echo("<form action='SaveToExcel.php' name='savetoexcelform' id='savetoexcelform' method='post' target='_blank' onsubmit='return saveToExcel();'>\n");
         echo("<input type='hidden' id='dataToDisplay' name='dataToDisplay'>");
-        echo("<input type='hidden' id='filename' name='filename' value='Certs_".$requested_user['user_firstname'].'.'.$requested_user['user_lastname'].'_'.date('Ymd').".xls'>");
+        echo("<input type='hidden' id='filename' name='filename' value='MyTimecard_".$requested_user['user_firstname'].'.'.$requested_user['user_lastname'].'_'.date('Ymd').".xls'>");
         echo("</form>");
 
 		$certs = array();
@@ -235,7 +235,7 @@
                 }
 
                 echo("<td>");
-                echo($day);
+                echo('<span class="day-of-month">' . htmlspecialchars($day) . '</span>');
                 echo("</td>");
 
                 echo("<td>");
@@ -269,13 +269,19 @@
                 echo("<td>");
                 echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
-                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="0.0"></span>&nbsp;&nbsp;');
+                    if ($inWorkdays) {
+                        echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="8"></span>&nbsp;&nbsp;');
+                    }
                 }
                 echo("</td>");
 
-
-                echo("<td>");
-                echo($value['subtotal'] ?? 0);
+                echo("<td style='display: flex; justify-content: space-between; align-items: center;'>");
+                echo('<span style="text-align: left;">' . ($value['subtotal'] ?? 0) . '</span>');
+                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
+                    if ($value['subtotal'] > 0) {
+                        echo('<span class="view-history-icon glyphicon glyphicon-time text-secondary" style="cursor: pointer;" title="View Badging History" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
+                    }
+                }
                 echo('</td>');
 
 //                echo("<td>");
@@ -327,7 +333,7 @@
                 echo("<td>");
                 echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
-                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="0.0"></span>&nbsp;&nbsp;');
+                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="8"></span>&nbsp;&nbsp;');
                 }
                 echo("</td>");
 
@@ -496,10 +502,10 @@
         echo('<h5 class="modal-title">Edit Vacation</h5>');
         echo('</div>');
         echo('<div class="modal-body" >');
-        echo('<label for="edit-vacation-input">Vacation[1, 8]:</label>');
-        echo('<input type="text" id="edit-vacation-input" value="4" />');
-//        echo('<br><label for="edit-comments">Comments[Non-empty. DO NOT USE \']:</label>');
-//        echo('<textarea id="edit-comments" rows="3" style="width:100%;"></textarea>');
+        echo('<label for="edit-vacation-input">Vacation[0, 8]:&nbsp;</label>');
+        echo('<input type="text" id="edit-vacation-input" min="0" max="8" step="1" value=4 autocomplete="off" style="width:100%; max-width:140px;" />');
+        echo('<br><label for="edit-comments">Comments:</label>');
+        echo('<textarea id="edit-comments" rows="3" style="width:100%;" placeholder="Update Vacation. Do not use \'. This can be empty."></textarea>');
         echo('</div>');
         echo('<div class="modal-footer">');
         echo('<button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>');
@@ -541,73 +547,74 @@
     // Track the current icon
     let currentIcon = null;
 
-    //document.querySelectorAll('.view-history-icon').forEach(icon => {
-    //    icon.addEventListener('click', function () {
-    //        const certId = this.getAttribute('data-cert-id');
-    //        const adAccount = "<?php //echo $requested_user['user_samaccountname']; ?>//";
-    //        if (!certId || !adAccount) {
-    //            alert('Certification ID or AD account is missing.');
-    //            return;
-    //        }
-    //
-    //        console.log(`Fetching: JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`);
-    //        // Fetch the history via AJAX
-    //        fetch(`JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`)
-    //            .then(response => response.json())
-    //            .then(data => {
-    //                if (data.success) {
-    //                    // Construct the history table
-    //                    let historyTable = `
-    //                    <h4> ${adAccount} - ${certId}</h4>
-    //                    <table class="table table-bordered table-striped">
-    //                        <thead>
-    //                            <tr>
-    //                                <th>Modified Time</th>
-    //                                <th>vacation</th>
-    //                                <th>Modified By</th>
-    //                                <th>Comments</th>
-    //                            </tr>
-    //                        </thead>
-    //                        <tbody>
-    //                `;
-    //
-    //                    // Loop through the history object and create table rows
-    //                    for (const key in data.history) {
-    //                        const entry = data.history[key];
-    //                        historyTable += `
-    //                        <tr>
-    //                            <td>${entry.modified_time}</td>
-    //                            <td>${entry.vacation}</td>
-    //                            <td>${entry.modified_user}</td>
-    //                            <td>${entry.modified_comments}</td>
-    //                        </tr>
-    //                    `;
-    //                    }
-    //
-    //                    historyTable += `
-    //                        </tbody>
-    //                    </table>
-    //                `;
-    //
-    //                    // Display the table in the modal
-    //                    const historyDialog = document.getElementById('history-dialog');
-    //                    historyDialog.querySelector('.modal-body').innerHTML = historyTable;
-    //                    historyDialog.style.display = 'block';
-    //                } else {
-    //                    alert('Failed to fetch history: ' + data.message);
-    //                }
-    //            })
-    //            .catch(error => {
-    //                console.error('Error fetching history:', error);
-    //                alert('Unable to fetch change history. Please try again later.');
-    //            });
-    //    });
-    //});
+    document.querySelectorAll('.view-history-icon').forEach(icon => {
+        icon.addEventListener('click', function () {
+            const dayOfMonth = this.getAttribute('data-day-of-month');
+            const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
+            if (!dayOfMonth || !adAccount) {
+                alert('Day of month or AD account is missing.');
+                return;
+            }
 
-    // document.getElementById('close-history-btn').addEventListener('click', function () {
-    //     const historyDialog = document.getElementById('history-dialog');
-    //     historyDialog.style.display = 'none';
-    // });
+            console.log(`Fetching: JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`);
+            // Fetch the history via AJAX
+            return;
+            fetch(`JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Construct the return;history table
+                        let historyTable = `
+                        <h4> ${adAccount} - ${certId}</h4>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Modified Time</th>
+                                    <th>vacation</th>
+                                    <th>Modified By</th>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                        // Loop through the history object and create table rows
+                        for (const key in data.history) {
+                            const entry = data.history[key];
+                            historyTable += `
+                            <tr>
+                                <td>${entry.modified_time}</td>
+                                <td>${entry.vacation}</td>
+                                <td>${entry.modified_user}</td>
+                                <td>${entry.modified_comments}</td>
+                            </tr>
+                        `;
+                        }
+
+                        historyTable += `
+                            </tbody>
+                        </table>
+                    `;
+
+                        // Display the table in the modal
+                        const historyDialog = document.getElementById('history-dialog');
+                        historyDialog.querySelector('.modal-body').innerHTML = historyTable;
+                        historyDialog.style.display = 'block';
+                    } else {
+                        alert('Failed to fetch history: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching history:', error);
+                    alert('Unable to fetch change history. Please try again later.');
+                });
+        });
+    });
+
+     document.getElementById('close-history-btn').addEventListener('click', function () {
+         const historyDialog = document.getElementById('history-dialog');
+         historyDialog.style.display = 'none';
+     });
 
     // Show the modal when the edit icon is clicked
     document.querySelectorAll('.glyphicon-pencil').forEach(icon => {
@@ -617,11 +624,11 @@
             const inputField = document.getElementById('edit-vacation-input');
             inputField.value = vacationValue.toFixed(0); // Set the current value in the input field
 
-            // const commentsField = document.getElementById('edit-comments');
-            // commentsField.value = ''; // Clear the comments field
+            const commentsField = document.getElementById('edit-comments');
+            commentsField.value = ''; // Clear the comments field
 
             const saveButton = document.getElementById('save-edit-btn');
-            saveButton.disabled = true; // Initially disable the Save button
+            saveButton.disabled = vacationValue < 1 || vacationValue > 8;
 
             const dialog = document.getElementById('edit-dialog');
             dialog.style.display = 'block'; // Show the modal
@@ -629,18 +636,18 @@
     });
 
     // Enable/Disable Save button based on comments input
-    // document.getElementById('edit-comments').addEventListener('input', function () {
-    //     const commentsValue = this.value.trim();
-    //     const saveButton = document.getElementById('save-edit-btn');
-    //     saveButton.disabled = commentsValue.length === 0; // Disable if comments are empty
-    // });
+    document.getElementById('edit-comments').addEventListener('input', function () {
+        const commentsValue = this.value.trim();
+        const saveButton = document.getElementById('save-edit-btn');
+        saveButton.disabled = false; // Disable if comments are empty
+    });
 
     // Save changes when the Save button is clicked
     document.getElementById('save-edit-btn').addEventListener('click', function () {
         const inputField = document.getElementById('edit-vacation-input');
-        // const commentsField = document.getElementById('edit-comments');
+        const commentsField = document.getElementById('edit-comments');
         const newVacation = parseFloat(inputField.value);
-        // const modifiedComments = commentsField.value.trim();
+        const modifiedComments = commentsField.value.trim();
 
         // Validate the vacation range
         if (isNaN(newVacation) || newVacation < 1 || newVacation > 8) {
@@ -651,20 +658,17 @@
         const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
         const modifiedUser = "<?php echo $user['user_samaccountname']; ?>";
         const currentRow = currentIcon.closest('tr'); // Find the parent row
-        const certId = currentRow.querySelector('.cert-id')?.textContent.trim();
-        const userCertDate = currentRow.querySelector('.user_cert_date')?.textContent.trim();
-        const certPointsSpan = currentIcon.closest('td').previousElementSibling.querySelector('.cert_points');
-        const certPoints = parseFloat(certPointsSpan.textContent);
+        const day_of_month = currentRow.querySelector('.day-of-month')?.textContent.trim();
 
         console.log(adAccount);
-        console.log('Cert ID:', certId);
-        console.log('User Cert Date:', userCertDate);
+        console.log('Day of Month:',day_of_month);
+
         console.log(newVacation);
         console.log(modifiedUser);
         console.log(modifiedComments);
 
-        if (!certId || !adAccount || !userCertDate) {
-            alert('Cert ID | AD ACCOUNT | USER CERT DATE is missing.');
+        if (!day_of_month || !adAccount) {
+            alert('Day of Month | AD Account is missing.');
             return;
         }
 
@@ -675,11 +679,11 @@
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-                cert_id: certId,
-                vacation: newVacation.toFixed(2),
+                day_of_month: day_of_month,
+                vacation: newVacation.toFixed(0),
                 ad_account: adAccount,
                 modified_user: modifiedUser,
-                // modified_comments: modifiedComments
+                modified_comments: modifiedComments
             }),
         }).then(response => response.json())
             .then(data => {
@@ -687,18 +691,18 @@
                     // Update the vacation value in the table
                     const vacationSpan = currentIcon.previousElementSibling;
                     if (vacationSpan) {
-                        vacationSpan.textContent = newVacation.toFixed(2); // Update the displayed vacation value
-                        currentIcon.setAttribute('data-vacation', newVacation.toFixed(2)); // Update the icon's data attribute
+                        vacationSpan.textContent = newVacation.toFixed(0); // Update the displayed vacation value
+                        currentIcon.setAttribute('data-vacation', newVacation.toFixed(0)); // Update the icon's data attribute
                     }
 
                     // Update the points-by-cert value
                     const pointsByCertCell = currentIcon.closest('td').nextElementSibling.querySelector('.points-by-cert');
                     if (!isNaN(certPoints) && pointsByCertCell) {
-                        pointsByCertCell.textContent = (certPoints * newVacation).toFixed(2);
+                        pointsByCertCell.textContent = (certPoints * newVacation).toFixed(0);
                     }
 
                     // Recalculate the total points
-                    recalculateTotalPoints();
+                    // recalculateTotalPoints();
 
                     // Hide the modal
                     const dialog = document.getElementById('edit-dialog');
