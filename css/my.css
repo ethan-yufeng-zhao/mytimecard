@@ -11,10 +11,10 @@ body {
 }
 .watermark-text {
     position: fixed;
-    top: 10%;
+    top: 7%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 5rem; /* Adjust font size */
+    font-size: 4rem; /* Adjust font size */
     color: rgba(0, 0, 0, 0.1); /* Transparent black text */
     z-index: -1; /* Sends the text behind other content */
     white-space: nowrap;
