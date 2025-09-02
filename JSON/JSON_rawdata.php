@@ -59,6 +59,8 @@ foreach ($arr as $user => $value ) {
     $totalTos = 0;
     $totalTib = 0;
     $totalTob = 0;
+    $totalVacation = 0;
+    $total_hours = 0;
 
     $workedDays = [];   // track which days had records
     $weekendDays = [];  // track weekends with hours
@@ -99,6 +101,14 @@ foreach ($arr as $user => $value ) {
             $arr[$user]['data'][$day]['tob'] = $dayTob;
             $totalTob += $dayTob;
 
+            $dayVacation = 0; //TODO
+            $arr[$user]['data'][$day]['vacation'] = $dayVacation;
+            $totalVacation += $dayVacation;
+
+            $dayHours = round(($dayTib + $dayVacation), 2);
+            $arr[$user]['data'][$day]['subtotal'] = $dayHours;
+            $total_hours += $dayHours;
+
             $workedDays[$day] = true;
 
             // check if weekend
@@ -112,9 +122,15 @@ foreach ($arr as $user => $value ) {
     foreach ($workdaysList as $wday) {
         if (!isset($workedDays[$wday])) {
             $noShowDays[] = $wday;
+//            $arr[$user]['data'][$wday]['tos'] = 'No Show';
+//            $arr[$user]['data'][$wday]['tib'] = 'No Show';
+//            $arr[$user]['data'][$wday]['tob'] = 'No Show';
+//            $arr[$user]['data'][$wday]['tif'] = 'No Show';
+//            $arr[$user]['data'][$wday]['tisf'] = 'No Show';
+//            $arr[$user]['data'][$wday]['tifac'] = 'No Show';
         }
     }
-
+    $arr[$user]['summary']['workdaysList'] = $workdaysList;
     $arr[$user]['summary']['workdays'] = $workDays;
     $arr[$user]['summary']['actual_workdays'] = count($workedDays);
     $arr[$user]['summary']['no_show_days'] = $noShowDays;
@@ -132,13 +148,15 @@ foreach ($arr as $user => $value ) {
     $arr[$user]['summary']['avg_tib']         = $workDays > 0 ? round($totalTib / $workDays, 2) : 0;
     $arr[$user]['summary']['avg_tob']         = $workDays > 0 ? round($totalTob / $workDays, 2) : 0;
     $arr[$user]['summary']['avg_tif']         = 0;
-    $arr[$user]['summary']['avg_tisf']         = 0;
-    $arr[$user]['summary']['avg_tifac']         = 0;
+    $arr[$user]['summary']['avg_tisf']        = 0;
+    $arr[$user]['summary']['avg_tifac']       = 0;
 
-    $total_hours = $arr[$user]['summary']['total_tib'] + $vacationHours;
-    $arr[$user]['summary']['total_hours'] = $total_hours;
+    $arr[$user]['summary']['total_vacation']  = $totalVacation;
+    $arr[$user]['summary']['avg_vacation']    = $workDays > 0 ? round($totalVacation / $workDays, 2) : 0;
+
+    $arr[$user]['summary']['total_hours'] = round($total_hours, 2);
     $averageHours = $workDays > 0 ? round($total_hours / $workDays, 2) : 0;
-    $arr[$user]['summary']['average_hours'] = $averageHours;
+    $arr[$user]['summary']['avg_hours'] = $averageHours;
 }
 
 $db_pdo = null;

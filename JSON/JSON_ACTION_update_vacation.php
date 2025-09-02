@@ -8,11 +8,11 @@
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$cert_id = $_POST['cert_id'] ?? null; // Row ID or unique identifier
         $ad_account = $_POST['ad_account'] ?? null;
-		$newProficiency = $_POST['proficiency'] ?? null;
+		$newvacation = $_POST['vacation'] ?? null;
 //        $user_cert_date = $_POST['user_cert_date'] ?? null;
         $modified_user = $_POST['modified_user'] ?? null;
         $modified_comments = $_POST['modified_comments'] ?? null;
-		if ($cert_id === null || $newProficiency === null || $ad_account === null || $modified_user === null || $modified_comments === null) {
+		if ($cert_id === null || $newvacation === null || $ad_account === null || $modified_user === null || $modified_comments === null) {
 			echo json_encode(['success' => false, 'message' => 'Invalid input.']);
 			exit;
 		}
@@ -22,12 +22,12 @@
 		$updatestring = '';
 		$db_pdo = db_connect();
 
-        $updatestring = 'INSERT INTO tcs.proficiency_his (cert_id, ad_account, proficiency, modified_user, modified_comments) VALUES ( ';
-        $updatestring .= "$cert_id, '$ad_account',  $newProficiency, '$modified_user', '$modified_comments' ) ";
-//        $updatestring .= ":cert_id, :ad_account, :proficiency,  :modified_user, :modified_comments )";
+        $updatestring = 'INSERT INTO tcs.vacation_his (cert_id, ad_account, vacation, modified_user, modified_comments) VALUES ( ';
+        $updatestring .= "$cert_id, '$ad_account',  $newvacation, '$modified_user', '$modified_comments' ) ";
+//        $updatestring .= ":cert_id, :ad_account, :vacation,  :modified_user, :modified_comments )";
 //        $params[':cert_id'] = $cert_id;
 //        $params[':ad_account'] = $ad_account;
-//        $params[':proficiency'] = $newProficiency;
+//        $params[':vacation'] = $newvacation;
 //        $params[':modified_user'] = $modified_user;
 //        $params[':modified_comments'] = $modified_comments;
 

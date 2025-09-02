@@ -162,75 +162,20 @@
         echo("</form>");
 
 		$certs = array();
-		$json = json_decode(file_get_contents(request_json_api('/JSON/JSON_mytimecard?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
-
-		if($json != null && count($json) > 0) {
-			foreach ($json as $key => $value) {
-				$largest_key = max(array_keys($value)); // This makes sure that we are always looking at the newest certification
-
-                $dummy = array();
-				$dummy['cert_name'] = $value[$largest_key]['cert_name'];
-				$dummy['cert_id'] = $value[$largest_key]['cert_id'];
-				$dummy['user_cert_id'] = $value[$largest_key]['user_cert_id'];
-				$dummy['cert_description'] = $value[$largest_key]['cert_description'];
-				$dummy['cert_never_expires'] = $value[$largest_key]['cert_never_expires'];
-				$dummy['user_cert_date_granted_ymd'] = $value[$largest_key]['user_cert_date_granted_ymd'];
-				if(isset($value[$largest_key]['calculated_expire_ymd'])) {
-					$dummy['calculated_expire_ymd'] = $value[$largest_key]['calculated_expire_ymd'];
-				}
-				if(isset($value[$largest_key]['calculated_days_until_expire'])) {
-					$dummy['calculated_days_until_expire'] = $value[$largest_key]['calculated_days_until_expire'];
-				}
-				$dummy['cert_notes'] = $value[$largest_key]['cert_notes'];
-				$dummy['user_cert_exception'] = $value[$largest_key]['user_cert_exception'];
-                $dummy['cert_points'] = $value[$largest_key]['cert_points'];
-                $dummy['proficiency'] = $value[$largest_key]['proficiency'];
-                $dummy['user_cert_date'] = $value[$largest_key]['user_cert_date'];
-                $dummy['in_template'] = $value[$largest_key]['in_template'];
-
-                if ($dummy['in_template'] !== 1 && floatval($dummy['proficiency']) !== 0.5) {
-                    $postData = http_build_query([
-                            'cert_id'           => $dummy['cert_id'],
-                            'proficiency'       => '0.50',
-                            'ad_account'        => $requested_user['user_samaccountname'],
-                            'modified_user'     => $user['user_samaccountname'],
-                            'modified_comments' => 'Auto default to 0.5'
-                    ]);
-
-                    $context_options = [
-                            'http' => [
-                                    'method'  => 'POST',
-                                    'header'  => "Content-Type: application/x-www-form-urlencoded\r\n"
-                                            . "Content-Length: " . strlen($postData) . "\r\n",
-                                    'content' => $postData,
-                                    'timeout' => 300,
-                                    'ignore_errors' => true
-                            ]
-                    ];
-
-                    $update_url = HTTP_BASEURL . '/JSON/JSON_ACTION_update_proficiency.php';
-                    logit("Sending form POST: $update_url\n" . print_r($context_options, true));
-
-                    $update_rslt = get_json($update_url, null, $context_options);
-                    if (isset($update_rslt['success']) && $update_rslt['success']) {
-                        $dummy['proficiency'] = 0.5;
-                    }
-                }
-
-                $certs[$dummy['cert_id']] = $dummy;
-				unset($dummy);
-			}
-			unset($json);
-
-			// echo('<div style="margin-bottom:1em;" class="bootstrap_buttons container">');
-			// echo('<button type="button" class="reset btn btn-primary" data-column="0" data-filter=""><i class="icon-white icon-refresh"></i> Reset filters</button>');
-			// echo('</div>');
+		$json = json_decode(file_get_contents(request_json_api('/JSON/JSON_rawdata.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
+        $daydata = $json[$requested_user['user_id']]['data'] ?? null;
+        $summary = $json[$requested_user['user_id']]['summary'] ?? null;
+		if($daydata && $summary) {
 			echo("<table class='table_col_2_with_labels'>");
 			echo("<thead>");
 			echo("<tr>");
 
             echo("<th>");
-            echo("Date");
+            echo("Day of Month");
+            echo("</th>");
+
+            echo("<th>");
+            echo("What day");
             echo("</th>");
 
 			echo("<th>");
@@ -257,91 +202,153 @@
             echo("Time in Facilities");
             echo("</th>");
 
+            echo("<th>");
+            echo("Vacation");
+            echo("</th>");
+
+            echo("<th>");
+            echo("Total Hours");
+            echo("</th>");
+
+//            echo("<th>");
+//            echo("Missing Exit Flag");
+//            echo("</th>");
+//
+//            echo("<th>");
+//            echo("Missing Entry Flag");
+//            echo("</th>");
+
 			echo("</tr>\n");
 			echo("</thead>");
 
 			echo("<tbody>");
 
-            $count_c = 0;
-            $totalpoints = 0;
-			foreach ($certs as $value) {
-                ++$count_c;
-				$notification_certs_arr[] = array('cert_id' => $value['cert_id'], 'user_cert_id' => $value['user_cert_id']);
-				echo('<tr>');
+            foreach ($daydata as $day => $value) {
+                $inWorkdays = in_array($day, $summary['workdaysList']);
+                if ($inWorkdays) {
+                    echo('<tr>');
+                } else {
+                    echo('<tr style="color:green;">');
+                }
+
+                echo("<td>");
+                echo($day);
+                echo("</td>");
+
+                echo("<td>");
+                echo(date('D', strtotime($day)));
+                echo("</td>");
+
+				echo("<td>");
+				echo($value['tos'] ?? 0);
+				echo('</td>');
+
+                echo("<td>");
+                echo($value['tib'] ?? 0);
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tob'] ?? 0);
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tif'] ?? 0);
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tisf'] ?? 0);
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tifac'] ?? 0);
+                echo('</td>');
+
+                echo("<td>");
+                echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
+                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
+                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="0.0"></span>&nbsp;&nbsp;');
+                }
+                echo("</td>");
+
+
+                echo("<td>");
+                echo($value['subtotal'] ?? 0);
+                echo('</td>');
 
 //                echo("<td>");
-//                echo(++$count_c);
+//                echo($value['missingexitflag'] ?? 0);
 //                echo('</td>');
-
-                echo("<td>");
-                echo('<span class="cert-id">' . htmlspecialchars($value['cert_id']) . '</span>');
-                echo("</td>");
-
-				echo("<td>");
-				echo($value['cert_name']);
-				echo('</td>');
-
-                echo("<td>");
-                echo($value['cert_description']);
-                echo('</td>');
-
-                echo("<td>");
-                echo('<span class="user_cert_date">' . htmlspecialchars($value['user_cert_date']) . '</span>');
-                echo('</td>');
-
-				echo("<td>");
-				if($value['cert_never_expires'] == 0) {
-                    echo($value['calculated_expire_ymd']);
-					if(intval($value['calculated_days_until_expire']) < -31) {
-						echo('<span style="display:none;">||||</span> <span class="label label-danger">Expired</span>');
-					} elseif(intval($value['calculated_days_until_expire']) < 0) {
-						echo('<span style="display:none;">||||</span> <span class="label" style="background-color:#E17572;">Now Due</span>');
-					} elseif(intval($value['calculated_days_until_expire']) < 31) {
-						echo('<span style="display:none;">||||</span> <span class="label label-warning">'.$value['calculated_days_until_expire'].' days</span>');
-					} else {
-						echo('<span style="display:none;">||||</span> <span class="label label-success">'.$value['calculated_days_until_expire'].' days</span>'); // The 4 bars are for parsing in javascript.  Content comes before them.
-					}
-				} else {
-					echo('does not expire');
-				}
-				if($value['user_cert_exception'] == 1) {
-					echo('<span style="display:none;">||||</span> <span class="label label-danger">Exception</span>');
-				}
-				echo('</td>');
-
-                echo("<td>");
-                if ($value['in_template'] == 1) {
-                    echo("Y");
-                } else {
-                    echo("N");
-                }
-                echo('</td>');
-
-                echo("<td>");
-                echo('<span class="cert_points">'.$value['cert_points'].'</span>');
-                echo('</td>');
-
-                echo("<td>");
-                echo('<span class="proficiency-value">' . htmlspecialchars($value['proficiency']) . '</span>&nbsp;&nbsp;');
-                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
-                    echo('<span class="edit-proficiency-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-proficiency="0.0"></span>&nbsp;&nbsp;');
-                    if ($value['proficiency'] > 0) {
-                        echo('<span class="view-history-icon glyphicon glyphicon-time text-secondary" style="cursor: pointer;" title="View Change History" data-cert-id="' . htmlspecialchars($value['cert_id']) . '"></span>');
-                    }
-                }
-                echo("</td>");
-
-                $pointsbycert = floatval($value['cert_points'])*floatval($value['proficiency']);
-                $totalpoints += $pointsbycert;
-                echo("<td>");
-                echo('<span class="points-by-cert">'.$pointsbycert.'</span>');
-                echo('</td>');
+//
+//                echo("<td>");
+//                echo($value['missingentryflag'] ?? 0);
+//                echo('</td>');
 
 				echo('</tr>');
 			}
+            foreach ($summary['no_show_days'] as $index => $day) {
+                $value = $daydata[$day] ?? null;
+                echo('<tr style="color:red;">');
+
+                echo("<td>");
+                echo($day);
+                echo("</td>");
+
+                echo("<td>");
+                echo(date('D', strtotime($day)));
+                echo("</td>");
+
+                echo("<td>");
+                echo($value['tos'] ?? 'No Show');
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tib'] ?? 'No Show');
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tob'] ?? 'No Show');
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tif'] ?? 'No Show');
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tisf'] ?? 'No Show');
+                echo('</td>');
+
+                echo("<td>");
+                echo($value['tifac'] ?? 'No Show');
+                echo('</td>');
+
+                echo("<td>");
+                echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
+                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
+                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="0.0"></span>&nbsp;&nbsp;');
+                }
+                echo("</td>");
+
+
+                echo("<td>");
+                echo($value['subtotal'] ?? 0);
+                echo('</td>');
+
+//                echo("<td>");
+//                echo($value['missingexitflag'] ?? 0);
+//                echo('</td>');
+//
+//                echo("<td>");
+//                echo($value['missingentryflag'] ?? 0);
+//                echo('</td>');
+
+                echo('</tr>');
+            }
 			echo("</tbody>");
             echo("</tfoot>");
-            echo('<tr><th colspan="6">Count:'.$count_c.'</th><th colspan="2">Total Points:</th><td id="total-points" class="hltext">'.number_format($totalpoints,2).'</td></tr>');
+            echo("<tr><th colspan='2'>Total:</th><th>".$summary['total_tos']."</th><th>".$summary['total_tib']."</th><th>".$summary['total_tob']."</th>");
+            echo("<th>".$summary['total_tif']."</th><th>".$summary['total_tisf']."</th><th>".$summary['total_tifac']."</th><th>".$summary['total_vacation']."</th><th>".$summary['total_hours']."</th></tr>");
+            echo("<tr><th colspan='2'>Average:</th><th>".$summary['avg_tos']."</th><th>".$summary['avg_tib']."</th><th>".$summary['avg_tob']."</th>");
+            echo("<th>".$summary['avg_tif']."</th><th>".$summary['avg_tisf']."</th><th>".$summary['avg_tifac']."</th><th>".$summary['avg_vacation']."</th><th>".$summary['avg_hours']."</th></tr>");
             echo("</tfoot>");
 			echo("</table>\n");
             echo("</div>\n");
@@ -350,7 +357,6 @@
 			echo('<p>No certifications assigned to: "'.$requested_user['user_samaccountname'].'"</p>');
 			echo('</div>');
 		}
-
 
         /**
          * Bootstrap Modals
@@ -484,13 +490,13 @@
         echo('<div class="modal-dialog">');
         echo('<div class="modal-content">');
         echo('<div class="modal-header">');
-        echo('<h5 class="modal-title">Edit Proficiency</h5>');
+        echo('<h5 class="modal-title">Edit Vacation</h5>');
         echo('</div>');
         echo('<div class="modal-body" >');
-        echo('<label for="edit-proficiency-input">Proficiency[0.7, 1.1]:</label>');
-        echo('<input type="text" id="edit-proficiency-input" />');
-        echo('<br><label for="edit-comments">Comments[Non-empty. DO NOT USE \']:</label>');
-        echo('<textarea id="edit-comments" rows="3" style="width:100%;"></textarea>');
+        echo('<label for="edit-vacation-input">Vacation[1, 8]:</label>');
+        echo('<input type="text" id="edit-vacation-input" value="4" />');
+//        echo('<br><label for="edit-comments">Comments[Non-empty. DO NOT USE \']:</label>');
+//        echo('<textarea id="edit-comments" rows="3" style="width:100%;"></textarea>');
         echo('</div>');
         echo('<div class="modal-footer">');
         echo('<button type="button" id="cancel-edit-btn" class="btn btn-secondary">Cancel</button>');
@@ -532,84 +538,84 @@
     // Track the current icon
     let currentIcon = null;
 
-    document.querySelectorAll('.view-history-icon').forEach(icon => {
-        icon.addEventListener('click', function () {
-            const certId = this.getAttribute('data-cert-id');
-            const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
-            if (!certId || !adAccount) {
-                alert('Certification ID or AD account is missing.');
-                return;
-            }
+    //document.querySelectorAll('.view-history-icon').forEach(icon => {
+    //    icon.addEventListener('click', function () {
+    //        const certId = this.getAttribute('data-cert-id');
+    //        const adAccount = "<?php //echo $requested_user['user_samaccountname']; ?>//";
+    //        if (!certId || !adAccount) {
+    //            alert('Certification ID or AD account is missing.');
+    //            return;
+    //        }
+    //
+    //        console.log(`Fetching: JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`);
+    //        // Fetch the history via AJAX
+    //        fetch(`JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`)
+    //            .then(response => response.json())
+    //            .then(data => {
+    //                if (data.success) {
+    //                    // Construct the history table
+    //                    let historyTable = `
+    //                    <h4> ${adAccount} - ${certId}</h4>
+    //                    <table class="table table-bordered table-striped">
+    //                        <thead>
+    //                            <tr>
+    //                                <th>Modified Time</th>
+    //                                <th>vacation</th>
+    //                                <th>Modified By</th>
+    //                                <th>Comments</th>
+    //                            </tr>
+    //                        </thead>
+    //                        <tbody>
+    //                `;
+    //
+    //                    // Loop through the history object and create table rows
+    //                    for (const key in data.history) {
+    //                        const entry = data.history[key];
+    //                        historyTable += `
+    //                        <tr>
+    //                            <td>${entry.modified_time}</td>
+    //                            <td>${entry.vacation}</td>
+    //                            <td>${entry.modified_user}</td>
+    //                            <td>${entry.modified_comments}</td>
+    //                        </tr>
+    //                    `;
+    //                    }
+    //
+    //                    historyTable += `
+    //                        </tbody>
+    //                    </table>
+    //                `;
+    //
+    //                    // Display the table in the modal
+    //                    const historyDialog = document.getElementById('history-dialog');
+    //                    historyDialog.querySelector('.modal-body').innerHTML = historyTable;
+    //                    historyDialog.style.display = 'block';
+    //                } else {
+    //                    alert('Failed to fetch history: ' + data.message);
+    //                }
+    //            })
+    //            .catch(error => {
+    //                console.error('Error fetching history:', error);
+    //                alert('Unable to fetch change history. Please try again later.');
+    //            });
+    //    });
+    //});
 
-            console.log(`Fetching: JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`);
-            // Fetch the history via AJAX
-            fetch(`JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Construct the history table
-                        let historyTable = `
-                        <h4> ${adAccount} - ${certId}</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Modified Time</th>
-                                    <th>Proficiency</th>
-                                    <th>Modified By</th>
-                                    <th>Comments</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    `;
-
-                        // Loop through the history object and create table rows
-                        for (const key in data.history) {
-                            const entry = data.history[key];
-                            historyTable += `
-                            <tr>
-                                <td>${entry.modified_time}</td>
-                                <td>${entry.proficiency}</td>
-                                <td>${entry.modified_user}</td>
-                                <td>${entry.modified_comments}</td>
-                            </tr>
-                        `;
-                        }
-
-                        historyTable += `
-                            </tbody>
-                        </table>
-                    `;
-
-                        // Display the table in the modal
-                        const historyDialog = document.getElementById('history-dialog');
-                        historyDialog.querySelector('.modal-body').innerHTML = historyTable;
-                        historyDialog.style.display = 'block';
-                    } else {
-                        alert('Failed to fetch history: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching history:', error);
-                    alert('Unable to fetch change history. Please try again later.');
-                });
-        });
-    });
-
-    document.getElementById('close-history-btn').addEventListener('click', function () {
-        const historyDialog = document.getElementById('history-dialog');
-        historyDialog.style.display = 'none';
-    });
+    // document.getElementById('close-history-btn').addEventListener('click', function () {
+    //     const historyDialog = document.getElementById('history-dialog');
+    //     historyDialog.style.display = 'none';
+    // });
 
     // Show the modal when the edit icon is clicked
     document.querySelectorAll('.glyphicon-pencil').forEach(icon => {
         icon.addEventListener('click', function () {
             currentIcon = this; // Save reference to the clicked icon
-            const proficiencyValue = parseFloat(this.getAttribute('data-proficiency'));
-            const inputField = document.getElementById('edit-proficiency-input');
-            inputField.value = proficiencyValue.toFixed(2); // Set the current value in the input field
+            const vacationValue = parseFloat(this.getAttribute('data-vacation'));
+            const inputField = document.getElementById('edit-vacation-input');
+            inputField.value = vacationValue.toFixed(0); // Set the current value in the input field
 
-            const commentsField = document.getElementById('edit-comments');
-            commentsField.value = ''; // Clear the comments field
+            // const commentsField = document.getElementById('edit-comments');
+            // commentsField.value = ''; // Clear the comments field
 
             const saveButton = document.getElementById('save-edit-btn');
             saveButton.disabled = true; // Initially disable the Save button
@@ -620,22 +626,22 @@
     });
 
     // Enable/Disable Save button based on comments input
-    document.getElementById('edit-comments').addEventListener('input', function () {
-        const commentsValue = this.value.trim();
-        const saveButton = document.getElementById('save-edit-btn');
-        saveButton.disabled = commentsValue.length === 0; // Disable if comments are empty
-    });
+    // document.getElementById('edit-comments').addEventListener('input', function () {
+    //     const commentsValue = this.value.trim();
+    //     const saveButton = document.getElementById('save-edit-btn');
+    //     saveButton.disabled = commentsValue.length === 0; // Disable if comments are empty
+    // });
 
     // Save changes when the Save button is clicked
     document.getElementById('save-edit-btn').addEventListener('click', function () {
-        const inputField = document.getElementById('edit-proficiency-input');
-        const commentsField = document.getElementById('edit-comments');
-        const newProficiency = parseFloat(inputField.value);
-        const modifiedComments = commentsField.value.trim();
+        const inputField = document.getElementById('edit-vacation-input');
+        // const commentsField = document.getElementById('edit-comments');
+        const newVacation = parseFloat(inputField.value);
+        // const modifiedComments = commentsField.value.trim();
 
-        // Validate the proficiency range
-        if (isNaN(newProficiency) || newProficiency < 0.7 || newProficiency > 1.1) {
-            alert('Proficiency must be a number between 0.7 and 1.1.');
+        // Validate the vacation range
+        if (isNaN(newVacation) || newVacation < 1 || newVacation > 8) {
+            alert('Vacation must be a number between 1 and 8');
             return;
         }
 
@@ -650,7 +656,7 @@
         console.log(adAccount);
         console.log('Cert ID:', certId);
         console.log('User Cert Date:', userCertDate);
-        console.log(newProficiency);
+        console.log(newVacation);
         console.log(modifiedUser);
         console.log(modifiedComments);
 
@@ -659,33 +665,33 @@
             return;
         }
 
-        // Send the updated proficiency value and comments to the server
-        fetch('JSON/JSON_ACTION_update_proficiency.php', {
+        // Send the updated vacation value and comments to the server
+        fetch('JSON/JSON_ACTION_update_vacation.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
                 cert_id: certId,
-                proficiency: newProficiency.toFixed(2),
+                vacation: newVacation.toFixed(2),
                 ad_account: adAccount,
                 modified_user: modifiedUser,
-                modified_comments: modifiedComments
+                // modified_comments: modifiedComments
             }),
         }).then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update the proficiency value in the table
-                    const proficiencySpan = currentIcon.previousElementSibling;
-                    if (proficiencySpan) {
-                        proficiencySpan.textContent = newProficiency.toFixed(2); // Update the displayed proficiency value
-                        currentIcon.setAttribute('data-proficiency', newProficiency.toFixed(2)); // Update the icon's data attribute
+                    // Update the vacation value in the table
+                    const vacationSpan = currentIcon.previousElementSibling;
+                    if (vacationSpan) {
+                        vacationSpan.textContent = newVacation.toFixed(2); // Update the displayed vacation value
+                        currentIcon.setAttribute('data-vacation', newVacation.toFixed(2)); // Update the icon's data attribute
                     }
 
                     // Update the points-by-cert value
                     const pointsByCertCell = currentIcon.closest('td').nextElementSibling.querySelector('.points-by-cert');
                     if (!isNaN(certPoints) && pointsByCertCell) {
-                        pointsByCertCell.textContent = (certPoints * newProficiency).toFixed(2);
+                        pointsByCertCell.textContent = (certPoints * newVacation).toFixed(2);
                     }
 
                     // Recalculate the total points
@@ -695,13 +701,13 @@
                     const dialog = document.getElementById('edit-dialog');
                     dialog.style.display = 'none';
 
-                    alert('Proficiency updated successfully.');
+                    alert('Vacation updated successfully.');
                 } else {
                     alert(`Error: ${data.message}`);
                 }
             }).catch(error => {
             console.error('Error:', error);
-            alert('Failed to update proficiency. Please try again.');
+            alert('Failed to update vacation. Please try again.');
         });
     });
 
