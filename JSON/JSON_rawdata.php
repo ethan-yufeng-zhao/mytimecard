@@ -15,7 +15,7 @@ $start_time = $_GET['start_time'] ?? date('Y-m-01', strtotime('first day of last
 $end_time = $_GET['end_time'] ?? date('Y-m-01'); //date('Y-m-t');
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays = count($workdaysList);
-$vacationHours = $_GET['vacation_hours'] ?? 0;
+//$vacationHours = $_GET['vacation_hours'] ?? 0;
 
 $querystring='';
 $db_pdo = db_connect();
@@ -66,6 +66,12 @@ foreach ($arr as $user => $value ) {
     $weekendDays = [];  // track weekends with hours
     $noShowDays = [];
 
+    $querystring2 = "SELECT day_of_month, vacation FROM hr.vacation WHERE ad_account = '".$user."' order by modified_time desc";
+    $db_arr2 = db_query($db_pdo, $querystring2);
+    foreach ($db_arr2 as $key => $data ) {
+        $arr[$user]['vacation'][$data['day_of_month']] = $data['vacation'];
+    }
+
     foreach($value['rawdata'] as $day => $events) {
         $dayTos = 0;
         $dayTib = 0;
@@ -101,7 +107,7 @@ foreach ($arr as $user => $value ) {
             $arr[$user]['data'][$day]['tob'] = $dayTob;
             $totalTob += $dayTob;
 
-            $dayVacation = 0; //TODO
+            $dayVacation = $arr[$user]['vacation'][$day] ?? 0;
             $arr[$user]['data'][$day]['vacation'] = $dayVacation;
             $totalVacation += $dayVacation;
 
@@ -135,7 +141,7 @@ foreach ($arr as $user => $value ) {
     $arr[$user]['summary']['actual_workdays'] = count($workedDays);
     $arr[$user]['summary']['no_show_days'] = $noShowDays;
     $arr[$user]['summary']['weekend_days'] = $weekendDays;
-    $arr[$user]['summary']['vacation_hours'] = $vacationHours;
+//    $arr[$user]['summary']['vacation_hours'] = $dayVacation;
 
     $arr[$user]['summary']['total_tos']       = round($totalTos, 2);
     $arr[$user]['summary']['total_tib']       = round($totalTib, 2);

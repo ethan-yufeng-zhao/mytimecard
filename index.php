@@ -367,85 +367,85 @@
 			echo('</div>');
 		}
 
-        /**
-         * Bootstrap Modals
-         */
-		echo("\n");
-		echo('<div class="modal none" id="modal_cert_picker_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="font-size:80%">');
-		echo('<div class="modal-dialog wider-modal">');
-		echo('<div class="modal-content">');
-		echo('<div class="modal-header">');
-		echo('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>');
-		echo('<h4 class="modal-title">Please click on a Cert Name to select it</h4>');
-		echo('</div>');
-		echo('<div class="modal-body">');
-		echo("<table class='tablesorter'>");
-		echo("<thead>");
-		echo('<tr>');
-
-        echo('<th>');
-        echo('No.');
-        echo('</th>');
-
-		echo('<th>');
-		echo('Cert Name');
-		echo('</th>');
-
-		echo('<th>');
-		echo('Description');
-		echo('</th>');
-
-		echo('<th>');
-		echo('Expires');
-		echo('</th>');
-
-        echo('<th>');
-        echo('Pts');
-        echo('</th>');
-
-		echo('</tr>');
-		echo("</thead>");
-		echo("<tbody>");
-		$json_all_certs = json_decode(file_get_contents(request_json_api('/JSON/JSON_all_certs.php') , false, getContextCookies()), true);
-        $count_cert = 0;
-		foreach ($json_all_certs as $key => $value) {
-			echo('<tr>');
-
-            echo('<td>');
-            echo(++$count_cert);
-            echo('</td>');
-
-			echo('<td>');
-			echo('<a href="javascript:void(0);" onclick="chooseCert('.$key.', \''.$value['cert_name'].'\');">'.$value['cert_name'].'</a>');
-			echo('</td>');
-
-			echo('<td>');
-			echo($value['cert_description']);
-			echo('</td>');
-
-			echo('<td>');
-			if($value['cert_never_expires'] == 1) {
-				echo('Never');
-			} else {
-				echo($value['cert_days_active'].' Days');
-			}
-			echo('</td>');
-
-            echo('<td>');
-            echo($value['cert_points']);
-            echo('</td>');
-
-			echo('</tr>');
-		}
-		echo("</tbody>");
-		echo('</table>');
-		echo('</div>');
-		echo('<div class="modal-footer">');
-		echo('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>');
-		echo('</div>');
-		echo('</div>'); // end of modal-content
-		echo('</div>'); // end of modal-dialog
-		echo('</div>'); // end of modal
+//        /**
+//         * Bootstrap Modals
+//         */
+//		echo("\n");
+//		echo('<div class="modal none" id="modal_cert_picker_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="font-size:80%">');
+//		echo('<div class="modal-dialog wider-modal">');
+//		echo('<div class="modal-content">');
+//		echo('<div class="modal-header">');
+//		echo('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>');
+//		echo('<h4 class="modal-title">Please click on a Cert Name to select it</h4>');
+//		echo('</div>');
+//		echo('<div class="modal-body">');
+//		echo("<table class='tablesorter'>");
+//		echo("<thead>");
+//		echo('<tr>');
+//
+//        echo('<th>');
+//        echo('No.');
+//        echo('</th>');
+//
+//		echo('<th>');
+//		echo('Cert Name');
+//		echo('</th>');
+//
+//		echo('<th>');
+//		echo('Description');
+//		echo('</th>');
+//
+//		echo('<th>');
+//		echo('Expires');
+//		echo('</th>');
+//
+//        echo('<th>');
+//        echo('Pts');
+//        echo('</th>');
+//
+//		echo('</tr>');
+//		echo("</thead>");
+//		echo("<tbody>");
+//		$json_all_certs = json_decode(file_get_contents(request_json_api('/JSON/JSON_all_certs.php') , false, getContextCookies()), true);
+//        $count_cert = 0;
+//		foreach ($json_all_certs as $key => $value) {
+//			echo('<tr>');
+//
+//            echo('<td>');
+//            echo(++$count_cert);
+//            echo('</td>');
+//
+//			echo('<td>');
+//			echo('<a href="javascript:void(0);" onclick="chooseCert('.$key.', \''.$value['cert_name'].'\');">'.$value['cert_name'].'</a>');
+//			echo('</td>');
+//
+//			echo('<td>');
+//			echo($value['cert_description']);
+//			echo('</td>');
+//
+//			echo('<td>');
+//			if($value['cert_never_expires'] == 1) {
+//				echo('Never');
+//			} else {
+//				echo($value['cert_days_active'].' Days');
+//			}
+//			echo('</td>');
+//
+//            echo('<td>');
+//            echo($value['cert_points']);
+//            echo('</td>');
+//
+//			echo('</tr>');
+//		}
+//		echo("</tbody>");
+//		echo('</table>');
+//		echo('</div>');
+//		echo('<div class="modal-footer">');
+//		echo('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>');
+//		echo('</div>');
+//		echo('</div>'); // end of modal-content
+//		echo('</div>'); // end of modal-dialog
+//		echo('</div>'); // end of modal
 
 		echo('<div class="modal none hidden-print" id="modal_date_picker_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">');
 		echo('<div class="modal-dialog">');
@@ -679,9 +679,9 @@
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
+                ad_account: adAccount,
                 day_of_month: day_of_month,
                 vacation: newVacation.toFixed(0),
-                ad_account: adAccount,
                 modified_user: modifiedUser,
                 modified_comments: modifiedComments
             }),

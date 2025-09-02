@@ -21,8 +21,8 @@
 		$updatestring = '';
 		$db_pdo = db_connect();
 
-        $updatestring = 'INSERT INTO hr.vacation (day_of_month, ad_account, vacation, modified_user, modified_comments) VALUES ( ';
-        $updatestring .= "$day_of_month, '$ad_account',  $newvacation, '$modified_user', '$modified_comments' ) ";
+        $updatestring = 'INSERT INTO hr.vacation (ad_account, day_of_month, vacation, modified_user, modified_comments) VALUES ( ';
+        $updatestring .= "'$ad_account', '$day_of_month', $newvacation, '$modified_user', '$modified_comments' ) ";
 //        $updatestring .= ":day_of_month, :ad_account, :vacation,  :modified_user, :modified_comments )";
 //        $params[':day_of_month'] = $day_of_month;
 //        $params[':ad_account'] = $ad_account;
