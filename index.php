@@ -651,8 +651,8 @@
         const modifiedComments = commentsField.value.trim();
 
         // Validate the vacation range
-        if (isNaN(newVacation) || newVacation < 1 || newVacation > 8) {
-            alert('Vacation must be a number between 1 and 8');
+        if (isNaN(newVacation) || newVacation < 0 || newVacation > 8) {
+            alert('Vacation must be a number between 0 and 8');
             return;
         }
 
