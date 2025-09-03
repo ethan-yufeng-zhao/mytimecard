@@ -287,7 +287,7 @@
                 echo('<span style="text-align: left;">' . ($value['subtotal'] ?? 0) . '</span>');
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
                     if ($value['subtotal'] > 0) {
-                        echo('<span class="view-history-icon glyphicon glyphicon-list text-secondary" style="cursor: pointer;" title="View Badging History" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
+                        echo('<span class="view-history-icon glyphicon glyphicon-list-alt text-secondary" style="cursor: pointer;" title="View Badging History" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
                     }
                 }
                 echo('</td>');
@@ -564,7 +564,6 @@
                 return;
             }
 
-            console.log(`Fetching: JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`);
             // Fetch the history via AJAX
             return;
             fetch(`JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`)
