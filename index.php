@@ -132,24 +132,34 @@
 			unset($json_add_user_cert);
 		}
 
+        $json = json_decode(file_get_contents(request_json_api('/JSON/JSON_rawdata.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
+        $meta = $json[$requested_user['user_id']]['meta'] ?? null;
+        $rawdata = $json[$requested_user['user_id']]['rawdata'] ?? null;
+        $vacations = $json[$requested_user['user_id']]['vacation'] ?? null;
+        $daydata = $json[$requested_user['user_id']]['data'] ?? null;
+        $noshow = $json[$requested_user['user_id']]['NoShow'] ?? null;
+        $summary = $json[$requested_user['user_id']]['summary'] ?? null;
+
         /**
          * Begining of content -- certs
          */
         echo("<div id='jfabtable'>");
-		echo('<table style="width:100%; border-collapse:collapse; text-align:left;"><tr><td style="width:25%; border:0px solid #ccc; padding:6px;">');
+		echo('<table style="width:100%; border-collapse:collapse; text-align:left;"><tr><td style="width:18%; border:0px solid #ccc; padding:6px;">');
 		echo('User: <a href="mailto:'.$requested_user['user_email'].'">');
 		echo($requested_user['user_firstname'].' '.$requested_user['user_lastname']);
 		echo('</a></td>');
+        echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Type:&nbsp;'.($meta['employeetype'] ?? '')."</td>");
+        echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.($meta['shifttype'] ?? '')."</td>");
 		if(!empty($requested_user['user_supervisor_id'])){
-			echo('<td style="width:25%; border:0px solid #ccc; padding:6px;">');
+			echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">');
 			echo('Supervisor: <a href="mailto:'.$requested_user_supervisor['user_email'].'">');
 			echo($requested_user_supervisor['user_firstname'].' '.$requested_user_supervisor['user_lastname']);
 			echo('</a>');
 			echo('</td>');
 		} else {
-            echo('<td style="width:25%; border:0px solid #ccc; padding:6px;">&nbsp;</td>');
+            echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">&nbsp;</td>');
         }
-		echo('<td style="width:25%; border:0px solid #ccc; padding:6px;">');
+		echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">');
 		echo('Time: '.date('Y-m-d H:i:s'));
 		echo('</td>');
 //		echo('</tr></table><p>');
@@ -157,7 +167,7 @@
 //		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
 //			echo('<a data-toggle="modal" href="#modal_cert_picker_data" class="btn btn-primary btn-sm hidden-print">Report missing data for '.$requested_user['user_samaccountname'].' </a>&nbsp;&nbsp;');
 //		}
-        echo('<td style="width:25%; border:0px solid #ccc; padding:6px; text-align: right">');
+        echo('<td style="width:10%; border:0px solid #ccc; padding:6px; text-align: right">');
         echo("<a href='javascript:void(0);' onclick='$(\"#savetoexcelform\").submit();' class='btn btn-primary btn-sm hidden-print'>Save to Excel</a></td></tr></table>");
         echo("<form action='SaveToExcel.php' name='savetoexcelform' id='savetoexcelform' method='post' target='_blank' onsubmit='return saveToExcel();'>\n");
         echo("<input type='hidden' id='dataToDisplay' name='dataToDisplay'>");
@@ -165,11 +175,7 @@
         echo("</form>");
 
 		$certs = array();
-		$json = json_decode(file_get_contents(request_json_api('/JSON/JSON_rawdata.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
-        $daydata = $json[$requested_user['user_id']]['data'] ?? null;
-        $summary = $json[$requested_user['user_id']]['summary'] ?? null;
-        $vacations = $json[$requested_user['user_id']]['vacation'] ?? null;
-        $noshow = $json[$requested_user['user_id']]['NoShow'] ?? null;
+
 		if($daydata && $summary) {
 			echo("<table class='table_col_2_with_labels'>");
 			echo("<thead>");
@@ -281,7 +287,7 @@
                 echo('<span style="text-align: left;">' . ($value['subtotal'] ?? 0) . '</span>');
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
                     if ($value['subtotal'] > 0) {
-                        echo('<span class="view-history-icon glyphicon glyphicon-time text-secondary" style="cursor: pointer;" title="View Badging History" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
+                        echo('<span class="view-history-icon glyphicon glyphicon-list text-secondary" style="cursor: pointer;" title="View Badging History" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
                     }
                 }
                 echo('</td>');
@@ -550,8 +556,9 @@
 
     document.querySelectorAll('.view-history-icon').forEach(icon => {
         icon.addEventListener('click', function () {
-            const dayOfMonth = this.getAttribute('data-day-of-month');
+            const dayOfMonth = this.getAttribute('data-day_of_month');
             const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
+            // console.log(dayOfMonth + " " + adAccount);
             if (!dayOfMonth || !adAccount) {
                 alert('Day of month or AD account is missing.');
                 return;
@@ -727,21 +734,21 @@
     });
 
     // Function to recalculate total points and update the table footer
-    function recalculateTotalPoints() {
-        let totalPoints = 0;
-        document.querySelectorAll('.points-by-cert').forEach(cell => {
-            const value = parseFloat(cell.textContent);
-            if (!isNaN(value)) {
-                totalPoints += value;
-            }
-        });
-
-        // Update the total points in the footer
-        const totalPointsCell = document.querySelector('#total-points');
-        if (totalPointsCell) {
-            totalPointsCell.textContent = totalPoints.toFixed(2);
-        }
-    }
+    // function recalculateTotalPoints() {
+    //     let totalPoints = 0;
+    //     document.querySelectorAll('.points-by-cert').forEach(cell => {
+    //         const value = parseFloat(cell.textContent);
+    //         if (!isNaN(value)) {
+    //             totalPoints += value;
+    //         }
+    //     });
+    //
+    //     // Update the total points in the footer
+    //     const totalPointsCell = document.querySelector('#total-points');
+    //     if (totalPointsCell) {
+    //         totalPointsCell.textContent = totalPoints.toFixed(2);
+    //     }
+    // }
 </script>
 
 
