@@ -168,6 +168,8 @@
 		$json = json_decode(file_get_contents(request_json_api('/JSON/JSON_rawdata.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
         $daydata = $json[$requested_user['user_id']]['data'] ?? null;
         $summary = $json[$requested_user['user_id']]['summary'] ?? null;
+        $vacations = $json[$requested_user['user_id']]['vacation'] ?? null;
+        $noshow = $json[$requested_user['user_id']]['NoShow'] ?? null;
 		if($daydata && $summary) {
 			echo("<table class='table_col_2_with_labels'>");
 			echo("<thead>");
@@ -270,7 +272,7 @@
                 echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
                     if ($inWorkdays) {
-                        echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="8"></span>&nbsp;&nbsp;');
+                        echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="'.$value['vacation'].'"></span>&nbsp;&nbsp;');
                     }
                 }
                 echo("</td>");
@@ -294,12 +296,11 @@
 
 				echo('</tr>');
 			}
-            foreach ($summary['no_show_days'] as $index => $day) {
-                $value = $daydata[$day] ?? null;
+            foreach ($noshow as $day => $value) {
                 echo('<tr style="color:red;">');
 
                 echo("<td>");
-                echo($day);
+                echo('<span class="day-of-month">' . htmlspecialchars($day) . '</span>');
                 echo("</td>");
 
                 echo("<td>");
@@ -333,7 +334,7 @@
                 echo("<td>");
                 echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
-                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="8"></span>&nbsp;&nbsp;');
+                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="'.($value['vacation'] ?? 0).'"></span>&nbsp;&nbsp;');
                 }
                 echo("</td>");
 
@@ -628,7 +629,7 @@
             commentsField.value = ''; // Clear the comments field
 
             const saveButton = document.getElementById('save-edit-btn');
-            saveButton.disabled = vacationValue < 1 || vacationValue > 8;
+            saveButton.disabled = false;//vacationValue < 1 || vacationValue > 8;
 
             const dialog = document.getElementById('edit-dialog');
             dialog.style.display = 'block'; // Show the modal
@@ -696,10 +697,10 @@
                     }
 
                     // Update the points-by-cert value
-                    const pointsByCertCell = currentIcon.closest('td').nextElementSibling.querySelector('.points-by-cert');
-                    if (!isNaN(certPoints) && pointsByCertCell) {
-                        pointsByCertCell.textContent = (certPoints * newVacation).toFixed(0);
-                    }
+                    // const pointsByCertCell = currentIcon.closest('td').nextElementSibling.querySelector('.points-by-cert');
+                    // if (!isNaN(certPoints) && pointsByCertCell) {
+                    //     pointsByCertCell.textContent = (certPoints * newVacation).toFixed(0);
+                    // }
 
                     // Recalculate the total points
                     // recalculateTotalPoints();
@@ -709,6 +710,7 @@
                     dialog.style.display = 'none';
 
                     alert('Vacation updated successfully.');
+                    window.location.reload();
                 } else {
                     alert(`Error: ${data.message}`);
                 }

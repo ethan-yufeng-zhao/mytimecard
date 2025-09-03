@@ -66,7 +66,7 @@ foreach ($arr as $user => $value ) {
     $weekendDays = [];  // track weekends with hours
     $noShowDays = [];
 
-    $querystring2 = "SELECT day_of_month, vacation FROM hr.vacation WHERE ad_account = '".$user."' order by modified_time desc";
+    $querystring2 = "SELECT day_of_month, vacation FROM hr.vacation WHERE ad_account = '".$user."' order by modified_time asc";
     $db_arr2 = db_query($db_pdo, $querystring2);
     foreach ($db_arr2 as $key => $data ) {
         $arr[$user]['vacation'][$data['day_of_month']] = $data['vacation'];
@@ -128,12 +128,16 @@ foreach ($arr as $user => $value ) {
     foreach ($workdaysList as $wday) {
         if (!isset($workedDays[$wday])) {
             $noShowDays[] = $wday;
-//            $arr[$user]['data'][$wday]['tos'] = 'No Show';
-//            $arr[$user]['data'][$wday]['tib'] = 'No Show';
-//            $arr[$user]['data'][$wday]['tob'] = 'No Show';
-//            $arr[$user]['data'][$wday]['tif'] = 'No Show';
-//            $arr[$user]['data'][$wday]['tisf'] = 'No Show';
-//            $arr[$user]['data'][$wday]['tifac'] = 'No Show';
+            $arr[$user]['NoShow'][$wday]['tos'] = 'No Show';
+            $arr[$user]['NoShow'][$wday]['tib'] = 'No Show';
+            $arr[$user]['NoShow'][$wday]['tob'] = 'No Show';
+            $arr[$user]['NoShow'][$wday]['tif'] = 'No Show';
+            $arr[$user]['NoShow'][$wday]['tisf'] = 'No Show';
+            $arr[$user]['NoShow'][$wday]['tifac'] = 'No Show';
+            $arr[$user]['NoShow'][$wday]['vacation'] = $arr[$user]['vacation'][$wday] ?? 0;
+            $totalVacation += $arr[$user]['NoShow'][$wday]['vacation'];
+            $arr[$user]['NoShow'][$wday]['subtotal'] = $arr[$user]['NoShow'][$wday]['vacation'];
+            $total_hours += $arr[$user]['NoShow'][$wday]['subtotal'];
         }
     }
     $arr[$user]['summary']['workdaysList'] = $workdaysList;
