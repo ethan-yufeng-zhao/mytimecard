@@ -15,7 +15,7 @@ $workDays = count($workdaysList);
 $db_pdo = db_connect();
 
 $querystring = "SELECT id, extsysid, identitytype, identitydivision, sourcename, sourcealtname, trx_timestamp";
-$querystring .= " FROM hr.acm_rpt_alltrx WHERE trx_timestamp >= '".$start_time."' and trx_timestamp < '".$end_time."'";
+$querystring .= " FROM hr.acm_rpt_alltrx WHERE trx_timestamp >= '".$start_time."' and trx_timestamp <= '".$end_time."'";
 if ($user_id) {
     $querystring .= " and extsysid = '".$user_id."'";
 }
