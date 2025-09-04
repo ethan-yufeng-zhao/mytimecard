@@ -529,9 +529,11 @@
         echo('<div class="modal-dialog modal-lg wider-modal">');  // modal-lg for bigger size
         echo('<div class="modal-content">');
 
-        echo('<div class="modal-header bg-secondary text-white justify-content-center">');
-        echo('<h4 class="modal-title w-100">'.$requested_user['user_samaccountname'].'</h4>');
-        echo('<button type="button" class="close position-absolute" style="right:15px;" data-dismiss="modal">&times;</button>');
+        echo('<div class="modal-header bg-secondary text-white d-flex align-items-center justify-content-between">');
+        echo('<h4 class="modal-title mb-0">'.$requested_user['user_samaccountname'].'</h4>');
+//        echo('<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="font-size:2rem; line-height:1;">');
+//        echo('<span aria-hidden="true">&times;</span>');
+//        echo('</button>');
         echo('</div>'); // modal-header
 
         echo('<div class="modal-body">');
