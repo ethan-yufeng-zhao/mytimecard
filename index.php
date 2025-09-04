@@ -610,8 +610,6 @@
                     <th>Source Name</th>
                     <th>Source Type</th>
                     <th>In & Out Time</th>
-                    <th>Modifier</th>
-                    <th>Comments</th>
                 </tr>
             </thead>
             <tbody>
@@ -640,15 +638,6 @@
                            class="form-control form-control-sm">
                     <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
                 </td>
-                <td>
-                    ${entry.modified_user || ''}
-                    <input type="hidden" name="modified_user[]" value="${entry.modified_user || ''}">
-                </td>
-                <td>
-                    <input type="text" name="modified_comments[]"
-                           value="${entry.modified_comments || ''}"
-                           class="form-control form-control-sm">
-                </td>
             </tr>
         `;
             });
@@ -669,15 +658,6 @@
                     <input type="text" name="new_inandout[]" placeholder="YYYY-MM-DD HH:mm:ss"
                            class="form-control form-control-sm">
                 </td>
-                <td>
-                    <input type="text" name="new_users[]" value="${modifiedUser}" readonly
-                           class="form-control form-control-sm">
-                </td>
-                <td>
-                    <input type="text" name="new_comments[]" placeholder="Reason for adding"
-                           class="form-control form-control-sm">
-                </td>
-                <td></td>
             </tr>
         `;
 

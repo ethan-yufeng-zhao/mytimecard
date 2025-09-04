@@ -57,6 +57,6 @@ a[target="_blank"]:hover {
     /*color: #337ab7;*/
 }
 .modal-dialog.wider-modal {
-    width: 80%;
+    width: 60%;
     /*max-width: 90%; !* Or any percentage or pixel value you want *!*/
 }
