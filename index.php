@@ -526,12 +526,12 @@
 
 
         echo('<div class="modal fade" id="history-dialog" tabindex="-1" role="dialog">');
-        echo('<div class="modal-dialog wider-modal">: ">');
+        echo('<div class="modal-dialog modal-lg wider-modal">');  // modal-lg for bigger size
         echo('<div class="modal-content">');
 
-        echo('<div class="modal-header bg-secondary text-white">');
-        echo('<h3 class="modal-title">'.$requested_user['user_samaccountname'].'</h3>');
-        echo('<button type="button" class="close" data-dismiss="modal">&times;</button>');
+        echo('<div class="modal-header bg-secondary text-white justify-content-center">');
+        echo('<h4 class="modal-title w-100">'.$requested_user['user_samaccountname'].'</h4>');
+        echo('<button type="button" class="close position-absolute" style="right:15px;" data-dismiss="modal">&times;</button>');
         echo('</div>'); // modal-header
 
         echo('<div class="modal-body">');
@@ -542,13 +542,14 @@
         echo('</div>'); // modal-body
 
         echo('<div class="modal-footer">');
-        echo('<button type="submit" form="history-form" class="btn btn-primary">Save Changes</button>');
+        echo('<button type="submit" form="history-form" class="btn btn-primary" id="save-btn" disabled>Save Changes</button>');
         echo('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
         echo('</div>'); // modal-footer
 
         echo('</div>'); // modal-content
-        echo('</div>');   // modal-dialog
-        echo('</div>');     // modal
+        echo('</div>'); // modal-dialog
+        echo('</div>'); // modal
+
 
 //        echo('<div id="history-dialog" class="modal">');
 //        echo('<div class="modal-dialog modal-lg" style="width: 60%">');
