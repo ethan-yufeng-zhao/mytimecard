@@ -579,6 +579,7 @@
 <script>
     // Track the current icon
     let currentIcon = null;
+
     const rawdata = <?php echo json_encode($rawdata); ?>;
     document.querySelectorAll('.view-history-icon').forEach(icon => {
         icon.addEventListener('click', function () {
@@ -596,48 +597,71 @@
 
             // Build editable table
             let tableHtml = `
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Source Name</th>
-                        <th>In & Out Time</th>
-                        <th>Modifier</th>
-                        <th>Comments</th>
-                        <th>Fix?</th>
-                    </tr>
-                </thead>
-                <tbody>
-            `;
+        <table class="table table-bordered table-striped table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Source Name</th>
+                    <th>In & Out Time</th>
+                    <th>Modifier</th>
+                    <th>Comments</th>
+                    <th>Ignore?</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
 
             entries.forEach((entry, idx) => {
                 tableHtml += `
-                <tr>
-                    <td>
-                        <input type="text" name="sourcename[]"
-                               value="${entry.sourcename || ''}"
-                               class="form-control form-control-sm">
-                    </td>
-                    <td>
-                        <input type="text" name="inandout[]"
-                               value="${entry.trx_timestamp || ''}"
-                               class="form-control form-control-sm">
-                    </td>
-                    <td>
-                        ${entry.modified_user || ''}
-                        <input type="hidden" name="modified_user[]"
-                               value="${entry.modified_user || ''}">
-                    </td>
-                    <td>
-                        <input type="text" name="modified_comments[]"
-                               value="${entry.modified_comments || ''}"
-                               class="form-control form-control-sm">
-                    </td>
-                    <td>
-                        <input type="checkbox" name="fix_missing[]" value="${entry.id || idx}">
-                    </td>
-                </tr>
-            `;
+            <tr>
+                <td>${idx + 1}</td>
+                <td>
+                    <input type="text" readonly
+                           value="${entry.sourcename || ''}"
+                           class="form-control form-control-sm">
+                    <input type="hidden" name="sourcename[]" value="${entry.sourcename || ''}">
+                </td>
+                <td>
+                    <input type="text" readonly
+                           value="${entry.trx_timestamp || ''}"
+                           class="form-control form-control-sm">
+                    <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
+                </td>
+                <td>
+                    ${entry.modified_user || ''}
+                    <input type="hidden" name="modified_user[]" value="${entry.modified_user || ''}">
+                </td>
+                <td>
+                    <input type="text" name="modified_comments[]"
+                           value="${entry.modified_comments || ''}"
+                           class="form-control form-control-sm">
+                </td>
+                <td class="text-center">
+                    <input type="checkbox" name="ignore_ids[]" value="${entry.id || idx}">
+                </td>
+            </tr>
+        `;
             });
+
+            // Option to add a *new badge record* for missing in/out
+            tableHtml += `
+            <tr class="table-success">
+                <td>+</td>
+                <td>
+                    <input type="text" name="new_sourcename[]" placeholder="Manual"
+                           class="form-control form-control-sm">
+                </td>
+                <td>
+                    <input type="text" name="new_inandout[]" placeholder="YYYY-MM-DD HH:mm:ss"
+                           class="form-control form-control-sm">
+                </td>
+                <td colspan="2">
+                    <input type="text" name="new_comments[]" placeholder="Reason for adding"
+                           class="form-control form-control-sm">
+                </td>
+                <td></td>
+            </tr>
+        `;
 
             tableHtml += `</tbody></table>`;
 
@@ -646,11 +670,10 @@
 
             // Show modal
             $('#history-dialog').modal('show');
-
         });
     });
 
-     document.getElementById('close-history-btn').addEventListener('click', function () {
+    document.getElementById('close-history-btn').addEventListener('click', function () {
          const historyDialog = document.getElementById('history-dialog');
          historyDialog.style.display = 'none';
      });
