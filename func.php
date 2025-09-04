@@ -205,3 +205,60 @@ function getWorkdays($start_time, $end_time) {
 
     return $workdaysList;
 }
+
+const SNP = [
+//    "Admin Roof Stairwell" => "Admin Roof Stairwell",
+//    "Archive Room" => "Archive Room",
+//    "Arsenic Door" => "Arsenic Door",
+    "BGBM - In" => "MainFab In",
+    "BGBM - Out" => "MainFab Out",
+//    "Computer Room" => "Computer Room",
+    "East Entrance - New Admin (120A)" => "Facility In",
+    "East Entry In" => "Building In",
+    "East Entry Out" => "Building Out",
+    "East Lobby In" => "Building In",
+    "East Lobby Out" => "Building Out",
+//    "East Lobby - North Hall Door" => "East Lobby North",
+//    "East Lobby - West Hall Door" => "East Lobby West",
+    "Employee Entrance - In" => "Building In",
+    "Employee Entrance - Out" => "Building Out",
+    "ERT Muster Out" => "Building Out",
+//    "ERT Room" => "ERT Room",
+    "Facility Shop - New Admin (113B)" => "Facility In",
+//    "FA Lab" => "FA Lab",
+    "Fitness Room - New Admin (109)" => "Facility In",
+//    "IDF East - New Admin (114A)" => "IDF East",
+//    "IDF North - New Admin (115)" => "IDF North",
+//    "IDF Room 2.1" => "IDF Room",
+//    "IDF Room 2.2" => "IDF Room",
+//    "Library" => "Library",
+//    "MDF 1.1 Room" => "MDF Room",
+//    "New Shipping/Receiving - In" => "Shipping/Receiving In",
+    "New Sort Gown Room - In" => "MainFab In",
+    "New Sort Gown Room - Out" => "MainFab Out",
+    "Parking Lot Muster" => "Building Out",
+//    "SEM Room" => "SEM Room",
+//    "Temperature Test" => "Temperature Test",
+    "Wafer Storage - New Admin (112A)" => "Facility In",
+    "West Entrance - New Admin (101A)" => "Facility In",
+    "Workshop - New Admin (110A)" => "Facility In",
+];
+
+// Function to normalize
+function normalizeSourceName($raw) {
+    if (empty($raw)) return "";
+
+    // Group "Main Fab ..."
+    if (preg_match('/^Main Fab.*In$/i', $raw)) return "MainFab In";
+    if (preg_match('/^Main Fab.*Out$/i', $raw)) return "MainFab Out";
+
+    // Group "SubFab ..."
+    if (preg_match('/^SubFab.*In$/i', $raw)) return "SubFab In";
+    if (preg_match('/^SubFab.*Out$/i', $raw)) return "SubFab Out";
+
+    // Group "IDF Room ... (SubFab)"
+    if (preg_match('/^IDF Room .*SubFab/i', $raw)) return "SubFab In";
+
+    // Exact match fallback
+    return SNP[$raw] ?? '';
+}

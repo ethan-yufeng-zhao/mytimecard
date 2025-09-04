@@ -524,11 +524,11 @@
 
 
         echo('<div class="modal fade" id="history-dialog" tabindex="-1" role="dialog">');
-        echo('<div class="modal-dialog wider-modal">');
+        echo('<div class="modal-dialog wider-modal">: ">');
         echo('<div class="modal-content">');
 
         echo('<div class="modal-header bg-secondary text-white">');
-        echo('<h5 class="modal-title">History</h5>');
+        echo('<h3 class="modal-title">'.$requested_user['user_samaccountname'].'</h3>');
         echo('<button type="button" class="close" data-dismiss="modal">&times;</button>');
         echo('</div>'); // modal-header
 
