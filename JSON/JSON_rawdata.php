@@ -46,6 +46,7 @@ foreach ($db_arr as $key => $data ) {
 //    $temp_arr['id'] = $data['id'];
     $temp_arr['sourcename'] = trim($data['sourcename']);
     $temp_arr['sourcealtname'] = trim($data['sourcealtname']);
+    $temp_arr['normalizedname'] = normalizeSourceName(trim($data['sourcename']));
     $temp_arr['trx_timestamp'] = $data['trx_timestamp'];
 
     $arr[$data['extsysid']]['rawdata'][$dateOnly][] = $temp_arr;
@@ -60,6 +61,9 @@ foreach ($arr as $user => $value ) {
     $totalTos = 0;
     $totalTib = 0;
     $totalTob = 0;
+    $totalTif = 0;
+    $totalTisf = 0;
+    $totalTifac = 0;
     $totalVacation = 0;
     $total_hours = 0;
 
@@ -78,24 +82,70 @@ foreach ($arr as $user => $value ) {
         $dayTib = 0;
         $dayTob = 0;
 
-        $inTime = null;
+        $dayTif = 0;   // Time in main fab
+        $dayTisf = 0;  // Time in subfab
+        $dayTifac = 0; // Time in facility
+
+        $inTime = [
+            'building' => null,
+            'mainfab'  => null,
+            'subfab'   => null,
+            'facility' => null,
+        ];
+
         $firstonsite = 0;
         $lastonsite = 0;
 
         foreach ($events as $event) {
-            if ($firstonsite===0) $firstonsite = strtotime($event['trx_timestamp']);
+            if ($firstonsite === 0) $firstonsite = strtotime($event['trx_timestamp']);
             $lastonsite = strtotime($event['trx_timestamp']);
             $ts = strtotime($event['trx_timestamp']);
-            $source = $event['sourcealtname'] ? strtolower($event['sourcealtname']) : strtolower($event['sourcename']);
-//            $source = convert2newsource($original_source);
 
-            if (strpos($source, 'in') !== false) {
-                $inTime = $ts;
-            } elseif (strpos($source, 'out') !== false && $inTime !== null) {
-                $dayTib += ($ts - $inTime);
-                $inTime = null; // reset
+            // normalized format: "<category> <in|out>"
+            $parts = explode(' ', strtolower(trim($event['normalizedname'])));
+            $category  = $parts[0] ?? null;   // building / mainfab / subfab / facility
+            $direction = $parts[1] ?? null;   // in / out
+
+            if (!$category || !$direction) continue;
+
+            // Handle IN
+            if ($direction === 'in') {
+                // If previous IN wasn’t closed, close it here
+                if ($inTime[$category] !== null) {
+                    $duration = $ts - $inTime[$category];
+                    switch ($category) {
+                        case 'building': $dayTib += $duration; break;
+                        case 'mainfab':  $dayTif += $duration; break;
+                        case 'subfab':   $dayTisf += $duration; break;
+                        case 'facility': $dayTifac += $duration; break;
+                    }
+                }
+                // Start new IN
+                $inTime[$category] = $ts;
+            }  elseif ($direction === 'out' && $inTime[$category] !== null) {
+                $duration = $ts - $inTime[$category];
+                switch ($category) {
+                    case 'building': $dayTib += $duration; break;
+                    case 'mainfab':  $dayTif += $duration; break;
+                    case 'subfab':   $dayTisf += $duration; break;
+                    case 'facility': $dayTifac += $duration; break;
+                }
+                $inTime[$category] = null; // reset
             }
         }
+
+        foreach ($inTime as $cat => $tsIn) {
+            if ($tsIn !== null) {
+                $duration = $lastonsite - $tsIn;
+                switch ($cat) {
+                    case 'building': $dayTib += $duration; break;
+                    case 'mainfab':  $dayTif += $duration; break;
+                    case 'subfab':   $dayTisf += $duration; break;
+                    case 'facility': $dayTifac += $duration; break;
+                }
+            }
+        }
+
         if ($dayTib > 0) {
             $dayTos = round(($lastonsite - $firstonsite) / 3600, 2);
             $arr[$user]['data'][$day]['tos'] = $dayTos;
@@ -108,6 +158,18 @@ foreach ($arr as $user => $value ) {
             $dayTob = round($dayTos - $dayTib, 2);
             $arr[$user]['data'][$day]['tob'] = $dayTob;
             $totalTob += $dayTob;
+
+            $dayTif = round($dayTif / 3600, 2);
+            $arr[$user]['data'][$day]['tif'] = $dayTif;
+            $totalTif += $dayTif;
+
+            $dayTisf = round($dayTisf / 3600, 2);
+            $arr[$user]['data'][$day]['tisf'] = $dayTisf;
+            $totalTisf += $dayTisf;
+
+            $dayTifac = round($dayTifac / 3600, 2);
+            $arr[$user]['data'][$day]['tifac'] = $dayTifac;
+            $totalTifac += $dayTifac;
 
             $dayVacation = $arr[$user]['vacation'][$day] ?? 0;
             $arr[$user]['data'][$day]['vacation'] = $dayVacation;
