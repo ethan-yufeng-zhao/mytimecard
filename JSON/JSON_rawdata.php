@@ -101,16 +101,29 @@ foreach ($arr as $user => $value ) {
             $lastonsite = strtotime($event['trx_timestamp']);
             $ts = strtotime($event['trx_timestamp']);
 
-            // normalized format: "<category> <in|out>"
             $parts = explode(' ', strtolower(trim($event['normalizedname'])));
-            $category  = $parts[0] ?? null;   // building / mainfab / subfab / facility
-            $direction = $parts[1] ?? null;   // in / out
+            $category  = $parts[0] ?? null;
+            $direction = $parts[1] ?? null;
 
             if (!$category || !$direction) continue;
 
             // Handle IN
             if ($direction === 'in') {
-                // If previous IN wasn’t closed, close it here
+                // 🔹 First: auto-close any still-open categories (other than this one)
+                foreach ($inTime as $cat => $tsIn) {
+                    if ($tsIn !== null && $cat !== $category) {
+                        $duration = $ts - $tsIn;
+                        switch ($cat) {
+                            case 'building': $dayTib += $duration; break;
+                            case 'mainfab':  $dayTif += $duration; break;
+                            case 'subfab':   $dayTisf += $duration; break;
+                            case 'facility': $dayTifac += $duration; break;
+                        }
+                        $inTime[$cat] = null; // closed
+                    }
+                }
+
+                // 🔹 If same category was still open, also close it (double IN case)
                 if ($inTime[$category] !== null) {
                     $duration = $ts - $inTime[$category];
                     switch ($category) {
@@ -120,9 +133,13 @@ foreach ($arr as $user => $value ) {
                         case 'facility': $dayTifac += $duration; break;
                     }
                 }
+
                 // Start new IN
                 $inTime[$category] = $ts;
-            }  elseif ($direction === 'out' && $inTime[$category] !== null) {
+            }
+
+            // Handle OUT
+            elseif ($direction === 'out' && $inTime[$category] !== null) {
                 $duration = $ts - $inTime[$category];
                 switch ($category) {
                     case 'building': $dayTib += $duration; break;
@@ -130,7 +147,7 @@ foreach ($arr as $user => $value ) {
                     case 'subfab':   $dayTisf += $duration; break;
                     case 'facility': $dayTifac += $duration; break;
                 }
-                $inTime[$category] = null; // reset
+                $inTime[$category] = null;
             }
         }
 
