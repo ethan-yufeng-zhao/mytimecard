@@ -20,7 +20,7 @@ $workDays = count($workdaysList);
 $querystring='';
 $db_pdo = db_connect();
 
-$querystring = "SELECT id, extsysid, identitytype, identitydivision, sourcename, trx_timestamp";
+$querystring = "SELECT id, extsysid, identitytype, identitydivision, sourcename, sourcealtname, trx_timestamp";
 $querystring .= " FROM hr.acm_rpt_alltrx WHERE trx_timestamp >= '".$start_time."' and trx_timestamp < '".$end_time."'";
 if ($user_id) {
     $querystring .= " and extsysid = '".$user_id."'";
@@ -44,7 +44,8 @@ foreach ($db_arr as $key => $data ) {
 
     $temp_arr = array();
 //    $temp_arr['id'] = $data['id'];
-    $temp_arr['sourcename'] = $data['sourcename'];
+    $temp_arr['sourcename'] = trim($data['sourcename']);
+    $temp_arr['sourcealtname'] = trim($data['sourcealtname']);
     $temp_arr['trx_timestamp'] = $data['trx_timestamp'];
 
     $arr[$data['extsysid']]['rawdata'][$dateOnly][] = $temp_arr;
@@ -85,7 +86,8 @@ foreach ($arr as $user => $value ) {
             if ($firstonsite===0) $firstonsite = strtotime($event['trx_timestamp']);
             $lastonsite = strtotime($event['trx_timestamp']);
             $ts = strtotime($event['trx_timestamp']);
-            $source = strtolower($event['sourcename']);
+            $source = $event['sourcealtname'] ? strtolower($event['sourcealtname']) : strtolower($event['sourcename']);
+//            $source = convert2newsource($original_source);
 
             if (strpos($source, 'in') !== false) {
                 $inTime = $ts;

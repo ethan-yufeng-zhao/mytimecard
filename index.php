@@ -585,6 +585,7 @@
         icon.addEventListener('click', function () {
             const dayOfMonth = this.getAttribute('data-day_of_month');
             const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
+            const modifiedUser = "<?php echo $user['user_samaccountname']; ?>";
             // console.log(dayOfMonth + " " + adAccount);
             if (!dayOfMonth || !adAccount) {
                 alert('Day of month or AD account is missing.');
@@ -605,21 +606,21 @@
                     <th>In & Out Time</th>
                     <th>Modifier</th>
                     <th>Comments</th>
-                    <th>Ignore?</th>
                 </tr>
             </thead>
             <tbody>
         `;
 
             entries.forEach((entry, idx) => {
+                const combinedSource = `${entry.sourcename || ''}|${entry.sourcealtname || ''}`;
                 tableHtml += `
             <tr>
                 <td>${idx + 1}</td>
                 <td>
                     <input type="text" readonly
-                           value="${entry.sourcename || ''}"
-                           class="form-control form-control-sm">
-                    <input type="hidden" name="sourcename[]" value="${entry.sourcename || ''}">
+                       value="${combinedSource}"
+                       class="form-control form-control-sm">
+                    <input type="hidden" name="sourcename[]" value="${combinedSource}">
                 </td>
                 <td>
                     <input type="text" readonly
@@ -635,9 +636,6 @@
                     <input type="text" name="modified_comments[]"
                            value="${entry.modified_comments || ''}"
                            class="form-control form-control-sm">
-                </td>
-                <td class="text-center">
-                    <input type="checkbox" name="ignore_ids[]" value="${entry.id || idx}">
                 </td>
             </tr>
         `;
@@ -656,7 +654,7 @@
                            class="form-control form-control-sm">
                 </td>
                 <td>
-                    <input type="text" name="new_users[]" value="${adAccount}" readonly
+                    <input type="text" name="new_users[]" value="${modifiedUser}" readonly
                            class="form-control form-control-sm">
                 </td>
                 <td>
