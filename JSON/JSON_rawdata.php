@@ -12,6 +12,13 @@ $end_time = $_GET['end_time'] ?? date('Y-m-01');
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays = count($workdaysList);
 
+// ---- Configurable constants ----
+const FACTOR_SPLIT   = 50;        // 0 = ignore orphan INs, 100 = take all as IN, 50 = split evenly
+const CUTOFF_DAYS    = "03:00:00"; // cutoff for day shift carryover
+const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
+const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
+
+
 $db_pdo = db_connect();
 
 $querystring = "SELECT id, extsysid, identitytype, identitydivision, sourcename, sourcealtname, trx_timestamp";
@@ -23,12 +30,7 @@ $querystring .= " order by trx_timestamp;";
 
 $db_arr = db_query($db_pdo, $querystring);
 
-/**
- * Shift-aware date assignment
- * - Days: cutoff at 03:00
- * - Nights: cutoff at 09:00
- */
-function assign_shift_day($ts, $shifttype, $cutoff_day="03:00", $cutoff_night="09:00") {
+function assign_shift_day($ts, $shifttype, $cutoff_day=CUTOFF_DAYS, $cutoff_night=CUTOFF_NIGHTS) {
     $date = date("Y-m-d", $ts);
     $time = date("H:i", $ts);
 
@@ -166,15 +168,30 @@ foreach ($arr as $user => $value ) {
         }
 
         // close any open INs -> capped at shift cutoff
-        $cutoff_ts = strtotime($day." ".($shifttype === "Days" ? "03:00:00" : "09:00:00")." +1 day");
+        $cutoff_ts = strtotime($day." ".($shifttype === "Days" ? CUTOFF_DAYS : CUTOFF_NIGHTS)." +1 day");
+
         foreach ($inTime as $cat => $tsIn) {
             if ($tsIn !== null) {
-                $duration = min($lastonsite, $cutoff_ts) - $tsIn;
+                // --- New end-of-day logic ---
+                if ($shifttype === "Days") {
+                    $late_threshold_ts = strtotime($day." ".LATE_THRESHOLD);
+                    if ($lastonsite >= $late_threshold_ts) {
+                        // stayed late → close at actual last badge time
+                        $duration = $lastonsite - $tsIn;
+                    } else {
+                        // did not stay late → close at cutoff (3am next day)
+                        $duration = $cutoff_ts - $tsIn;
+                    }
+                } else {
+                    // Night shift: always close at cutoff (9am next day)
+                    $duration = $cutoff_ts - $tsIn;
+                }
+
                 if ($duration > 0) {
                     switch ($cat) {
                         case 'building': $dayTib += $duration; break;
-                        case 'mainfab': $dayTif += $duration; $dayTib += $duration; break;
-                        case 'subfab': $dayTisf += $duration; $dayTib += $duration; break;
+                        case 'mainfab':  $dayTif += $duration; $dayTib += $duration; break;
+                        case 'subfab':   $dayTisf += $duration; $dayTib += $duration; break;
                         case 'facility': $dayTifac += $duration; $dayTib += $duration; break;
                     }
                 }
