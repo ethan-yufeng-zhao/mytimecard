@@ -655,7 +655,11 @@
                     <input type="text" name="new_inandout[]" placeholder="YYYY-MM-DD HH:mm:ss"
                            class="form-control form-control-sm">
                 </td>
-                <td colspan="2">
+                <td>
+                    <input type="text" name="new_users[]" value="${adAccount}" readonly
+                           class="form-control form-control-sm">
+                </td>
+                <td>
                     <input type="text" name="new_comments[]" placeholder="Reason for adding"
                            class="form-control form-control-sm">
                 </td>
