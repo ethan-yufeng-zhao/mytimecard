@@ -287,7 +287,7 @@
                 echo('<span style="text-align: left;">' . ($value['subtotal'] ?? 0) . '</span>');
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
                     if ($value['subtotal'] > 0) {
-                        echo('<span class="view-history-icon glyphicon glyphicon-list-alt text-secondary" style="cursor: pointer;" title="View Badging History" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
+                        echo('<span class="view-history-icon glyphicon glyphicon-list-alt text-secondary" style="cursor: pointer;" title="View/Edit Badging His" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
                     }
                 }
                 echo('</td>');
@@ -454,7 +454,7 @@
 //		echo('</div>'); // end of modal-dialog
 //		echo('</div>'); // end of modal
 
-		echo('<div class="modal none hidden-print" id="modal_date_picker_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">');
+        echo('<div class="modal none hidden-print" id="modal_date_picker_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">');
 		echo('<div class="modal-dialog">');
 		echo('<div class="modal-content">');
 		echo('<form name="add_user_cert_form" id="add_user_cert_form" action="'.$mybaseurl.'/index.php?'.http_build_query($_GET).'" method="post" onsubmit="return validateAddCert();">');
@@ -522,22 +522,48 @@
         echo('</div>');
         echo('</div>');
 
-        echo('<div id="history-dialog" class="modal">');
-        echo('<div class="modal-dialog modal-lg" style="width: 60%">');
+
+        echo('<div class="modal fade" id="history-dialog" tabindex="-1" role="dialog">');
+        echo('<div class="modal-dialog wider-modal">');
         echo('<div class="modal-content">');
-        echo('<div class="modal-header">');
-        echo("<h4 class='modal-title'>Change History </h4>");
-//        echo('<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>');
-        echo('</div>');
+
+        echo('<div class="modal-header bg-secondary text-white">');
+        echo('<h5 class="modal-title">History</h5>');
+        echo('<button type="button" class="close" data-dismiss="modal">&times;</button>');
+        echo('</div>'); // modal-header
+
         echo('<div class="modal-body">');
-        echo('<p>Loading history...</p>');
-        echo('</div>');
+        echo('<form id="history-form" method="post" action="update_badge_records.php">');
+        echo('<input type="hidden" name="day" id="history-day">');
+        echo('<div id="history-table-container"></div>');
+        echo('</form>');
+        echo('</div>'); // modal-body
+
         echo('<div class="modal-footer">');
-        echo('<button type="button" id="close-history-btn">Close</button>');
-        echo('</div>');
-        echo('</div>');
-        echo('</div>');
-        echo('</div>');
+        echo('<button type="submit" form="history-form" class="btn btn-primary">Save Changes</button>');
+        echo('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+        echo('</div>'); // modal-footer
+
+        echo('</div>'); // modal-content
+        echo('</div>');   // modal-dialog
+        echo('</div>');     // modal
+
+//        echo('<div id="history-dialog" class="modal">');
+//        echo('<div class="modal-dialog modal-lg" style="width: 60%">');
+//        echo('<div class="modal-content">');
+//        echo('<div class="modal-header">');
+//        echo("<h4 class='modal-title'>Change History </h4>");
+////        echo('<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>');
+//        echo('</div>');
+//        echo('<div class="modal-body">');
+//        echo('<p>Loading history...</p>');
+//        echo('</div>');
+//        echo('<div class="modal-footer">');
+//        echo('<button type="button" id="close-history-btn">Close</button>');
+//        echo('</div>');
+//        echo('</div>');
+//        echo('</div>');
+//        echo('</div>');
 
     } else {
 		// echo('<div class="span-24 last" style="margin-top:1em;">');
@@ -553,7 +579,7 @@
 <script>
     // Track the current icon
     let currentIcon = null;
-
+    const rawdata = <?php echo json_encode($rawdata); ?>;
     document.querySelectorAll('.view-history-icon').forEach(icon => {
         icon.addEventListener('click', function () {
             const dayOfMonth = this.getAttribute('data-day_of_month');
@@ -563,58 +589,64 @@
                 alert('Day of month or AD account is missing.');
                 return;
             }
+            const entries = rawdata[dayOfMonth] || [];
 
-            // Fetch the history via AJAX
-            return;
-            fetch(`JSON/JSON_ACTION_fetch_history.php?cert_id=${certId}&ad_account=${adAccount}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Construct the return;history table
-                        let historyTable = `
-                        <h4> ${adAccount} - ${certId}</h4>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Modified Time</th>
-                                    <th>vacation</th>
-                                    <th>Modified By</th>
-                                    <th>Comments</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    `;
+            // Fill hidden input
+            document.getElementById('history-day').value = dayOfMonth;
 
-                        // Loop through the history object and create table rows
-                        for (const key in data.history) {
-                            const entry = data.history[key];
-                            historyTable += `
-                            <tr>
-                                <td>${entry.modified_time}</td>
-                                <td>${entry.vacation}</td>
-                                <td>${entry.modified_user}</td>
-                                <td>${entry.modified_comments}</td>
-                            </tr>
-                        `;
-                        }
+            // Build editable table
+            let tableHtml = `
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Source Name</th>
+                        <th>In & Out Time</th>
+                        <th>Modifier</th>
+                        <th>Comments</th>
+                        <th>Fix?</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
 
-                        historyTable += `
-                            </tbody>
-                        </table>
-                    `;
+            entries.forEach((entry, idx) => {
+                tableHtml += `
+                <tr>
+                    <td>
+                        <input type="text" name="sourcename[]"
+                               value="${entry.sourcename || ''}"
+                               class="form-control form-control-sm">
+                    </td>
+                    <td>
+                        <input type="text" name="inandout[]"
+                               value="${entry.trx_timestamp || ''}"
+                               class="form-control form-control-sm">
+                    </td>
+                    <td>
+                        ${entry.modified_user || ''}
+                        <input type="hidden" name="modified_user[]"
+                               value="${entry.modified_user || ''}">
+                    </td>
+                    <td>
+                        <input type="text" name="modified_comments[]"
+                               value="${entry.modified_comments || ''}"
+                               class="form-control form-control-sm">
+                    </td>
+                    <td>
+                        <input type="checkbox" name="fix_missing[]" value="${entry.id || idx}">
+                    </td>
+                </tr>
+            `;
+            });
 
-                        // Display the table in the modal
-                        const historyDialog = document.getElementById('history-dialog');
-                        historyDialog.querySelector('.modal-body').innerHTML = historyTable;
-                        historyDialog.style.display = 'block';
-                    } else {
-                        alert('Failed to fetch history: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching history:', error);
-                    alert('Unable to fetch change history. Please try again later.');
-                });
+            tableHtml += `</tbody></table>`;
+
+            // Insert into modal
+            document.getElementById('history-table-container').innerHTML = tableHtml;
+
+            // Show modal
+            $('#history-dialog').modal('show');
+
         });
     });
 
