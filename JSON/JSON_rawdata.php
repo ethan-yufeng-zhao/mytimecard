@@ -109,43 +109,74 @@ foreach ($arr as $user => $value ) {
 
             // Handle IN
             if ($direction === 'in') {
-                // 🔹 First: auto-close any still-open categories (other than this one)
+                // 🔹 Auto-close other categories when new IN arrives
                 foreach ($inTime as $cat => $tsIn) {
                     if ($tsIn !== null && $cat !== $category) {
                         $duration = $ts - $tsIn;
                         switch ($cat) {
-                            case 'building': $dayTib += $duration; break;
-                            case 'mainfab':  $dayTif += $duration; break;
-                            case 'subfab':   $dayTisf += $duration; break;
-                            case 'facility': $dayTifac += $duration; break;
+                            case 'building':
+                                $dayTib += $duration;
+                                break;
+                            case 'mainfab':
+                                $dayTif += $duration;
+                                $dayTib += $duration; // also building
+                                break;
+                            case 'subfab':
+                                $dayTisf += $duration;
+                                $dayTib += $duration; // also building
+                                break;
+                            case 'facility':
+                                $dayTifac += $duration;
+                                $dayTib += $duration; // also building
+                                break;
                         }
-                        $inTime[$cat] = null; // closed
+                        $inTime[$cat] = null;
                     }
                 }
 
-                // 🔹 If same category was still open, also close it (double IN case)
+                // 🔹 Double-IN handling for same category
                 if ($inTime[$category] !== null) {
                     $duration = $ts - $inTime[$category];
                     switch ($category) {
-                        case 'building': $dayTib += $duration; break;
-                        case 'mainfab':  $dayTif += $duration; break;
-                        case 'subfab':   $dayTisf += $duration; break;
-                        case 'facility': $dayTifac += $duration; break;
+                        case 'building':
+                            $dayTib += $duration;
+                            break;
+                        case 'mainfab':
+                            $dayTif += $duration;
+                            $dayTib += $duration;
+                            break;
+                        case 'subfab':
+                            $dayTisf += $duration;
+                            $dayTib += $duration;
+                            break;
+                        case 'facility':
+                            $dayTifac += $duration;
+                            $dayTib += $duration;
+                            break;
                     }
                 }
 
                 // Start new IN
                 $inTime[$category] = $ts;
-            }
-
-            // Handle OUT
+            } // Handle OUT
             elseif ($direction === 'out' && $inTime[$category] !== null) {
                 $duration = $ts - $inTime[$category];
                 switch ($category) {
-                    case 'building': $dayTib += $duration; break;
-                    case 'mainfab':  $dayTif += $duration; break;
-                    case 'subfab':   $dayTisf += $duration; break;
-                    case 'facility': $dayTifac += $duration; break;
+                    case 'building':
+                        $dayTib += $duration;
+                        break;
+                    case 'mainfab':
+                        $dayTif += $duration;
+                        $dayTib += $duration;
+                        break;
+                    case 'subfab':
+                        $dayTisf += $duration;
+                        $dayTib += $duration;
+                        break;
+                    case 'facility':
+                        $dayTifac += $duration;
+                        $dayTib += $duration;
+                        break;
                 }
                 $inTime[$category] = null;
             }
@@ -155,10 +186,21 @@ foreach ($arr as $user => $value ) {
             if ($tsIn !== null) {
                 $duration = $lastonsite - $tsIn;
                 switch ($cat) {
-                    case 'building': $dayTib += $duration; break;
-                    case 'mainfab':  $dayTif += $duration; break;
-                    case 'subfab':   $dayTisf += $duration; break;
-                    case 'facility': $dayTifac += $duration; break;
+                    case 'building':
+                        $dayTib += $duration;
+                        break;
+                    case 'mainfab':
+                        $dayTif += $duration;
+                        $dayTib += $duration;
+                        break;
+                    case 'subfab':
+                        $dayTisf += $duration;
+                        $dayTib += $duration;
+                        break;
+                    case 'facility':
+                        $dayTifac += $duration;
+                        $dayTib += $duration;
+                        break;
                 }
             }
         }
