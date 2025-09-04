@@ -6,18 +6,12 @@ $current_timestamp = time();
 
 $arr = array();
 
-// xdebug
-//$_GET['user_id'] = 'oliver.li';
-
-
 $user_id = $_GET['user_id'] ?? '';
-$start_time = $_GET['start_time'] ?? date('Y-m-01', strtotime('first day of last month')); //date('Y-m-01');
-$end_time = $_GET['end_time'] ?? date('Y-m-01'); //date('Y-m-t');
+$start_time = $_GET['start_time'] ?? date('Y-m-01', strtotime('first day of last month'));
+$end_time = $_GET['end_time'] ?? date('Y-m-01');
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays = count($workdaysList);
-//$vacationHours = $_GET['vacation_hours'] ?? 0;
 
-$querystring='';
 $db_pdo = db_connect();
 
 $querystring = "SELECT id, extsysid, identitytype, identitydivision, sourcename, sourcealtname, trx_timestamp";
@@ -29,21 +23,48 @@ $querystring .= " order by trx_timestamp;";
 
 $db_arr = db_query($db_pdo, $querystring);
 
+/**
+ * Shift-aware date assignment
+ * - Days: cutoff at 03:00
+ * - Nights: cutoff at 09:00
+ */
+function assign_shift_day($ts, $shifttype, $cutoff_day="03:00", $cutoff_night="09:00") {
+    $date = date("Y-m-d", $ts);
+    $time = date("H:i", $ts);
+
+    if ($shifttype === "Days") {
+        if ($time < $cutoff_day) {
+            return date("Y-m-d", strtotime("-1 day", $ts));
+        }
+        return $date;
+    }
+
+    if ($shifttype === "Nights") {
+        if ($time < $cutoff_night) {
+            return date("Y-m-d", strtotime("-1 day", $ts));
+        }
+        return $date;
+    }
+
+    return $date; // fallback
+}
+
 foreach ($db_arr as $key => $data ) {
     if (!isset($arr[$data['extsysid']])) {
         $arr[$data['extsysid']] = array();
     }
-    if (!isset($arr[$data['extsysid']]['employeetype']) || $arr[$data['extsysid']]['employeetype']==='') {
+    if (!isset($arr[$data['extsysid']]['meta']['employeetype']) || $arr[$data['extsysid']]['meta']['employeetype']==='') {
         $arr[$data['extsysid']]['meta']['employeetype']=$data['identitytype'] ?? 'Employee';
     }
-    if (!isset($arr[$data['extsysid']]['shifttype']) || $arr[$data['extsysid']]['shifttype']==='') {
+    if (!isset($arr[$data['extsysid']]['meta']['shifttype']) || $arr[$data['extsysid']]['meta']['shifttype']==='') {
         $arr[$data['extsysid']]['meta']['shifttype']=$data['identitydivision'] ?? 'Days';
     }
 
-    $dateOnly = date('Y-m-d', strtotime($data['trx_timestamp']));
+    $shifttype = $arr[$data['extsysid']]['meta']['shifttype'];
+    $ts = strtotime($data['trx_timestamp']);
+    $dateOnly = assign_shift_day($ts, $shifttype);
 
     $temp_arr = array();
-//    $temp_arr['id'] = $data['id'];
     $temp_arr['sourcename'] = trim($data['sourcename']);
     $temp_arr['sourcealtname'] = trim($data['sourcealtname']);
     $temp_arr['normalizedname'] = normalizeSourceName(trim($data['sourcename']));
@@ -67,8 +88,8 @@ foreach ($arr as $user => $value ) {
     $totalVacation = 0;
     $total_hours = 0;
 
-    $workedDays = [];   // track which days had records
-    $weekendDays = [];  // track weekends with hours
+    $workedDays = [];
+    $weekendDays = [];
     $noShowDays = [];
 
     $querystring2 = "SELECT day_of_month, vacation FROM hr.vacation WHERE ad_account = '".$user."' order by modified_time asc";
@@ -82,9 +103,9 @@ foreach ($arr as $user => $value ) {
         $dayTib = 0;
         $dayTob = 0;
 
-        $dayTif = 0;   // Time in main fab
-        $dayTisf = 0;  // Time in subfab
-        $dayTifac = 0; // Time in facility
+        $dayTif = 0;
+        $dayTisf = 0;
+        $dayTifac = 0;
 
         $inTime = [
             'building' => null,
@@ -107,100 +128,55 @@ foreach ($arr as $user => $value ) {
 
             if (!$category || !$direction) continue;
 
-            // Handle IN
             if ($direction === 'in') {
-                // 🔹 Auto-close other categories when new IN arrives
                 foreach ($inTime as $cat => $tsIn) {
                     if ($tsIn !== null && $cat !== $category) {
                         $duration = $ts - $tsIn;
                         switch ($cat) {
-                            case 'building':
-                                $dayTib += $duration;
-                                break;
-                            case 'mainfab':
-                                $dayTif += $duration;
-                                $dayTib += $duration; // also building
-                                break;
-                            case 'subfab':
-                                $dayTisf += $duration;
-                                $dayTib += $duration; // also building
-                                break;
-                            case 'facility':
-                                $dayTifac += $duration;
-                                $dayTib += $duration; // also building
-                                break;
+                            case 'building': $dayTib += $duration; break;
+                            case 'mainfab': $dayTif += $duration; $dayTib += $duration; break;
+                            case 'subfab': $dayTisf += $duration; $dayTib += $duration; break;
+                            case 'facility': $dayTifac += $duration; $dayTib += $duration; break;
                         }
                         $inTime[$cat] = null;
                     }
                 }
 
-                // 🔹 Double-IN handling for same category
                 if ($inTime[$category] !== null) {
                     $duration = $ts - $inTime[$category];
                     switch ($category) {
-                        case 'building':
-                            $dayTib += $duration;
-                            break;
-                        case 'mainfab':
-                            $dayTif += $duration;
-                            $dayTib += $duration;
-                            break;
-                        case 'subfab':
-                            $dayTisf += $duration;
-                            $dayTib += $duration;
-                            break;
-                        case 'facility':
-                            $dayTifac += $duration;
-                            $dayTib += $duration;
-                            break;
+                        case 'building': $dayTib += $duration; break;
+                        case 'mainfab': $dayTif += $duration; $dayTib += $duration; break;
+                        case 'subfab': $dayTisf += $duration; $dayTib += $duration; break;
+                        case 'facility': $dayTifac += $duration; $dayTib += $duration; break;
                     }
                 }
-
-                // Start new IN
                 $inTime[$category] = $ts;
-            } // Handle OUT
+            }
             elseif ($direction === 'out' && $inTime[$category] !== null) {
                 $duration = $ts - $inTime[$category];
                 switch ($category) {
-                    case 'building':
-                        $dayTib += $duration;
-                        break;
-                    case 'mainfab':
-                        $dayTif += $duration;
-                        $dayTib += $duration;
-                        break;
-                    case 'subfab':
-                        $dayTisf += $duration;
-                        $dayTib += $duration;
-                        break;
-                    case 'facility':
-                        $dayTifac += $duration;
-                        $dayTib += $duration;
-                        break;
+                    case 'building': $dayTib += $duration; break;
+                    case 'mainfab': $dayTif += $duration; $dayTib += $duration; break;
+                    case 'subfab': $dayTisf += $duration; $dayTib += $duration; break;
+                    case 'facility': $dayTifac += $duration; $dayTib += $duration; break;
                 }
                 $inTime[$category] = null;
             }
         }
 
+        // close any open INs -> capped at shift cutoff
+        $cutoff_ts = strtotime($day." ".($shifttype === "Days" ? "03:00:00" : "09:00:00")." +1 day");
         foreach ($inTime as $cat => $tsIn) {
             if ($tsIn !== null) {
-                $duration = $lastonsite - $tsIn;
-                switch ($cat) {
-                    case 'building':
-                        $dayTib += $duration;
-                        break;
-                    case 'mainfab':
-                        $dayTif += $duration;
-                        $dayTib += $duration;
-                        break;
-                    case 'subfab':
-                        $dayTisf += $duration;
-                        $dayTib += $duration;
-                        break;
-                    case 'facility':
-                        $dayTifac += $duration;
-                        $dayTib += $duration;
-                        break;
+                $duration = min($lastonsite, $cutoff_ts) - $tsIn;
+                if ($duration > 0) {
+                    switch ($cat) {
+                        case 'building': $dayTib += $duration; break;
+                        case 'mainfab': $dayTif += $duration; $dayTib += $duration; break;
+                        case 'subfab': $dayTisf += $duration; $dayTib += $duration; break;
+                        case 'facility': $dayTifac += $duration; $dayTib += $duration; break;
+                    }
                 }
             }
         }
@@ -240,14 +216,13 @@ foreach ($arr as $user => $value ) {
 
             $workedDays[$day] = true;
 
-            // check if weekend
-            $dow = date('N', strtotime($day)); // 1=Mon .. 7=Sun
+            $dow = date('N', strtotime($day));
             if ($dow >= 6) {
                 $weekendDays[] = $day;
             }
         }
     }
-    // mark no-shows
+
     foreach ($workdaysList as $wday) {
         if (!isset($workedDays[$wday])) {
             $noShowDays[] = $wday;
@@ -268,14 +243,13 @@ foreach ($arr as $user => $value ) {
     $arr[$user]['summary']['actual_workdays'] = count($workedDays);
     $arr[$user]['summary']['no_show_days'] = $noShowDays;
     $arr[$user]['summary']['weekend_days'] = $weekendDays;
-//    $arr[$user]['summary']['vacation_hours'] = $dayVacation;
 
     $arr[$user]['summary']['total_tos']       = round($totalTos, 2);
     $arr[$user]['summary']['total_tib']       = round($totalTib, 2);
     $arr[$user]['summary']['total_tob']       = round($totalTob, 2);
     $arr[$user]['summary']['total_tif']       = round($totalTif, 2);
-    $arr[$user]['summary']['total_tisf']       = round($totalTisf, 2);
-    $arr[$user]['summary']['total_tifac']       = round($totalTifac, 2);
+    $arr[$user]['summary']['total_tisf']      = round($totalTisf, 2);
+    $arr[$user]['summary']['total_tifac']     = round($totalTifac, 2);
 
     $arr[$user]['summary']['avg_tos']         = $workDays > 0 ? round($totalTos / $workDays, 2) : 0;
     $arr[$user]['summary']['avg_tib']         = $workDays > 0 ? round($totalTib / $workDays, 2) : 0;
