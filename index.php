@@ -302,62 +302,64 @@
 
 				echo('</tr>');
 			}
-            foreach ($noshow as $day => $value) {
-                echo('<tr style="color:red;">');
+            if ($noshow) {
+                foreach ($noshow as $day => $value) {
+                    echo('<tr style="color:red;">');
 
-                echo("<td>");
-                echo('<span class="day-of-month">' . htmlspecialchars($day) . '</span>');
-                echo("</td>");
+                    echo("<td>");
+                    echo('<span class="day-of-month">' . htmlspecialchars($day) . '</span>');
+                    echo("</td>");
 
-                echo("<td>");
-                echo(date('D', strtotime($day)));
-                echo("</td>");
+                    echo("<td>");
+                    echo(date('D', strtotime($day)));
+                    echo("</td>");
 
-                echo("<td>");
-                echo($value['tos'] ?? 'No Show');
-                echo('</td>');
+                    echo("<td>");
+                    echo($value['tos'] ?? 'No Show');
+                    echo('</td>');
 
-                echo("<td>");
-                echo($value['tib'] ?? 'No Show');
-                echo('</td>');
+                    echo("<td>");
+                    echo($value['tib'] ?? 'No Show');
+                    echo('</td>');
 
-                echo("<td>");
-                echo($value['tob'] ?? 'No Show');
-                echo('</td>');
+                    echo("<td>");
+                    echo($value['tob'] ?? 'No Show');
+                    echo('</td>');
 
-                echo("<td>");
-                echo($value['tif'] ?? 'No Show');
-                echo('</td>');
+                    echo("<td>");
+                    echo($value['tif'] ?? 'No Show');
+                    echo('</td>');
 
-                echo("<td>");
-                echo($value['tisf'] ?? 'No Show');
-                echo('</td>');
+                    echo("<td>");
+                    echo($value['tisf'] ?? 'No Show');
+                    echo('</td>');
 
-                echo("<td>");
-                echo($value['tifac'] ?? 'No Show');
-                echo('</td>');
+                    echo("<td>");
+                    echo($value['tifac'] ?? 'No Show');
+                    echo('</td>');
 
-                echo("<td>");
-                echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
-                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
-                    echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="'.($value['vacation'] ?? 0).'"></span>&nbsp;&nbsp;');
+                    echo("<td>");
+                    echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
+                    if ($user['user_is_admin'] || $user['user_is_supervisor']) {
+                        echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="' . ($value['vacation'] ?? 0) . '"></span>&nbsp;&nbsp;');
+                    }
+                    echo("</td>");
+
+
+                    echo("<td>");
+                    echo($value['subtotal'] ?? 0);
+                    echo('</td>');
+
+                    //                echo("<td>");
+                    //                echo($value['missingexitflag'] ?? 0);
+                    //                echo('</td>');
+                    //
+                    //                echo("<td>");
+                    //                echo($value['missingentryflag'] ?? 0);
+                    //                echo('</td>');
+
+                    echo('</tr>');
                 }
-                echo("</td>");
-
-
-                echo("<td>");
-                echo($value['subtotal'] ?? 0);
-                echo('</td>');
-
-//                echo("<td>");
-//                echo($value['missingexitflag'] ?? 0);
-//                echo('</td>');
-//
-//                echo("<td>");
-//                echo($value['missingentryflag'] ?? 0);
-//                echo('</td>');
-
-                echo('</tr>');
             }
 			echo("</tbody>");
             echo("</tfoot>");
@@ -603,6 +605,7 @@
                 <tr>
                     <th>#</th>
                     <th>Source Name</th>
+                    <th>Source Type</th>
                     <th>In & Out Time</th>
                     <th>Modifier</th>
                     <th>Comments</th>
@@ -612,7 +615,7 @@
         `;
 
             entries.forEach((entry, idx) => {
-                const combinedSource = `${entry.sourcename || ''}|${entry.sourcealtname || ''}`;
+                const combinedSource = `${entry.sourcename || ''}`;//`${entry.sourcename || ''}|${entry.sourcealtname || ''}`;
                 tableHtml += `
             <tr>
                 <td>${idx + 1}</td>
@@ -621,6 +624,12 @@
                        value="${combinedSource}"
                        class="form-control form-control-sm">
                     <input type="hidden" name="sourcename[]" value="${combinedSource}">
+                </td>
+                <td>
+                    <input type="text" readonly
+                       value="${entry.normalizedname || ''}"
+                       class="form-control form-control-sm">
+                    <input type="hidden" name="normalizedname[]" value="${entry.normalizedname || ''}">
                 </td>
                 <td>
                     <input type="text" readonly
@@ -646,7 +655,11 @@
             <tr class="table-success">
                 <td>+</td>
                 <td>
-                    <input type="text" name="new_sourcename[]" placeholder="Manual"
+                    <input type="text" name="new_sourcename[]" placeholder="Enter source name"
+                           class="form-control form-control-sm">
+                </td>
+                <td>
+                    <input type="text" name="new_normalizedname[]" placeholder="Enter source type"
                            class="form-control form-control-sm">
                 </td>
                 <td>

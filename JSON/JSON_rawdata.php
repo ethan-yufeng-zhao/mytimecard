@@ -273,16 +273,16 @@ foreach ($arr as $user => $value ) {
     $arr[$user]['summary']['total_tos']       = round($totalTos, 2);
     $arr[$user]['summary']['total_tib']       = round($totalTib, 2);
     $arr[$user]['summary']['total_tob']       = round($totalTob, 2);
-    $arr[$user]['summary']['total_tif']       = 0;
-    $arr[$user]['summary']['total_tisf']       = 0;
-    $arr[$user]['summary']['total_tifac']       = 0;
+    $arr[$user]['summary']['total_tif']       = round($totalTif, 2);
+    $arr[$user]['summary']['total_tisf']       = round($totalTisf, 2);
+    $arr[$user]['summary']['total_tifac']       = round($totalTifac, 2);
 
     $arr[$user]['summary']['avg_tos']         = $workDays > 0 ? round($totalTos / $workDays, 2) : 0;
     $arr[$user]['summary']['avg_tib']         = $workDays > 0 ? round($totalTib / $workDays, 2) : 0;
     $arr[$user]['summary']['avg_tob']         = $workDays > 0 ? round($totalTob / $workDays, 2) : 0;
-    $arr[$user]['summary']['avg_tif']         = 0;
-    $arr[$user]['summary']['avg_tisf']        = 0;
-    $arr[$user]['summary']['avg_tifac']       = 0;
+    $arr[$user]['summary']['avg_tif']         = $workDays > 0 ? round($totalTif / $workDays, 2) : 0;
+    $arr[$user]['summary']['avg_tisf']        = $workDays > 0 ? round($totalTisf / $workDays, 2) : 0;
+    $arr[$user]['summary']['avg_tifac']       = $workDays > 0 ? round($totalTifac / $workDays, 2) : 0;
 
     $arr[$user]['summary']['total_vacation']  = $totalVacation;
     $arr[$user]['summary']['avg_vacation']    = $workDays > 0 ? round($totalVacation / $workDays, 2) : 0;
