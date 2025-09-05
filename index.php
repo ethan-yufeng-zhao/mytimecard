@@ -677,7 +677,7 @@
                 <input type="hidden" name="inandout[]" value="${(entry.trx_timestamp || '').replace(/"/g,'&quot;')}">
             </td>
             <td class="text-center">
-                ${isAssumed ? `<input type="checkbox" name="assumed_ids[]" value="${assumedValue}" checked>` : ''}
+                ${isAssumed ? `<input type="checkbox" name="assumed_ids[]" value="${assumedValue}" checked disabled>` : ''}
             </td>
         </tr>
     `;
