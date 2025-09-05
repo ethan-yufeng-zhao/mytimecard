@@ -601,6 +601,26 @@
             const entries = rawdata[dayOfMonth] || [];
             document.getElementById('history-day').value = dayOfMonth;
 
+            // ensure highlight styles exist (inject once)
+            (function ensureHistoryRowStyles(){
+                if (document.getElementById('history-row-styles')) return;
+                const css = `
+        /* assumed = red */
+        .assumed-row { background-color: #f8d7da !important; }
+        /* overnight = orange */
+        .overnight-row { background-color: #fff3cd !important; }
+        /* both = slightly darker red */
+        .assumed-overnight { background-color: #f5c6cb !important; }
+        /* make sure inputs stay readable */
+        .assumed-row input, .overnight-row input, .assumed-overnight input { color: #000 !important; }
+    `;
+                const s = document.createElement('style');
+                s.id = 'history-row-styles';
+                s.appendChild(document.createTextNode(css));
+                document.head.appendChild(s);
+            })();
+
+// Build editable table (with highlighted rows)
             let tableHtml = `
     <table class="table table-bordered table-striped table-sm">
         <thead class="thead-light">
@@ -617,42 +637,51 @@
 
             entries.forEach((entry, idx) => {
                 const combinedSource = `${entry.sourcename || ''}`;
-                const trxDate = new Date(entry.trx_timestamp);
+                const trxDate = new Date(entry.trx_timestamp || '');
                 const dayStart = new Date(dayOfMonth + 'T00:00:00');
                 const dayEnd = new Date(dayOfMonth + 'T23:59:59');
 
                 const isOvernight = trxDate < dayStart || trxDate > dayEnd;
-                const isAssumed = entry.assumed === true;
+                const isAssumed = entry.assumed === true || entry.assumed === 'true' || entry.assumed === 1 || entry.assumed === '1';
 
-                let rowClass = "";
-                if (isAssumed) {
-                    rowClass = "table-danger";   // 🔴 red for assumed
+                // choose class and inline fallback color (inline used in case stylesheet still overridden)
+                let rowClass = '';
+                let inlineStyle = '';
+                if (isAssumed && isOvernight) {
+                    rowClass = 'assumed-overnight';
+                    inlineStyle = 'style="background-color: #f5c6cb !important;"';
+                } else if (isAssumed) {
+                    rowClass = 'assumed-row';
+                    inlineStyle = 'style="background-color: #f8d7da !important;"';
                 } else if (isOvernight) {
-                    rowClass = "table-warning";  // 🟠 orange for overnight
+                    rowClass = 'overnight-row';
+                    inlineStyle = 'style="background-color: #fff3cd !important;"';
                 }
 
+                // Use an id/value for the assumed checkbox if available (entry.assumed_id), otherwise fallback to idx
+                const assumedValue = entry.assumed_id ?? entry.assumed ?? idx;
+
                 tableHtml += `
-        <tr class="${rowClass}">
+        <tr class="${rowClass}" ${inlineStyle}>
             <td>${idx + 1}</td>
             <td>
-                <input type="text" readonly value="${combinedSource}" class="form-control form-control-sm">
-                <input type="hidden" name="sourcename[]" value="${combinedSource}">
+                <input type="text" readonly value="${(combinedSource).replace(/"/g,'&quot;')}" class="form-control form-control-sm">
+                <input type="hidden" name="sourcename[]" value="${(combinedSource).replace(/"/g,'&quot;')}">
             </td>
             <td>
-                <input type="text" readonly value="${entry.normalizedname || ''}" class="form-control form-control-sm">
-                <input type="hidden" name="normalizedname[]" value="${entry.normalizedname || ''}">
+                <input type="text" readonly value="${(entry.normalizedname || '').replace(/"/g,'&quot;')}" class="form-control form-control-sm">
+                <input type="hidden" name="normalizedname[]" value="${(entry.normalizedname || '').replace(/"/g,'&quot;')}">
             </td>
             <td>
-                <input type="text" readonly value="${entry.trx_timestamp || ''}" class="form-control form-control-sm">
-                <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
+                <input type="text" readonly value="${(entry.trx_timestamp || '').replace(/"/g,'&quot;')}" class="form-control form-control-sm">
+                <input type="hidden" name="inandout[]" value="${(entry.trx_timestamp || '').replace(/"/g,'&quot;')}">
             </td>
             <td class="text-center">
-                ${isAssumed ? `<input type="checkbox" checked disabled>` : ``}
+                ${isAssumed ? `<input type="checkbox" name="assumed_ids[]" value="${assumedValue}" checked>` : ''}
             </td>
         </tr>
     `;
             });
-
 
             // Option to add a *new badge record* for missing in/out
         //     tableHtml += `
