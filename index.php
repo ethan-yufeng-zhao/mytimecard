@@ -609,6 +609,7 @@
                         <th>Source Name</th>
                         <th>Source Type</th>
                         <th>In & Out Time</th>
+                        <th>Assumed?</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -637,6 +638,9 @@
                     <td>
                         <input type="text" readonly value="${entry.trx_timestamp || ''}" class="form-control form-control-sm">
                         <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
+                    </td>
+                    <td class="text-center">
+                        <input type="checkbox" name="assumed_ids[]" value="${entry.assumed || idx}">
                     </td>
                 </tr>
             `;
