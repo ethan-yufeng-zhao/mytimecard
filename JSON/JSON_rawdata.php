@@ -27,7 +27,7 @@ $FACTOR_SPLIT = $configs['balanced']; // example selection
 const CUTOFF_DAYS    = "04:00:00"; // cutoff for day shift carryover
 const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
-const ASSUMED_END = 600;
+const ASSUMED_END = 1800;
 const TIMECONVERTER = 3600;
 
 $db_pdo = db_connect();
@@ -188,7 +188,7 @@ foreach ($arr as $extsysid => &$person) {
                         'sourcename'=>"Assumed In",
                         'sourcealtname'=>"Assumed In",
                         'normalizedname'=>ucfirst($category)." In",
-                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - ASSUMED_END),
+                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 600),
                         'assumed'=>true
                     ];
                 }
@@ -202,7 +202,7 @@ foreach ($arr as $extsysid => &$person) {
         foreach ($lastIn as $category => $inEvent) {
             if ($inEvent !== null) {
                 $lastInTs = strtotime($inEvent['trx_timestamp']);
-                $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + 1800;
+                $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + ASSUMED_END;
 
                 $fixed[] = [
                     'sourcename'     => "Assumed Out",
