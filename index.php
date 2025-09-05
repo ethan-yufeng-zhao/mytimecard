@@ -239,7 +239,7 @@
                 if ($inWorkdays) {
                     echo('<tr>');
                 } else {
-                    echo('<tr style="color:green;">');
+                    echo('<tr style="color:orchid;">');
                 }
 
                 echo("<td>");
@@ -341,10 +341,11 @@
                     echo("<td>");
                     echo('<span class="vacation-value">' . htmlspecialchars($value['vacation'] ?? 0) . '</span>&nbsp;&nbsp;');
                     if ($user['user_is_admin'] || $user['user_is_supervisor']) {
-                        echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="' . ($value['vacation'] ?? 0) . '"></span>&nbsp;&nbsp;');
+                        if ($inWorkdays) {
+                            echo('<span class="edit-vacation-icon glyphicon glyphicon-pencil text-primary" style="cursor: pointer;" data-vacation="'.$value['vacation'].'"></span>&nbsp;&nbsp;');
+                        }
                     }
                     echo("</td>");
-
 
                     echo("<td>");
                     echo($value['subtotal'] ?? 0);
@@ -544,7 +545,7 @@
         echo('</div>'); // modal-body
 
         echo('<div class="modal-footer">');
-        echo('<button type="submit" form="history-form" class="btn btn-primary" id="save-btn" disabled>Save Changes</button>');
+//        echo('<button type="submit" form="history-form" class="btn btn-primary" id="save-btn" disabled>Save Changes</button>');
         echo('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
         echo('</div>'); // modal-footer
 
@@ -596,77 +597,73 @@
                 alert('Day of month or AD account is missing.');
                 return;
             }
-            const entries = rawdata[dayOfMonth] || [];
 
-            // Fill hidden input
+            const entries = rawdata[dayOfMonth] || [];
             document.getElementById('history-day').value = dayOfMonth;
 
-            // Build editable table
             let tableHtml = `
-        <table class="table table-bordered table-striped table-sm">
-            <thead class="thead-light">
-                <tr>
-                    <th>#</th>
-                    <th>Source Name</th>
-                    <th>Source Type</th>
-                    <th>In & Out Time</th>
-                </tr>
-            </thead>
-            <tbody>
+            <table class="table table-bordered table-striped table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Source Name</th>
+                        <th>Source Type</th>
+                        <th>In & Out Time</th>
+                    </tr>
+                </thead>
+                <tbody>
         `;
 
             entries.forEach((entry, idx) => {
-                const combinedSource = `${entry.sourcename || ''}`;//`${entry.sourcename || ''}|${entry.sourcealtname || ''}`;
+                const combinedSource = `${entry.sourcename || ''}`;
+                const trxDate = new Date(entry.trx_timestamp);
+                const dayStart = new Date(dayOfMonth + 'T00:00:00');
+                const dayEnd = new Date(dayOfMonth + 'T23:59:59');
+
+                // Highlight overnight if timestamp is outside this day
+                const isOvernight = trxDate < dayStart || trxDate > dayEnd;
+
                 tableHtml += `
-            <tr>
-                <td>${idx + 1}</td>
-                <td>
-                    <input type="text" readonly
-                       value="${combinedSource}"
-                       class="form-control form-control-sm">
-                    <input type="hidden" name="sourcename[]" value="${combinedSource}">
-                </td>
-                <td>
-                    <input type="text" readonly
-                       value="${entry.normalizedname || ''}"
-                       class="form-control form-control-sm">
-                    <input type="hidden" name="normalizedname[]" value="${entry.normalizedname || ''}">
-                </td>
-                <td>
-                    <input type="text" readonly
-                           value="${entry.trx_timestamp || ''}"
-                           class="form-control form-control-sm">
-                    <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
-                </td>
-            </tr>
-        `;
+                <tr ${isOvernight ? 'class="table-warning"' : ''}>
+                    <td>${idx + 1}</td>
+                    <td>
+                        <input type="text" readonly value="${combinedSource}" class="form-control form-control-sm">
+                        <input type="hidden" name="sourcename[]" value="${combinedSource}">
+                    </td>
+                    <td>
+                        <input type="text" readonly value="${entry.normalizedname || ''}" class="form-control form-control-sm">
+                        <input type="hidden" name="normalizedname[]" value="${entry.normalizedname || ''}">
+                    </td>
+                    <td>
+                        <input type="text" readonly value="${entry.trx_timestamp || ''}" class="form-control form-control-sm">
+                        <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
+                    </td>
+                </tr>
+            `;
             });
 
             // Option to add a *new badge record* for missing in/out
-            tableHtml += `
-            <tr class="table-success">
-                <td>+</td>
-                <td>
-                    <input type="text" name="new_sourcename[]" placeholder="Enter source name"
-                           class="form-control form-control-sm">
-                </td>
-                <td>
-                    <input type="text" name="new_normalizedname[]" placeholder="Enter source type"
-                           class="form-control form-control-sm">
-                </td>
-                <td>
-                    <input type="text" name="new_inandout[]" placeholder="YYYY-MM-DD HH:mm:ss"
-                           class="form-control form-control-sm">
-                </td>
-            </tr>
-        `;
+        //     tableHtml += `
+        //     <tr class="table-success">
+        //         <td>+</td>
+        //         <td>
+        //             <input type="text" name="new_sourcename[]" placeholder="Enter source name"
+        //                    class="form-control form-control-sm">
+        //         </td>
+        //         <td>
+        //             <input type="text" name="new_normalizedname[]" placeholder="Enter source type"
+        //                    class="form-control form-control-sm">
+        //         </td>
+        //         <td>
+        //             <input type="text" name="new_inandout[]" placeholder="YYYY-MM-DD HH:mm:ss"
+        //                    class="form-control form-control-sm">
+        //         </td>
+        //     </tr>
+        // `;
 
             tableHtml += `</tbody></table>`;
-
-            // Insert into modal
             document.getElementById('history-table-container').innerHTML = tableHtml;
 
-            // Show modal
             $('#history-dialog').modal('show');
         });
     });
