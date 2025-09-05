@@ -6,11 +6,13 @@ $current_timestamp = time();
 
 $arr = array();
 
-$user_id = $_GET['user_id'] ?? '';
+$user_id    = $_GET['user_id'] ?? '';
 $start_time = $_GET['start_time'] ?? date('Y-m-01', strtotime('first day of last month'));
-$end_time = $_GET['end_time'] ?? date('Y-m-01');
+$end_time   = $_GET['end_time']   ?? date('Y-m-d', strtotime('last day of last month'));
+$query_end_time = date("Y-m-d", strtotime($end_time . " +1 day"));
+
 $workdaysList = getWorkdays($start_time, $end_time);
-$workDays = count($workdaysList);
+$workDays     = count($workdaysList);
 
 // ---- Configurable constants ----
 const FACTOR_SPLIT   = 50;        // 0 = ignore orphan INs, 100 = take all as IN, 50 = split evenly
@@ -18,32 +20,48 @@ const CUTOFF_DAYS    = "03:00:00"; // cutoff for day shift carryover
 const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
 
-
 $db_pdo = db_connect();
 
-$querystring = "SELECT id, extsysid, identitytype, identitydivision, sourcename, sourcealtname, trx_timestamp";
-$querystring .= " FROM hr.acm_rpt_alltrx WHERE trx_timestamp >= '".$start_time."' and trx_timestamp <= '".$end_time."'";
+$querystring = "
+    SELECT id, extsysid, identitytype, identitydivision, 
+           sourcename, sourcealtname, trx_timestamp
+    FROM hr.acm_rpt_alltrx 
+    WHERE trx_timestamp >= '".$start_time."' 
+      AND trx_timestamp < '".$query_end_time."'
+";
 if ($user_id) {
-    $querystring .= " and extsysid = '".$user_id."'";
+    $querystring .= " AND extsysid = '".$user_id."'";
 }
-$querystring .= " order by trx_timestamp;";
+$querystring .= " ORDER BY trx_timestamp;";
 
 $db_arr = db_query($db_pdo, $querystring);
 
-function assign_shift_day($ts, $shifttype, $cutoff_day=CUTOFF_DAYS, $cutoff_night=CUTOFF_NIGHTS) {
+function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_night = CUTOFF_NIGHTS) {
+    global $start_time;
+
     $date = date("Y-m-d", $ts);
-    $time = date("H:i", $ts);
+    $time = date("H:i:s", $ts);
 
     if ($shifttype === "Days") {
         if ($time < $cutoff_day) {
-            return date("Y-m-d", strtotime("-1 day", $ts));
+            $shift_day = date("Y-m-d", strtotime($date . " -1 day"));
+            // prevent rolling back before report start
+            if ($shift_day < $start_time) {
+                return $date;
+            }
+            return $shift_day;
         }
         return $date;
     }
 
     if ($shifttype === "Nights") {
         if ($time < $cutoff_night) {
-            return date("Y-m-d", strtotime("-1 day", $ts));
+            $shift_day = date("Y-m-d", strtotime($date . " -1 day"));
+            // prevent rolling back before report start
+            if ($shift_day < $start_time) {
+                return $date;
+            }
+            return $shift_day;
         }
         return $date;
     }
