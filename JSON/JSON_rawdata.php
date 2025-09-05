@@ -240,8 +240,10 @@ foreach ($arr as $user => $value ) {
         $dayTif = 0;
         $dayTisf = 0;
         $dayTifac = 0;
+        $dayTibFromSub = 0; // time in main/sub/facility counted toward TIB
 
-        $inTime = ['mainfab'=>null,'subfab'=>null,'facility'=>null];
+        $lastInTs = null;
+        $buildingOnlyTime = 0;
 
         foreach ($events as $event) {
             $ts = strtotime($event['trx_timestamp']);
@@ -252,51 +254,49 @@ foreach ($arr as $user => $value ) {
 
             if (!$category || !$direction) continue;
 
-            // Update first/last timestamps for TOS
             if ($direction === 'in') {
                 if ($firstInTs === null) $firstInTs = $ts;
+                $lastInTs = $ts;
             } else {
                 $lastOutTs = $ts;
-            }
 
-            // Track time per category
-            if ($direction === 'in') {
-                $inTime[$category] = $ts;
-            } elseif ($direction === 'out' && $inTime[$category] !== null) {
-                $duration = $ts - $inTime[$category];
-                switch ($category) {
-                    case 'mainfab':  $dayTif += $duration; break;
-                    case 'subfab':   $dayTisf += $duration; break;
-                    case 'facility': $dayTifac += $duration; break;
-                }
-                $inTime[$category] = null;
-            }
-        }
+                // Calculate duration since last IN
+                if ($lastInTs !== null) {
+                    $duration = $ts - $lastInTs;
 
-        // Close any remaining INs using cutoff / lastOnSite logic
-        foreach ($inTime as $cat => $tsIn) {
-            if ($tsIn !== null) {
-                $cutoff_ts = strtotime($day." ".($shifttype === "Days" ? CUTOFF_DAYS : CUTOFF_NIGHTS)." +1 day");
-                $lastonsite_ts = $lastOutTs ?? $tsIn;
-                $duration = ($lastonsite_ts > $tsIn) ? $lastonsite_ts - $tsIn : $cutoff_ts - $tsIn;
+                    switch ($category) {
+                        case 'mainfab':  $dayTif += $duration; $dayTibFromSub += $duration; break;
+                        case 'subfab':   $dayTisf += $duration; $dayTibFromSub += $duration; break;
+                        case 'facility': $dayTifac += $duration; $dayTibFromSub += $duration; break;
+                        case 'building':
+                            if ($dayTif+$dayTisf+$dayTifac == 0) {
+                                // building-only time counts as TIB fully
+                                $buildingOnlyTime += $duration;
+                            }
+                            break;
+                    }
 
-                switch ($cat) {
-                    case 'mainfab':  $dayTif += $duration; break;
-                    case 'subfab':   $dayTisf += $duration; break;
-                    case 'facility': $dayTifac += $duration; break;
+                    $lastInTs = null;
                 }
             }
         }
 
-        // Compute TOS/TIB/TOB based on your formula
+        // Compute totals
         if ($firstInTs !== null && $lastOutTs !== null) {
             $dayTos = round(($lastOutTs - $firstInTs)/3600, 2);
             $dayTif = round($dayTif/3600,2);
             $dayTisf = round($dayTisf/3600,2);
             $dayTifac = round($dayTifac/3600,2);
-            $dayTib = $dayTif + $dayTisf + $dayTifac;
+            $dayTibFromSub = round($dayTibFromSub/3600,2);
+            $buildingOnlyTime = round($buildingOnlyTime/3600,2);
+
+            // Final TIB: sum subfab/fab/facility + building-only if no sub/facility time
+            $dayTib = $buildingOnlyTime + $dayTibFromSub;//($dayTibFromSub > 0) ? $dayTibFromSub : $buildingOnlyTime;
+
+            // TOB = TOS - TIB
             $dayTob = round($dayTos - $dayTib,2);
 
+            // store in array
             $arr[$user]['data'][$day] = [
                 'tos' => $dayTos,
                 'tib' => $dayTib,
@@ -304,8 +304,8 @@ foreach ($arr as $user => $value ) {
                 'tif' => $dayTif,
                 'tisf'=> $dayTisf,
                 'tifac'=> $dayTifac,
-                'vacation' => $arr[$user]['vacation'][$day] ?? 0,
-                'subtotal' => $dayTib + ($arr[$user]['vacation'][$day] ?? 0)
+                'vacation'=> $arr[$user]['vacation'][$day] ?? 0,
+                'subtotal'=> $dayTib + ($arr[$user]['vacation'][$day] ?? 0)
             ];
 
             $totalTos += $dayTos;
