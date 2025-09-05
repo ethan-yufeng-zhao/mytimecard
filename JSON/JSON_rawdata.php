@@ -130,41 +130,48 @@ foreach ($arr as $extsysid => &$person) {
 
         foreach ($events as $e) {
             $name = strtolower($e['normalizedname']);
-            $category = null;
-            if (str_starts_with($name, "building")) $category = "building";
-            elseif (str_starts_with($name, "mainfab")) $category = "mainfab";
-            elseif (str_starts_with($name, "subfab")) $category = "subfab";
-            elseif (str_starts_with($name, "facility")) $category = "facility";
-
-            $direction = str_ends_with($e['normalizedname'], 'In') ? 'In' : 'Out';
+            $parts = explode(' ', $name);
+            $category = $parts[0] ?? null;
+            $direction = $parts[1] ?? null;
 
             if (!$category) {
                 $fixed[] = $e;
                 continue;
             }
 
-            if ($direction === 'In') {
-                // Check if same category already inside → insert assumed Out
+            if (strtolower($e['sourcename']) === 'parking lot muster') {
+                if ($direction === 'out') {
+                    if (strtolower($fixed[count($fixed) - 1]['normalizedname']) === 'building out') {
+                        // already had a building out → ignore this event
+                        $e['normalizedname'] = '';
+                        $fixed[] = $e;
+                        continue;
+                    }
+                }
+            }
+
+            if ($direction === 'in') {
+                // if same category already inside → insert assumed Out
                 if ($lastIn[$category] !== null) {
                     $fixed[] = [
-                        'sourcename'     => "Assumed Out",
-                        'sourcealtname'  => "Assumed Out",
-                        'normalizedname' => ucfirst($category) . " Out",
-                        'trx_timestamp'  => date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 1),
-                        'assumed'        => true
+                        'sourcename'=>"Assumed Out",
+                        'sourcealtname'=>"Assumed Out",
+                        'normalizedname'=>ucfirst($category)." Out",
+                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 1),
+                        'assumed'=>true
                     ];
                 }
 
-                // Special: if Facility In, and another facility already in → insert assumed Out
+                // Special: facility check for overlapping locations
                 if ($category === 'facility') {
                     foreach (['building','mainfab','subfab'] as $cat) {
                         if ($lastIn[$cat] !== null) {
                             $fixed[] = [
-                                'sourcename'     => "Assumed Out",
-                                'sourcealtname'  => "Assumed Out",
-                                'normalizedname' => ucfirst($cat) . " Out",
-                                'trx_timestamp'  => date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 1),
-                                'assumed'        => true
+                                'sourcename'=>"Assumed Out",
+                                'sourcealtname'=>"Assumed Out",
+                                'normalizedname'=>ucfirst($cat)." Out",
+                                'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 1),
+                                'assumed'=>true
                             ];
                             $lastIn[$cat] = null;
                         }
@@ -172,15 +179,15 @@ foreach ($arr as $extsysid => &$person) {
                 }
 
                 $lastIn[$category] = $e;
-            } else { // direction = Out
+            } else { // direction = out
                 if ($lastIn[$category] === null) {
                     // insert assumed In slightly earlier
                     $fixed[] = [
-                        'sourcename'     => "Assumed In",
-                        'sourcealtname'  => "Assumed In",
-                        'normalizedname' => ucfirst($category) . " In",
-                        'trx_timestamp'  => date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 600),
-                        'assumed'        => true
+                        'sourcename'=>"Assumed In",
+                        'sourcealtname'=>"Assumed In",
+                        'normalizedname'=>ucfirst($category)." In",
+                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 600),
+                        'assumed'=>true
                     ];
                 }
                 $lastIn[$category] = null;
