@@ -37,7 +37,7 @@ $querystring .= " ORDER BY trx_timestamp;";
 $db_arr = db_query($db_pdo, $querystring);
 
 function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_night = CUTOFF_NIGHTS) {
-    global $start_time, $end_time;  // reporting window
+    global $start_time;  // reporting window
 
     $date = date("Y-m-d", $ts);
     $time = date("H:i:s", $ts);
@@ -88,14 +88,16 @@ foreach ($db_arr as $key => $data ) {
     $ts = strtotime($data['trx_timestamp']);
     $dateOnly = assign_shift_day($ts, $shifttype);
 
-    $temp_arr = array();
-    $temp_arr['sourcename'] = trim($data['sourcename']);
-    $temp_arr['sourcealtname'] = trim($data['sourcealtname']);
-    $temp_arr['normalizedname'] = normalizeSourceName(trim($data['sourcename']));
-    $temp_arr['trx_timestamp'] = $data['trx_timestamp'];
+    if ($dateOnly) {
+        $temp_arr = array();
+        $temp_arr['sourcename'] = trim($data['sourcename']);
+        $temp_arr['sourcealtname'] = trim($data['sourcealtname']);
+        $temp_arr['normalizedname'] = normalizeSourceName(trim($data['sourcename']));
+        $temp_arr['trx_timestamp'] = $data['trx_timestamp'];
 
-    $arr[$data['extsysid']]['rawdata'][$dateOnly][] = $temp_arr;
-    unset($temp_arr);
+        $arr[$data['extsysid']]['rawdata'][$dateOnly][] = $temp_arr;
+        unset($temp_arr);
+    }
 }
 
 // data / summary
