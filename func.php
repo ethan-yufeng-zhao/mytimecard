@@ -288,3 +288,29 @@ if (!function_exists('str_ends_with')) {
         return substr($haystack, -$needle_len) === $needle;
     }
 }
+
+if (!function_exists('str_starts_with')) {
+    /**
+     * Checks if a string starts with a given substring.
+     *
+     * @param string $haystack The string to search in.
+     * @param string $needle The substring to search for at the beginning of $haystack.
+     * @return bool True if $haystack starts with $needle, false otherwise.
+     */
+    function str_starts_with(string $haystack, string $needle): bool
+    {
+        $needle_len = strlen($needle);
+
+        // An empty needle is always a match
+        if ($needle_len === 0) {
+            return true;
+        }
+
+        // The needle cannot be longer than the haystack
+        if (strlen($haystack) < $needle_len) {
+            return false;
+        }
+
+        return substr($haystack, 0, $needle_len) === $needle;
+    }
+}

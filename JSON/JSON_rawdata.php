@@ -111,8 +111,9 @@ foreach ($db_arr as $key => $data) {
     }
 }
 
-// After loading all real records, walk through each $arr[…]['rawdata'][day]
-// and insert assumed "In" or "Out" where missing
+// ------------------------------------------------------------
+// Insert assumed records (respecting rules for Building/MainFab/SubFab/Facility)
+// ------------------------------------------------------------
 foreach ($arr as $extsysid => &$person) {
     if (!isset($person['rawdata'])) continue;
 
@@ -121,7 +122,13 @@ foreach ($arr as $extsysid => &$person) {
 
         $fixed = [];
         $lastIn = null;
+
         foreach ($events as $e) {
+            $name = strtolower($e['normalizedname']);
+            $isBuilding = str_starts_with($name, "building");
+            $isFacility = str_starts_with($name, "facility");
+            $isMainOrSubFab = str_starts_with($name, "mainfab") || str_starts_with($name, "subfab");
+
             if (str_ends_with($e['normalizedname'], 'In')) {
                 if ($lastIn !== null) {
                     // previous In had no Out → insert assumed Out before this In
@@ -129,14 +136,14 @@ foreach ($arr as $extsysid => &$person) {
                         'sourcename'     => "Assumed Out",
                         'sourcealtname'  => "Assumed Out",
                         'normalizedname' => preg_replace('/In$/', 'Out', $lastIn['normalizedname']),
-                        'trx_timestamp'  => $e['trx_timestamp'],
+                        'trx_timestamp'  => date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 1),
                         'assumed'        => true
                     ];
                 }
                 $lastIn = $e;
             } elseif (str_ends_with($e['normalizedname'], 'Out')) {
                 if ($lastIn === null) {
-                    // Out without In → insert assumed In a bit before
+                    // Out without In → insert assumed In slightly earlier
                     $fixed[] = [
                         'sourcename'     => "Assumed In",
                         'sourcealtname'  => "Assumed In",
@@ -150,17 +157,14 @@ foreach ($arr as $extsysid => &$person) {
             $fixed[] = $e;
         }
 
-        // If still inside at end of day → insert cutoff Out
         // If still inside at end of day → insert assumed Out
         if ($lastIn !== null) {
             $lastInTs = strtotime($lastIn['trx_timestamp']);
             $lateThresholdTs = strtotime($day . ' ' . LATE_THRESHOLD);
 
             if ($lastInTs <= $lateThresholdTs) {
-                // case: entered before cutoff, assume they left at cutoff
                 $cutoff = date('Y-m-d H:i:sO', $lateThresholdTs);
             } else {
-                // case: entered after cutoff, assume they left 30 mins later
                 $cutoff = date('Y-m-d H:i:sO', $lastInTs + 1800);
             }
 
