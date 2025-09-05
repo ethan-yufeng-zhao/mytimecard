@@ -16,7 +16,14 @@ $workdaysList = getWorkdays($start_time, $end_time);
 $workDays     = count($workdaysList);
 
 // ---- Configurable constants ----
-const FACTOR_SPLIT   = 50;        // 0 = ignore orphan INs, 100 = take all as IN, 50 = split evenly
+$configs = [
+    'strict'   => 0,   // only count real badge pairs
+    'balanced' => 50,  // give half-credit for missing ranges
+    'generous' => 100, // assume full credit up to cutoff
+];
+
+$FACTOR_SPLIT = $configs['balanced']; // example selection
+
 const CUTOFF_DAYS    = "04:00:00"; // cutoff for day shift carryover
 const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
@@ -75,15 +82,15 @@ function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_ni
     return $date;
 }
 
-foreach ($db_arr as $key => $data ) {
+foreach ($db_arr as $key => $data) {
     if (!isset($arr[$data['extsysid']])) {
-        $arr[$data['extsysid']] = array();
+        $arr[$data['extsysid']] = [];
     }
-    if (!isset($arr[$data['extsysid']]['meta']['employeetype']) || $arr[$data['extsysid']]['meta']['employeetype']==='') {
-        $arr[$data['extsysid']]['meta']['employeetype']=$data['identitytype'] ?? 'Employee';
+    if (!isset($arr[$data['extsysid']]['meta']['employeetype']) || $arr[$data['extsysid']]['meta']['employeetype'] === '') {
+        $arr[$data['extsysid']]['meta']['employeetype'] = $data['identitytype'] ?? 'Employee';
     }
-    if (!isset($arr[$data['extsysid']]['meta']['shifttype']) || $arr[$data['extsysid']]['meta']['shifttype']==='') {
-        $arr[$data['extsysid']]['meta']['shifttype']=$data['identitydivision'] ?? 'Days';
+    if (!isset($arr[$data['extsysid']]['meta']['shifttype']) || $arr[$data['extsysid']]['meta']['shifttype'] === '') {
+        $arr[$data['extsysid']]['meta']['shifttype'] = $data['identitydivision'] ?? 'Days';
     }
 
     $shifttype = $arr[$data['extsysid']]['meta']['shifttype'];
@@ -91,14 +98,82 @@ foreach ($db_arr as $key => $data ) {
     $dateOnly = assign_shift_day($ts, $shifttype);
 
     if ($dateOnly) {
-        $temp_arr = array();
-        $temp_arr['sourcename'] = trim($data['sourcename']);
-        $temp_arr['sourcealtname'] = trim($data['sourcealtname']);
-        $temp_arr['normalizedname'] = normalizeSourceName(trim($data['sourcename']));
-        $temp_arr['trx_timestamp'] = $data['trx_timestamp'];
+        $temp_arr = [
+            'sourcename'     => trim($data['sourcename']),
+            'sourcealtname'  => trim($data['sourcealtname']),
+            'normalizedname' => normalizeSourceName(trim($data['sourcename'])),
+            'trx_timestamp'  => $data['trx_timestamp'],
+            'assumed'        => false  // mark real records
+        ];
 
         $arr[$data['extsysid']]['rawdata'][$dateOnly][] = $temp_arr;
         unset($temp_arr);
+    }
+}
+
+// After loading all real records, walk through each $arr[…]['rawdata'][day]
+// and insert assumed "In" or "Out" where missing
+foreach ($arr as $extsysid => &$person) {
+    if (!isset($person['rawdata'])) continue;
+
+    foreach ($person['rawdata'] as $day => &$events) {
+        usort($events, fn($a, $b) => strtotime($a['trx_timestamp']) <=> strtotime($b['trx_timestamp']));
+
+        $fixed = [];
+        $lastIn = null;
+        foreach ($events as $e) {
+            if (str_ends_with($e['normalizedname'], 'In')) {
+                if ($lastIn !== null) {
+                    // previous In had no Out → insert assumed Out before this In
+                    $fixed[] = [
+                        'sourcename'     => "Assumed Out",
+                        'sourcealtname'  => "Assumed Out",
+                        'normalizedname' => preg_replace('/In$/', 'Out', $lastIn['normalizedname']),
+                        'trx_timestamp'  => $e['trx_timestamp'],
+                        'assumed'        => true
+                    ];
+                }
+                $lastIn = $e;
+            } elseif (str_ends_with($e['normalizedname'], 'Out')) {
+                if ($lastIn === null) {
+                    // Out without In → insert assumed In a bit before
+                    $fixed[] = [
+                        'sourcename'     => "Assumed In",
+                        'sourcealtname'  => "Assumed In",
+                        'normalizedname' => preg_replace('/Out$/', 'In', $e['normalizedname']),
+                        'trx_timestamp'  => date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 600),
+                        'assumed'        => true
+                    ];
+                }
+                $lastIn = null; // matched
+            }
+            $fixed[] = $e;
+        }
+
+        // If still inside at end of day → insert cutoff Out
+        // If still inside at end of day → insert assumed Out
+        if ($lastIn !== null) {
+            $lastInTs = strtotime($lastIn['trx_timestamp']);
+            $lateThresholdTs = strtotime($day . ' ' . LATE_THRESHOLD);
+
+            if ($lastInTs <= $lateThresholdTs) {
+                // case: entered before cutoff, assume they left at cutoff
+                $cutoff = date('Y-m-d H:i:sO', $lateThresholdTs);
+            } else {
+                // case: entered after cutoff, assume they left 30 mins later
+                $cutoff = date('Y-m-d H:i:sO', $lastInTs + 1800);
+            }
+
+            $fixed[] = [
+                'sourcename'     => "Assumed Out",
+                'sourcealtname'  => "Assumed Out",
+                'normalizedname' => preg_replace('/In$/', 'Out', $lastIn['normalizedname']),
+                'trx_timestamp'  => $cutoff,
+                'assumed'        => true
+            ];
+        }
+
+        $events = $fixed;
     }
 }
 
@@ -213,7 +288,7 @@ foreach ($arr as $user => $value ) {
                 }
 
                 // --- Apply factor split ---
-                $duration = $duration * FACTOR_SPLIT / 100;
+                $duration = $duration * $FACTOR_SPLIT / 100;
 
                 if ($duration > 0) {
                     switch ($cat) {
