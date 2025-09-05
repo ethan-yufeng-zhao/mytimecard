@@ -298,14 +298,11 @@
                         echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>');
                         echo('<ul class="dropdown-menu">');
                         echo('<li><a href="'.$mybaseurl.'/all_users.php">All Users</a></li>');
-                        echo('<li><a href="'.$mybaseurl.'/all_users_certs.php">All Granted Certifications Report</a></li>');
-                        echo('<li><a href="'.$mybaseurl.'/all_templates.php">All Templates</a></li>');
-                        echo('<li><a href="'.$mybaseurl.'/all_tools.php">All Tools</a></li>');
                         // echo('<li><a href="'.$mybaseurl.'/all_users_templates.php">Users Templates Report</a></li>');
                         echo('<li class="divider"></li>');
                         echo('<li><a target="_blank" href="https://hydrogen.jfab.aosmd.com/rptp/public/authorization_center/index.html?system=tcs">Manage Admin</a></li>');
-                        echo('<li><a href="'.$mybaseurl.'/rebuild_template_users_by_department.php">Rebuild template users by Dept.</a></li>');
-                        echo('<li><a href="'.$mybaseurl.'/rebuild_template_certs.php">Rebuild template certs</a></li>');
+//                        echo('<li><a href="'.$mybaseurl.'/rebuild_template_users_by_department.php">Rebuild template users by Dept.</a></li>');
+//                        echo('<li><a href="'.$mybaseurl.'/rebuild_template_certs.php">Rebuild template certs</a></li>');
                         echo('</ul>');
                         echo('</li>');
                     }
@@ -314,8 +311,6 @@
                         echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Supervisor <b class="caret"></b></a>');
                         echo('<ul class="dropdown-menu">');
                         echo('<li><a href="'.$mybaseurl.'/team_users.php">Team Users</a></li>');
-                        echo('<li><a href="'.$mybaseurl.'/team_users_certs.php">Team Certs</a></li>');
-                        echo('<li><a href="'.$mybaseurl.'/team_users_templates.php">Team Templates</a></li>');
 //                            echo('<li><a href="'.$mybaseurl.'/sync_users_with_ldap.php">Re-sync user list with LDAP</a></li>');
 //                            echo('<li class="divider"></li>');
 //                            echo('<li><a target="_blank" href="https://hydrogen.jfab.aosmd.com/rptp/public/authorization_center/index.html?system=tcs">Manage Supervisor</a></li>');

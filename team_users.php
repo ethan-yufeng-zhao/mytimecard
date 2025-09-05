@@ -72,9 +72,9 @@
 		echo("Email");
 		echo("</th>");
 
-		echo("<th>");
-		echo("Cert Count");
-		echo("</th>");
+//		echo("<th>");
+//		echo("Cert Count");
+//		echo("</th>");
 
 		echo("<th>");
 		echo("Supervisor");
@@ -123,11 +123,11 @@
 			echo('<a href="mailto:'.$value['user_email'].'">'.$value['user_email'].'</a>');
 			echo("</td>\n");
 
-			echo('<td>');
-            if($value['certcount'] > 0){
-                echo($value['certcount']);
-            }
-			echo("</td>\n");
+//			echo('<td>');
+//            if($value['certcount'] > 0){
+//                echo($value['certcount']);
+//            }
+//			echo("</td>\n");
 
 			echo('<td>');
             if($value['user_supervisor_id']) {
