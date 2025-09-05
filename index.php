@@ -239,7 +239,7 @@
                 if ($inWorkdays) {
                     echo('<tr>');
                 } else {
-                    echo('<tr style="color:orchid;">');
+                    echo('<tr style="color:mediumorchid;">');
                 }
 
                 echo("<td>");
