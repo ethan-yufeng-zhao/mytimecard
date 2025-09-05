@@ -602,18 +602,18 @@
             document.getElementById('history-day').value = dayOfMonth;
 
             let tableHtml = `
-            <table class="table table-bordered table-striped table-sm">
-                <thead class="thead-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Source Name</th>
-                        <th>Source Type</th>
-                        <th>In & Out Time</th>
-                        <th>Assumed?</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
+    <table class="table table-bordered table-striped table-sm">
+        <thead class="thead-light">
+            <tr>
+                <th>#</th>
+                <th>Source Name</th>
+                <th>Source Type</th>
+                <th>In & Out Time</th>
+                <th>Assumed?</th>
+            </tr>
+        </thead>
+        <tbody>
+`;
 
             entries.forEach((entry, idx) => {
                 const combinedSource = `${entry.sourcename || ''}`;
@@ -624,26 +624,29 @@
                 // Highlight overnight if timestamp is outside this day
                 const isOvernight = trxDate < dayStart || trxDate > dayEnd;
 
+                // If backend set assumed flag
+                const isAssumed = entry.assumed === true;
+
                 tableHtml += `
-                <tr ${isOvernight ? 'class="table-warning"' : ''}>
-                    <td>${idx + 1}</td>
-                    <td>
-                        <input type="text" readonly value="${combinedSource}" class="form-control form-control-sm">
-                        <input type="hidden" name="sourcename[]" value="${combinedSource}">
-                    </td>
-                    <td>
-                        <input type="text" readonly value="${entry.normalizedname || ''}" class="form-control form-control-sm">
-                        <input type="hidden" name="normalizedname[]" value="${entry.normalizedname || ''}">
-                    </td>
-                    <td>
-                        <input type="text" readonly value="${entry.trx_timestamp || ''}" class="form-control form-control-sm">
-                        <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
-                    </td>
-                    <td class="text-center">
-                        <input type="checkbox" name="assumed_ids[]" value="${entry.assumed || idx}">
-                    </td>
-                </tr>
-            `;
+        <tr ${(isOvernight ? 'class="table-warning"' : '') + (isAssumed ? ' class="table-info"' : '')}>
+            <td>${idx + 1}</td>
+            <td>
+                <input type="text" readonly value="${combinedSource}" class="form-control form-control-sm">
+                <input type="hidden" name="sourcename[]" value="${combinedSource}">
+            </td>
+            <td>
+                <input type="text" readonly value="${entry.normalizedname || ''}" class="form-control form-control-sm">
+                <input type="hidden" name="normalizedname[]" value="${entry.normalizedname || ''}">
+            </td>
+            <td>
+                <input type="text" readonly value="${entry.trx_timestamp || ''}" class="form-control form-control-sm">
+                <input type="hidden" name="inandout[]" value="${entry.trx_timestamp || ''}">
+            </td>
+            <td class="text-center">
+                ${isAssumed ? `<input type="checkbox" checked disabled>` : ``}
+            </td>
+        </tr>
+    `;
             });
 
             // Option to add a *new badge record* for missing in/out
