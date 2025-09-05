@@ -156,7 +156,6 @@
 						// echo('<ul class="sub_menu">');
 						echo('<ul>');
 						echo('<li><a href="'.$mybaseurl.'/all_users.php">Users</a></li>');
-						echo('<li><a href="'.$mybaseurl.'/all_certs.php">Certifications</a>');
 
 						// echo('<ul class="sub_menu">');
 						// echo('<li><a href="'.$mybaseurl.'/cert.php?edit=1">Add Certification</a>');
@@ -172,7 +171,6 @@
 						echo('<li><a href="'.$mybaseurl.'/all_users_templates.php">Users Templates</a></li>'); // can add or delete templates from users
 							// can link or unlink a cert to the template
 						//echo('<li><a href="'.$mybaseurl.'/sync_users_with_ldap.php">Re-sync user list with LDAP</a></li>');
-						echo('<li><a href="'.$mybaseurl.'/cert.php?edit=1">Add a new Certificate</a>');
 						echo('</ul>');
 						echo('</li>');
 					}
