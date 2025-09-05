@@ -202,16 +202,18 @@ foreach ($arr as $user => $value ) {
                 if ($shifttype === "Days") {
                     $late_threshold_ts = strtotime($day." ".LATE_THRESHOLD);
                     if ($lastonsite >= $late_threshold_ts) {
-                        // stayed late → close at actual last badge time
                         $duration = $lastonsite - $tsIn;
                     } else {
-                        // did not stay late → close at cutoff (3am next day)
+                        $cutoff_ts = strtotime($day." ".CUTOFF_DAYS." +1 day");
                         $duration = $cutoff_ts - $tsIn;
                     }
                 } else {
-                    // Night shift: always close at cutoff (9am next day)
+                    $cutoff_ts = strtotime($day." ".CUTOFF_NIGHTS." +1 day");
                     $duration = $cutoff_ts - $tsIn;
                 }
+
+                // --- Apply factor split ---
+                $duration = $duration * FACTOR_SPLIT / 100;
 
                 if ($duration > 0) {
                     switch ($cat) {
