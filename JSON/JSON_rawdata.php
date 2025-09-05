@@ -239,6 +239,9 @@ foreach ($arr as $user => $value) {
         $firstInTs = null;
         $lastOutTs = null;
 
+        $dayTos = 0;
+        $dayTib = 0;
+        $dayTob = 0;
         $dayTif = 0;
         $dayTisf = 0;
         $dayTifac = 0;
