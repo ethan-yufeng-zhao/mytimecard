@@ -10,13 +10,14 @@ $user_id    = $_GET['user_id'] ?? '';
 $start_time = $_GET['start_time'] ?? date('Y-m-01', strtotime('first day of last month'));
 $end_time   = $_GET['end_time']   ?? date('Y-m-d', strtotime('last day of last month'));
 $query_end_time = date("Y-m-d", strtotime($end_time . " +1 day"));
+$query_time = $query_end_time . " 23:59:59";
 
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays     = count($workdaysList);
 
 // ---- Configurable constants ----
 const FACTOR_SPLIT   = 50;        // 0 = ignore orphan INs, 100 = take all as IN, 50 = split evenly
-const CUTOFF_DAYS    = "03:00:00"; // cutoff for day shift carryover
+const CUTOFF_DAYS    = "04:00:00"; // cutoff for day shift carryover
 const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
 
@@ -27,7 +28,7 @@ $querystring = "
            sourcename, sourcealtname, trx_timestamp
     FROM hr.acm_rpt_alltrx 
     WHERE trx_timestamp >= '".$start_time."' 
-      AND trx_timestamp < '".$query_end_time."'
+      AND trx_timestamp < '".$query_time."'
 ";
 if ($user_id) {
     $querystring .= " AND extsysid = '".$user_id."'";
@@ -37,21 +38,22 @@ $querystring .= " ORDER BY trx_timestamp;";
 $db_arr = db_query($db_pdo, $querystring);
 
 function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_night = CUTOFF_NIGHTS) {
-    global $start_time;  // reporting window
+    global $start_time, $query_end_time;
 
     $date = date("Y-m-d", $ts);
     $time = date("H:i:s", $ts);
 
     // --- ignore events before start_time ---
     if ($date === $start_time) {
-        if ($shifttype === "Days" && $time < $cutoff_day) {
-            return null; // ignore, belongs to previous day
-        }
-        if ($shifttype === "Nights" && $time < $cutoff_night) {
-            return null; // ignore, belongs to previous day
-        }
+        if ($shifttype === "Days" && $time < $cutoff_day) return null;
+        if ($shifttype === "Nights" && $time < $cutoff_night) return null;
+    }
+    if ($date === $query_end_time) {
+        if ($shifttype === "Days" && $time > $cutoff_day) return null;
+        if ($shifttype === "Nights" && $time > $cutoff_night) return null;
     }
 
+    // --- assign shift day normally ---
     if ($shifttype === "Days") {
         if ($time < $cutoff_day) {
             $shift_day = date("Y-m-d", strtotime($date . " -1 day"));
