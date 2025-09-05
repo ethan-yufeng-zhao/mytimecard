@@ -210,40 +210,27 @@ foreach ($arr as $extsysid => &$person) {
 }
 
 // data / summary
-foreach ($arr as $user => $value ) {
+foreach ($arr as $user => $value) {
     $employeetype = $value['meta']['employeetype'];
     $shifttype = $value['meta']['shifttype'];
 
-    $totalTos = 0;
-    $totalTib = 0;
-    $totalTob = 0;
-    $totalTif = 0;
-    $totalTisf = 0;
-    $totalTifac = 0;
-    $totalVacation = 0;
-    $total_hours = 0;
+    $totalTos = $totalTib = $totalTob = 0;
+    $totalTif = $totalTisf = $totalTifac = 0;
+    $totalVacation = $total_hours = 0;
 
-    $workedDays = [];
-    $weekendDays = [];
-    $noShowDays = [];
+    $workedDays = $weekendDays = $noShowDays = [];
 
+    // Load vacation
     $querystring2 = "SELECT day_of_month, vacation FROM hr.vacation WHERE ad_account = '".$user."' ORDER BY modified_time ASC";
     $db_arr2 = db_query($db_pdo, $querystring2);
     foreach ($db_arr2 as $key => $data ) {
         $arr[$user]['vacation'][$data['day_of_month']] = $data['vacation'];
     }
 
-    foreach($value['rawdata'] as $day => $events) {
-        $firstInTs = null;
-        $lastOutTs = null;
-
-        $dayTif = 0;
-        $dayTisf = 0;
-        $dayTifac = 0;
-        $dayTibFromSub = 0; // time in main/sub/facility counted toward TIB
-
+    foreach ($value['rawdata'] as $day => $events) {
+        $firstInTs = $lastOutTs = null;
+        $dayTif = $dayTisf = $dayTifac = $dayTibFromSub = $buildingOnlyTime = 0;
         $lastInTs = null;
-        $buildingOnlyTime = 0;
 
         foreach ($events as $event) {
             $ts = strtotime($event['trx_timestamp']);
@@ -251,7 +238,6 @@ foreach ($arr as $user => $value ) {
             $parts = explode(' ', $name);
             $category = $parts[0] ?? null;
             $direction = $parts[1] ?? null;
-
             if (!$category || !$direction) continue;
 
             if ($direction === 'in') {
@@ -259,53 +245,58 @@ foreach ($arr as $user => $value ) {
                 $lastInTs = $ts;
             } else {
                 $lastOutTs = $ts;
-
-                // Calculate duration since last IN
                 if ($lastInTs !== null) {
                     $duration = $ts - $lastInTs;
-
                     switch ($category) {
-                        case 'mainfab':  $dayTif += $duration; $dayTibFromSub += $duration; break;
-                        case 'subfab':   $dayTisf += $duration; $dayTibFromSub += $duration; break;
-                        case 'facility': $dayTifac += $duration; $dayTibFromSub += $duration; break;
+                        case 'mainfab':
+                            $dayTif += $duration;
+                            $dayTibFromSub += $duration;
+                            break;
+                        case 'subfab':
+                            $dayTisf += $duration;
+                            $dayTibFromSub += $duration;
+                            break;
+                        case 'facility':
+                            $dayTifac += $duration;
+                            $dayTibFromSub += $duration;
+                            break;
                         case 'building':
                             if ($dayTif+$dayTisf+$dayTifac == 0) {
-                                // building-only time counts as TIB fully
                                 $buildingOnlyTime += $duration;
                             }
                             break;
                     }
-
                     $lastInTs = null;
                 }
             }
         }
 
-        // Compute totals
         if ($firstInTs !== null && $lastOutTs !== null) {
-            $dayTos = round(($lastOutTs - $firstInTs)/3600, 2);
+            $dayTos = round(($lastOutTs - $firstInTs)/3600,2);
             $dayTif = round($dayTif/3600,2);
             $dayTisf = round($dayTisf/3600,2);
             $dayTifac = round($dayTifac/3600,2);
             $dayTibFromSub = round($dayTibFromSub/3600,2);
             $buildingOnlyTime = round($buildingOnlyTime/3600,2);
 
-            // Final TIB: sum subfab/fab/facility + building-only if no sub/facility time
-            $dayTib = $buildingOnlyTime + $dayTibFromSub;//($dayTibFromSub > 0) ? $dayTibFromSub : $buildingOnlyTime;
+            // Final TIB = building-only segments + main/sub/facility durations
+            $dayTib = $buildingOnlyTime + $dayTibFromSub;
 
             // TOB = TOS - TIB
-            $dayTob = round($dayTos - $dayTib,2);
+            $dayTob = round(max($dayTos - $dayTib,0),2);
 
-            // store in array
+            $vacation = $arr[$user]['vacation'][$day] ?? 0;
+            $subtotal = $dayTib + $vacation;
+
             $arr[$user]['data'][$day] = [
-                'tos' => $dayTos,
-                'tib' => $dayTib,
-                'tob' => $dayTob,
-                'tif' => $dayTif,
-                'tisf'=> $dayTisf,
-                'tifac'=> $dayTifac,
-                'vacation'=> $arr[$user]['vacation'][$day] ?? 0,
-                'subtotal'=> $dayTib + ($arr[$user]['vacation'][$day] ?? 0)
+                'tos'=>$dayTos,
+                'tib'=>$dayTib,
+                'tob'=>$dayTob,
+                'tif'=>$dayTif,
+                'tisf'=>$dayTisf,
+                'tifac'=>$dayTifac,
+                'vacation'=>$vacation,
+                'subtotal'=>$subtotal
             ];
 
             $totalTos += $dayTos;
@@ -314,29 +305,27 @@ foreach ($arr as $user => $value ) {
             $totalTif += $dayTif;
             $totalTisf += $dayTisf;
             $totalTifac += $dayTifac;
-
-            $totalVacation += $arr[$user]['data'][$day]['vacation'];
-            $total_hours += $arr[$user]['data'][$day]['subtotal'];
+            $totalVacation += $vacation;
+            $total_hours += $subtotal;
 
             $workedDays[$day] = true;
 
-            $dow = date('N', strtotime($day));
-            if ($dow >=6) $weekendDays[] = $day;
+            if (date('N', strtotime($day)) >= 6) $weekendDays[] = $day;
         }
     }
 
-    // Handle no-show days
+    // No-show days
     foreach ($workdaysList as $wday) {
         if (!isset($workedDays[$wday])) {
             $noShowDays[] = $wday;
+            $vac = $arr[$user]['vacation'][$wday] ?? 0;
             $arr[$user]['NoShow'][$wday] = [
                 'tos'=>'No Show','tib'=>'No Show','tob'=>'No Show',
                 'tif'=>'No Show','tisf'=>'No Show','tifac'=>'No Show',
-                'vacation'=>$arr[$user]['vacation'][$wday] ?? 0,
-                'subtotal'=>$arr[$user]['vacation'][$wday] ?? 0
+                'vacation'=>$vac,'subtotal'=>$vac
             ];
-            $totalVacation += $arr[$user]['NoShow'][$wday]['vacation'];
-            $total_hours += $arr[$user]['NoShow'][$wday]['subtotal'];
+            $totalVacation += $vac;
+            $total_hours += $vac;
         }
     }
 
@@ -353,12 +342,12 @@ foreach ($arr as $user => $value ) {
         'total_tif'=>round($totalTif,2),
         'total_tisf'=>round($totalTisf,2),
         'total_tifac'=>round($totalTifac,2),
-        'avg_tos'=> $workDays>0 ? round($totalTos/$workDays,2):0,
-        'avg_tib'=> $workDays>0 ? round($totalTib/$workDays,2):0,
-        'avg_tob'=> $workDays>0 ? round($totalTob/$workDays,2):0,
-        'avg_tif'=> $workDays>0 ? round($totalTif/$workDays,2):0,
-        'avg_tisf'=> $workDays>0 ? round($totalTisf/$workDays,2):0,
-        'avg_tifac'=> $workDays>0 ? round($totalTifac/$workDays,2):0,
+        'avg_tos'=>$workDays>0 ? round($totalTos/$workDays,2):0,
+        'avg_tib'=>$workDays>0 ? round($totalTib/$workDays,2):0,
+        'avg_tob'=>$workDays>0 ? round($totalTob/$workDays,2):0,
+        'avg_tif'=>$workDays>0 ? round($totalTif/$workDays,2):0,
+        'avg_tisf'=>$workDays>0 ? round($totalTisf/$workDays,2):0,
+        'avg_tifac'=>$workDays>0 ? round($totalTifac/$workDays,2):0,
         'total_vacation'=>$totalVacation,
         'avg_vacation'=>$workDays>0 ? round($totalVacation/$workDays,2):0,
         'total_hours'=>round($total_hours,2),
