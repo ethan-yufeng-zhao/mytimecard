@@ -27,6 +27,8 @@ $FACTOR_SPLIT = $configs['balanced']; // example selection
 const CUTOFF_DAYS    = "04:00:00"; // cutoff for day shift carryover
 const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
+const ASSUMED_END = 600;
+const TIMECONVERTER = 3600;
 
 $db_pdo = db_connect();
 
@@ -40,7 +42,7 @@ $querystring = "
 if ($user_id) {
     $querystring .= " AND extsysid = '".$user_id."'";
 }
-$querystring .= " ORDER BY trx_timestamp;";
+$querystring .= " ORDER BY trx_timestamp ASC, serialnumber ASC;";
 
 $db_arr = db_query($db_pdo, $querystring);
 
@@ -186,7 +188,7 @@ foreach ($arr as $extsysid => &$person) {
                         'sourcename'=>"Assumed In",
                         'sourcealtname'=>"Assumed In",
                         'normalizedname'=>ucfirst($category)." In",
-                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 600),
+                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - ASSUMED_END),
                         'assumed'=>true
                     ];
                 }
@@ -278,11 +280,11 @@ foreach ($arr as $user => $value) {
                     if ($lastSubOutTs !== null && $lastSubOutTs < $ts) {
                         // Add building-only time between sub-location gaps
                         $buildingOnlyTime = $ts - $lastSubOutTs;
-                        $dayTib += $buildingOnlyTime / 3600;
+                        $dayTib += $buildingOnlyTime / TIMECONVERTER;
                     } elseif ($lastSubOutTs === null && $buildingInStack < $ts) {
                         // First sub-location inside building
                         $buildingOnlyTime = $ts - $buildingInStack;
-                        $dayTib += $buildingOnlyTime / 3600;
+                        $dayTib += $buildingOnlyTime / TIMECONVERTER;
                     }
                 }
 
@@ -300,15 +302,15 @@ foreach ($arr as $user => $value) {
                     $duration = $ts - $inTime[$category];
                     switch ($category) {
                         case 'mainfab':
-                            $dayTif += $duration / 3600;
-                            $dayTib += $duration / 3600;
+                            $dayTif += $duration / TIMECONVERTER;
+                            $dayTib += $duration / TIMECONVERTER;
                             break;
                         case 'subfab':
-                            $dayTisf += $duration / 3600;
-                            $dayTib += $duration / 3600;
+                            $dayTisf += $duration / TIMECONVERTER;
+                            $dayTib += $duration / TIMECONVERTER;
                             break;
                         case 'facility':
-                            $dayTifac += $duration / 3600;
+                            $dayTifac += $duration / TIMECONVERTER;
                             break;
                     }
                     $lastSubOutTs = $ts;
@@ -319,9 +321,9 @@ foreach ($arr as $user => $value) {
                 if ($category === 'building' && $buildingInStack !== null) {
                     // Add remaining building-only time since last sub-location out
                     if ($lastSubOutTs !== null && $lastSubOutTs < $ts) {
-                        $dayTib += ($ts - $lastSubOutTs) / 3600;
+                        $dayTib += ($ts - $lastSubOutTs) / TIMECONVERTER;
                     } elseif ($lastSubOutTs === null && $buildingInStack < $ts) {
-                        $dayTib += ($ts - $buildingInStack) / 3600;
+                        $dayTib += ($ts - $buildingInStack) / TIMECONVERTER;
                     }
                     $buildingInStack = null;
                 }
@@ -330,7 +332,7 @@ foreach ($arr as $user => $value) {
 
         // Compute totals
         if ($firstInTs !== null && $lastOutTs !== null) {
-            $dayTos = round(($lastOutTs - $firstInTs)/3600,2);
+            $dayTos = round(($lastOutTs - $firstInTs)/ TIMECONVERTER,2);
 
             // add facility outside building to TIB
             $dayTib = round($dayTib + $dayTifac,2);
