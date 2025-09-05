@@ -621,14 +621,18 @@
                 const dayStart = new Date(dayOfMonth + 'T00:00:00');
                 const dayEnd = new Date(dayOfMonth + 'T23:59:59');
 
-                // Highlight overnight if timestamp is outside this day
                 const isOvernight = trxDate < dayStart || trxDate > dayEnd;
-
-                // If backend set assumed flag
                 const isAssumed = entry.assumed === true;
 
+                let rowClass = "";
+                if (isAssumed) {
+                    rowClass = "table-danger";   // 🔴 red for assumed
+                } else if (isOvernight) {
+                    rowClass = "table-warning";  // 🟠 orange for overnight
+                }
+
                 tableHtml += `
-        <tr ${(isOvernight ? 'class="table-warning"' : '') + (isAssumed ? ' class="table-info"' : '')}>
+        <tr class="${rowClass}">
             <td>${idx + 1}</td>
             <td>
                 <input type="text" readonly value="${combinedSource}" class="form-control form-control-sm">
@@ -648,6 +652,7 @@
         </tr>
     `;
             });
+
 
             // Option to add a *new badge record* for missing in/out
         //     tableHtml += `
