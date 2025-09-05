@@ -37,18 +37,25 @@ $querystring .= " ORDER BY trx_timestamp;";
 $db_arr = db_query($db_pdo, $querystring);
 
 function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_night = CUTOFF_NIGHTS) {
-    global $start_time;
+    global $start_time, $end_time;  // reporting window
 
     $date = date("Y-m-d", $ts);
     $time = date("H:i:s", $ts);
 
+    // --- ignore events before start_time ---
+    if ($date === $start_time) {
+        if ($shifttype === "Days" && $time < $cutoff_day) {
+            return null; // ignore, belongs to previous day
+        }
+        if ($shifttype === "Nights" && $time < $cutoff_night) {
+            return null; // ignore, belongs to previous day
+        }
+    }
+
     if ($shifttype === "Days") {
         if ($time < $cutoff_day) {
             $shift_day = date("Y-m-d", strtotime($date . " -1 day"));
-            // prevent rolling back before report start
-            if ($shift_day < $start_time) {
-                return $date;
-            }
+            if ($shift_day < $start_time) return $date;
             return $shift_day;
         }
         return $date;
@@ -57,16 +64,13 @@ function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_ni
     if ($shifttype === "Nights") {
         if ($time < $cutoff_night) {
             $shift_day = date("Y-m-d", strtotime($date . " -1 day"));
-            // prevent rolling back before report start
-            if ($shift_day < $start_time) {
-                return $date;
-            }
+            if ($shift_day < $start_time) return $date;
             return $shift_day;
         }
         return $date;
     }
 
-    return $date; // fallback
+    return $date;
 }
 
 foreach ($db_arr as $key => $data ) {
