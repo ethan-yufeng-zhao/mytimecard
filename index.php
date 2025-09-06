@@ -149,7 +149,7 @@
 		echo($requested_user['user_firstname'].' '.$requested_user['user_lastname']);
 		echo('</a></td>');
         echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Type:&nbsp;'.($meta['employeetype'] ?? '')."</td>");
-        echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.($meta['shifttype'] ?? '')."</td>");
+        echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.'<span class="data-shifttype">'.(htmlspecialchars($meta['shifttype'] ?? '')).'</span>'."</td>");
 		if(!empty($requested_user['user_supervisor_id'])){
 			echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">');
 			echo('Supervisor: <a href="mailto:'.$requested_user_supervisor['user_email'].'">');
@@ -590,6 +590,7 @@
     document.querySelectorAll('.view-history-icon').forEach(icon => {
         icon.addEventListener('click', function () {
             const dayOfMonth = this.getAttribute('data-day_of_month');
+            const shiftType = this.getAttribute('data-shifttype');
             const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
             const modifiedUser = "<?php echo $user['user_samaccountname']; ?>";
             // console.log(dayOfMonth + " " + adAccount);
@@ -644,21 +645,20 @@
                 const isOvernight = trxDate < dayStart || trxDate > dayEnd;
                 const isAssumed = entry.assumed === true || entry.assumed === 'true' || entry.assumed === 1 || entry.assumed === '1';
 
-                // choose class and inline fallback color (inline used in case stylesheet still overridden)
+                // add a flag for day vs night shift
+                const isDayShift = shiftType === 'Days';  // you can set shiftType = 'day' or 'night' elsewhere
+
+                // choose class and inline fallback color
                 let rowClass = '';
                 let inlineStyle = '';
-                if (isAssumed && isOvernight) {
-                    rowClass = 'assumed-overnight';
-                    inlineStyle = 'style="background-color: #f5c6cb !important;"';
-                } else if (isAssumed) {
+                if (isAssumed) {
                     rowClass = 'assumed-row';
-                    inlineStyle = 'style="background-color: #f8d7da !important;"';
-                } else if (isOvernight) {
+                    inlineStyle = 'style="background-color: #f8d7da !important;"'; // red
+                } else if (isOvernight && isDayShift) {
                     rowClass = 'overnight-row';
-                    inlineStyle = 'style="background-color: #fff3cd !important;"';
+                    inlineStyle = 'style="background-color: #fff3cd !important;"'; // yellow
                 }
 
-                // Use an id/value for the assumed checkbox if available (entry.assumed_id), otherwise fallback to idx
                 const assumedValue = entry.assumed_id ?? entry.assumed ?? idx;
 
                 tableHtml += `
