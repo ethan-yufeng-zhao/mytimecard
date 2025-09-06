@@ -24,11 +24,14 @@ $configs = [
 
 $FACTOR_SPLIT = $configs['balanced']; // example selection
 
+const TIMECONVERTER = 3600;
+
 const CUTOFF_DAYS    = "04:00:00"; // cutoff for day shift carryover
 const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
-const ASSUMED_END = 1800;
-const TIMECONVERTER = 3600;
+
+const ASSUMED_GAP = 1800;
+const ASSUMED_1SEC = 1;
 
 $db_pdo = db_connect();
 
@@ -152,19 +155,25 @@ foreach ($arr as $extsysid => &$person) {
                 }
             }
 
+            $txs = strtotime($e['trx_timestamp']);
+
             if ($direction === 'in') {
                 // if same category already inside → insert assumed Out
                 if ($lastIn[$category] !== null) {
+                    $prevTs = strtotime($lastIn[$category]['trx_timestamp']);
+                    $gap = $txs - $prevTs;
+                    $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
+
                     $fixed[] = [
                         'sourcename'=>"Assumed Out",
                         'sourcealtname'=>"Assumed Out",
                         'normalizedname'=>ucfirst($category)." Out",
-                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 1),
+                        'trx_timestamp'=>date('Y-m-d H:i:sO', $assumedTs),
                         'assumed'=>true
                     ];
                 }
 
-                // Special: facility check for overlapping locations
+                // Special: Facility In → close building/mainfab/subfab
                 if ($category === 'facility') {
                     foreach (['building','mainfab','subfab'] as $cat) {
                         if ($lastIn[$cat] !== null) {
@@ -172,7 +181,10 @@ foreach ($arr as $extsysid => &$person) {
                                 'sourcename'=>"Assumed Out",
                                 'sourcealtname'=>"Assumed Out",
                                 'normalizedname'=>ucfirst($cat)." Out",
-                                'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 1),
+                                'trx_timestamp'=>date(
+                                    'Y-m-d H:i:sO',
+                                    $txs - ASSUMED_1SEC
+                                ),
                                 'assumed'=>true
                             ];
                             $lastIn[$cat] = null;
@@ -180,15 +192,35 @@ foreach ($arr as $extsysid => &$person) {
                     }
                 }
 
+                // Special: Building/Mainfab/Subfab In → close facility
+                if (in_array($category, ['building','mainfab','subfab'])) {
+                    if ($lastIn['facility'] !== null) {
+                        $fixed[] = [
+                            'sourcename'=>"Assumed Out",
+                            'sourcealtname'=>"Assumed Out",
+                            'normalizedname'=>"Facility Out",
+                            'trx_timestamp'=>date(
+                                'Y-m-d H:i:sO',
+                                $txs - ASSUMED_1SEC
+                            ),
+                            'assumed'=>true
+                        ];
+                        $lastIn['facility'] = null;
+                    }
+                }
+
                 $lastIn[$category] = $e;
             } else { // direction = out
                 if ($lastIn[$category] === null) {
-                    // insert assumed In slightly earlier
+                    $prevTs = $fixed ? strtotime(end($fixed)['trx_timestamp']) : $txs - ASSUMED_GAP;
+                    $gap = $txs - $prevTs;
+                    $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
+
                     $fixed[] = [
                         'sourcename'=>"Assumed In",
                         'sourcealtname'=>"Assumed In",
                         'normalizedname'=>ucfirst($category)." In",
-                        'trx_timestamp'=>date('Y-m-d H:i:sO', strtotime($e['trx_timestamp']) - 600),
+                        'trx_timestamp'=>date('Y-m-d H:i:sO', $assumedTs),
                         'assumed'=>true
                     ];
                 }
@@ -202,7 +234,7 @@ foreach ($arr as $extsysid => &$person) {
         foreach ($lastIn as $category => $inEvent) {
             if ($inEvent !== null) {
                 $lastInTs = strtotime($inEvent['trx_timestamp']);
-                $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + ASSUMED_END;
+                $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + ASSUMED_GAP;
 
                 $fixed[] = [
                     'sourcename'     => "Assumed Out",
