@@ -546,7 +546,7 @@
 
         echo('<div class="modal-footer">');
 //        echo('<button type="submit" form="history-form" class="btn btn-primary" id="save-btn" disabled>Save Changes</button>');
-        echo('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+        echo('<button type="button" id="close-history-btn" class="btn btn-secondary" data-dismiss="modal">Close</button>');
         echo('</div>'); // modal-footer
 
         echo('</div>'); // modal-content
@@ -603,23 +603,23 @@
             document.getElementById('history-day').value = dayOfMonth;
 
             // ensure highlight styles exist (inject once)
-            (function ensureHistoryRowStyles(){
-                if (document.getElementById('history-row-styles')) return;
-                const css = `
-        /* assumed = red */
-        .assumed-row { background-color: #f8d7da !important; }
-        /* overnight = orange */
-        .overnight-row { background-color: #fff3cd !important; }
-        /* both = slightly darker red */
-        .assumed-overnight { background-color: #f5c6cb !important; }
-        /* make sure inputs stay readable */
-        .assumed-row input, .overnight-row input, .assumed-overnight input { color: #000 !important; }
-    `;
-                const s = document.createElement('style');
-                s.id = 'history-row-styles';
-                s.appendChild(document.createTextNode(css));
-                document.head.appendChild(s);
-            })();
+    //         (function ensureHistoryRowStyles(){
+    //             if (document.getElementById('history-row-styles')) return;
+    //             const css = `
+    //     /* assumed = red */
+    //     .assumed-row { background-color: #f8d7da !important; }
+    //     /* overnight = orange */
+    //     .overnight-row { background-color: #fff3cd !important; }
+    //     /* both = slightly darker red */
+    //     .assumed-overnight { background-color: #f5c6cb !important; }
+    //     /* make sure inputs stay readable */
+    //     .assumed-row input, .overnight-row input, .assumed-overnight input { color: #000 !important; }
+    // `;
+    //             const s = document.createElement('style');
+    //             s.id = 'history-row-styles';
+    //             s.appendChild(document.createTextNode(css));
+    //             document.head.appendChild(s);
+    //         })();
 
 // Build editable table (with highlighted rows)
             let tableHtml = `
@@ -643,8 +643,9 @@
                 const dayEnd = new Date(dayOfMonth + 'T23:59:59');
 
                 const isOvernight = trxDate < dayStart || trxDate > dayEnd;
-                const isAssumed = entry.assumed === true || entry.assumed === 'true' || entry.assumed === 1 || entry.assumed === '1';
-
+                const assumedValue = entry.assumed_id ?? entry.assumed ?? idx;
+                const isAssumed = assumedValue === 'true' || assumedValue === true;
+                console.log(assumedValue, isAssumed);
                 // add a flag for day vs night shift
                 const isDayShift = shiftType === 'Days';  // you can set shiftType = 'day' or 'night' elsewhere
 
@@ -659,7 +660,7 @@
                     inlineStyle = 'style="background-color: #fff3cd !important;"'; // yellow
                 }
 
-                const assumedValue = entry.assumed_id ?? entry.assumed ?? idx;
+
 
                 tableHtml += `
         <tr class="${rowClass}" ${inlineStyle}>

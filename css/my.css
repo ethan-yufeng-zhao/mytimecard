@@ -60,3 +60,18 @@ a[target="_blank"]:hover {
     width: 60%;
     /*max-width: 90%; !* Or any percentage or pixel value you want *!*/
 }
+/* Highlight assumed rows (red) */
+.assumed-row {
+    background-color: #f8d7da !important;
+}
+
+/* Highlight overnight rows (yellow/orange) */
+.overnight-row {
+    background-color: #fff3cd !important;
+}
+
+/* Ensure text inside inputs is readable */
+.assumed-row input,
+.overnight-row input {
+    color: #000 !important;
+}
