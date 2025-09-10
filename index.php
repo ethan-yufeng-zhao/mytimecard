@@ -602,39 +602,19 @@
             const entries = rawdata[dayOfMonth] || [];
             document.getElementById('history-day').value = dayOfMonth;
 
-            // ensure highlight styles exist (inject once)
-    //         (function ensureHistoryRowStyles(){
-    //             if (document.getElementById('history-row-styles')) return;
-    //             const css = `
-    //     /* assumed = red */
-    //     .assumed-row { background-color: #f8d7da !important; }
-    //     /* overnight = orange */
-    //     .overnight-row { background-color: #fff3cd !important; }
-    //     /* both = slightly darker red */
-    //     .assumed-overnight { background-color: #f5c6cb !important; }
-    //     /* make sure inputs stay readable */
-    //     .assumed-row input, .overnight-row input, .assumed-overnight input { color: #000 !important; }
-    // `;
-    //             const s = document.createElement('style');
-    //             s.id = 'history-row-styles';
-    //             s.appendChild(document.createTextNode(css));
-    //             document.head.appendChild(s);
-    //         })();
-
-// Build editable table (with highlighted rows)
             let tableHtml = `
-    <table class="table table-bordered table-striped table-sm">
-        <thead class="thead-light">
-            <tr>
-                <th>#</th>
-                <th>Source Name</th>
-                <th>Source Type</th>
-                <th>In & Out Time</th>
-                <th>Assumed?</th>
-            </tr>
-        </thead>
-        <tbody>
-`;
+            <table class="table table-bordered table-striped table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Source Name</th>
+                        <th>Source Type</th>
+                        <th>In & Out Time</th>
+                        <th>Assumed?</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
 
             entries.forEach((entry, idx) => {
                 const combinedSource = `${entry.sourcename || ''}`;
@@ -644,64 +624,39 @@
 
                 const isOvernight = trxDate < dayStart || trxDate > dayEnd;
                 const assumedValue = entry.assumed_id ?? entry.assumed ?? idx;
-                const isAssumed = assumedValue === 'true' || assumedValue === true;
-                console.log(assumedValue, isAssumed);
-                // add a flag for day vs night shift
-                const isDayShift = shiftType === 'Days';  // you can set shiftType = 'day' or 'night' elsewhere
+                const isAssumed = (assumedValue === true || assumedValue === 'true' || assumedValue === 1 || assumedValue === '1');
 
-                // choose class and inline fallback color
+                const isDayShift = (shiftType === 'Days');
+
+                // Decide row class (no inline style)
                 let rowClass = '';
-                let inlineStyle = '';
                 if (isAssumed) {
                     rowClass = 'assumed-row';
-                    inlineStyle = 'style="background-color: #f8d7da !important;"'; // red
                 } else if (isOvernight && isDayShift) {
                     rowClass = 'overnight-row';
-                    inlineStyle = 'style="background-color: #fff3cd !important;"'; // yellow
                 }
 
-
-
                 tableHtml += `
-        <tr class="${rowClass}" ${inlineStyle}>
-            <td>${idx + 1}</td>
-            <td>
-                <input type="text" readonly value="${(combinedSource).replace(/"/g,'&quot;')}" class="form-control form-control-sm">
-                <input type="hidden" name="sourcename[]" value="${(combinedSource).replace(/"/g,'&quot;')}">
-            </td>
-            <td>
-                <input type="text" readonly value="${(entry.normalizedname || '').replace(/"/g,'&quot;')}" class="form-control form-control-sm">
-                <input type="hidden" name="normalizedname[]" value="${(entry.normalizedname || '').replace(/"/g,'&quot;')}">
-            </td>
-            <td>
-                <input type="text" readonly value="${(entry.trx_timestamp || '').replace(/"/g,'&quot;')}" class="form-control form-control-sm">
-                <input type="hidden" name="inandout[]" value="${(entry.trx_timestamp || '').replace(/"/g,'&quot;')}">
-            </td>
-            <td class="text-center">
-                ${isAssumed ? `<input type="checkbox" name="assumed_ids[]" value="${assumedValue}" checked disabled>` : ''}
-            </td>
-        </tr>
-    `;
+                <tr class="${rowClass}">
+                    <td>${idx + 1}</td>
+                    <td>
+                        <input type="text" readonly value="${(combinedSource).replace(/"/g,'&quot;')}" class="form-control form-control-sm">
+                        <input type="hidden" name="sourcename[]" value="${(combinedSource).replace(/"/g,'&quot;')}">
+                    </td>
+                    <td>
+                        <input type="text" readonly value="${(entry.normalizedname || '').replace(/"/g,'&quot;')}" class="form-control form-control-sm">
+                        <input type="hidden" name="normalizedname[]" value="${(entry.normalizedname || '').replace(/"/g,'&quot;')}">
+                    </td>
+                    <td>
+                        <input type="text" readonly value="${(entry.trx_timestamp || '').replace(/"/g,'&quot;')}" class="form-control form-control-sm">
+                        <input type="hidden" name="inandout[]" value="${(entry.trx_timestamp || '').replace(/"/g,'&quot;')}">
+                    </td>
+                    <td class="text-center">
+                        ${isAssumed ? `<input type="checkbox" name="assumed_ids[]" value="${assumedValue}" checked disabled>` : ''}
+                    </td>
+                </tr>
+            `;
             });
-
-            // Option to add a *new badge record* for missing in/out
-        //     tableHtml += `
-        //     <tr class="table-success">
-        //         <td>+</td>
-        //         <td>
-        //             <input type="text" name="new_sourcename[]" placeholder="Enter source name"
-        //                    class="form-control form-control-sm">
-        //         </td>
-        //         <td>
-        //             <input type="text" name="new_normalizedname[]" placeholder="Enter source type"
-        //                    class="form-control form-control-sm">
-        //         </td>
-        //         <td>
-        //             <input type="text" name="new_inandout[]" placeholder="YYYY-MM-DD HH:mm:ss"
-        //                    class="form-control form-control-sm">
-        //         </td>
-        //     </tr>
-        // `;
 
             tableHtml += `</tbody></table>`;
             document.getElementById('history-table-container').innerHTML = tableHtml;
