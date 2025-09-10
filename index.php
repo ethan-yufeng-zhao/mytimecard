@@ -603,7 +603,7 @@
             document.getElementById('history-day').value = dayOfMonth;
 
             let tableHtml = `
-            <table class="table table-bordered table-striped table-sm">
+            <table class="table table-bordered table-sm history-rawdata-table">
                 <thead class="thead-light">
                     <tr>
                         <th>#</th>
@@ -625,7 +625,7 @@
                 const isOvernight = trxDate < dayStart || trxDate > dayEnd;
                 const assumedValue = entry.assumed_id ?? entry.assumed ?? idx;
                 const isAssumed = (assumedValue === true || assumedValue === 'true' || assumedValue === 1 || assumedValue === '1');
-
+                //console.log(idx, assumedValue, isAssumed);
                 const isDayShift = (shiftType === 'Days');
 
                 // Decide row class (no inline style)

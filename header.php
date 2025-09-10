@@ -144,6 +144,8 @@
 	<script src="js/jquery.tablesorter.js"></script> <!-- tablesorter -->
 	<script src="js/jquery.tablesorter.widgets.js"></script> <!-- tablesorter -->
 
+    <link rel="icon" type="image/png" href="./favicon.png">
+
 	<style type="text/css" media="print">
 		a[href]:after {
 			content:none;

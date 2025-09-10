@@ -60,18 +60,33 @@ a[target="_blank"]:hover {
     width: 60%;
     /*max-width: 90%; !* Or any percentage or pixel value you want *!*/
 }
-/* Highlight assumed rows (red) */
-.assumed-row {
-    background-color: #f8d7da !important;
-}
 
-/* Highlight overnight rows (yellow/orange) */
-.overnight-row {
-    background-color: #fff3cd !important;
-}
-
-/* Ensure text inside inputs is readable */
-.assumed-row input,
-.overnight-row input {
+/* target the specific history table so Bootstrap doesn't win */
+.history-rawdata-table tbody tr.assumed-row > td {
+    background-color: #f8d7da !important; /* light red */
     color: #000 !important;
+}
+
+.history-rawdata-table tbody tr.overnight-row > td {
+    background-color: #fff3cd !important; /* light yellow */
+    color: #000 !important;
+}
+
+.history-rawdata-table tbody tr.assumed-overnight > td {
+    background-color: #f5c6cb !important; /* darker red */
+    color: #000 !important;
+}
+
+/* make readonly inputs inside highlighted rows readable and transparent */
+.history-rawdata-table tbody tr.assumed-row input,
+.history-rawdata-table tbody tr.overnight-row input,
+.history-rawdata-table tbody tr.assumed-overnight input {
+    background-color: transparent !important;
+    color: inherit !important;
+    border-color: rgba(0,0,0,0.05) !important; /* keep the input visible */
+}
+
+/* optionally reduce stripe interference — but not required */
+.history-rawdata-table.table-striped tbody > tr:nth-of-type(odd) > td {
+    background-color: transparent !important;
 }
