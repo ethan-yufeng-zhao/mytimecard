@@ -254,6 +254,7 @@ foreach ($arr as $extsysid => &$person) {
 foreach ($arr as $user => $value) {
     $employeetype = $value['meta']['employeetype'];
     $shifttype = $value['meta']['shifttype'];
+    $rawvalue = $value['rawdata'];
 
     $totalTos = 0;
     $totalTib = 0;
@@ -275,7 +276,7 @@ foreach ($arr as $user => $value) {
         $arr[$user]['vacation'][$data['day_of_month']] = $data['vacation'];
     }
 
-    foreach ($value['rawdata'] as $day => $events) {
+    foreach ($rawvalue as $keyday => $eventvalue) {
 
         $firstInTs = null;
         $lastOutTs = null;
@@ -290,7 +291,7 @@ foreach ($arr as $user => $value) {
         $buildingInStack = null; // tracks Building IN timestamp (parent container)
         $lastSubOutTs = null;    // last main/sub out timestamp
 
-        foreach ($events as $event) {
+        foreach ($eventvalue as $event) {
             $ts = strtotime($event['trx_timestamp']);
             $name = strtolower($event['normalizedname']);
             $parts = explode(' ', $name);
@@ -375,9 +376,9 @@ foreach ($arr as $user => $value) {
 
             $dayTob = round($dayTos - $dayTib,2);
 
-            $dayVacation = $arr[$user]['vacation'][$day] ?? 0;
+            $dayVacation = $arr[$user]['vacation'][$keyday] ?? 0;
 
-            $arr[$user]['data'][$day] = [
+            $arr[$user]['data'][$keyday] = [
                 'tos' => $dayTos,
                 'tib' => $dayTib,
                 'tob' => $dayTob,
@@ -396,11 +397,11 @@ foreach ($arr as $user => $value) {
             $totalTisf += $dayTisf;
             $totalTifac += $dayTifac;
             $totalVacation += $dayVacation;
-            $total_hours += $arr[$user]['data'][$day]['subtotal'];
+            $total_hours += $arr[$user]['data'][$keyday]['subtotal'];
 
-            $workedDays[$day] = true;
-            $dow = date('N', strtotime($day));
-            if ($dow>=6) $weekendDays[] = $day;
+            $workedDays[$keyday] = true;
+            $dow = date('N', strtotime($keyday));
+            if ($dow>=6) $weekendDays[] = $keyday;
         }
     }
 
