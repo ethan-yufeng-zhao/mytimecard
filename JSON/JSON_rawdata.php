@@ -363,22 +363,23 @@ foreach ($arr as $user => $value) {
                         case 'mainfab':
                             $dayTif += $duration / TIMECONVERTER;
                             $dayTib += $duration / TIMECONVERTER;
+                            $lastSubOutTs = $ts;
                             break;
                         case 'subfab':
                             $dayTisf += $duration / TIMECONVERTER;
                             $dayTib += $duration / TIMECONVERTER;
+                            $lastSubOutTs = $ts;
                             break;
                         case 'facility':
                             $dayTifac += $duration / TIMECONVERTER;
                             break;
                     }
-                    $lastSubOutTs = $ts;
                     $inTime[$category] = null;
                 }
 
                 // If Building OUT, close the building container
                 if ($category === 'building' && $buildingInStack !== null) {
-                    // Add remaining building-only time since last sub-location out
+                    // Add only building-only time (exclude facility, since counted separately)
                     if ($lastSubOutTs !== null && $lastSubOutTs < $ts) {
                         $dayTib += ($ts - $lastSubOutTs) / TIMECONVERTER;
                     } elseif ($lastSubOutTs === null && $buildingInStack < $ts) {
