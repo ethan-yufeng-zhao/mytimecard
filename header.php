@@ -328,5 +328,34 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
+<div class="container" style="margin-top:5px; margin-bottom:5px;">
+    <form method="get" class="form-inline" role="form" style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
+
+        <!-- Mode Selector -->
+        <label for="mode" class="mb-0">Mode:</label>
+        <select name="mode" id="mode" class="form-control input-sm">
+            <option value="strict"   <?php echo ($_GET['mode'] ?? '') === 'strict' ? 'selected' : ''; ?>>Strict</option>
+            <option value="balanced" <?php echo ($_GET['mode'] ?? 'balanced') === 'balanced' ? 'selected' : ''; ?>>Balanced</option>
+            <option value="generous" <?php echo ($_GET['mode'] ?? '') === 'generous' ? 'selected' : ''; ?>>Generous</option>
+        </select>
+
+        <!-- Start Date -->
+        <label for="start" class="mb-0">Start:</label>
+        <input type="date" name="start" id="start" class="form-control input-sm"
+               value="<?php echo htmlspecialchars($_GET['start'] ?? date('Y-m-01')); ?>">
+
+        <!-- End Date -->
+        <label for="end" class="mb-0">End:</label>
+        <input type="date" name="end" id="end" class="form-control input-sm"
+               value="<?php echo htmlspecialchars($_GET['end'] ?? date('Y-m-d')); ?>">
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+    </form>
+</div>
+
+<div class="container">
+    <hr style="border:0; height:1px; background: lightgrey; margin-top:5px; margin-bottom:10px;">
+</div>
 
 <div class="container">
