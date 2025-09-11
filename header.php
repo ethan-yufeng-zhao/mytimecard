@@ -329,7 +329,7 @@
     </div>
 </div>
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
-    <form method="get" class="form-inline" role="form" style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
+    <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form" style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
 
         <!-- Mode Selector -->
         <label for="mode" class="mb-0">Mode:</label>
