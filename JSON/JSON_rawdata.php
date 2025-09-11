@@ -396,8 +396,8 @@ foreach ($arr as $user => $value) {
             // add facility outside building to TIB
             $dayTib = round($dayTib + $dayTifac,2);
 
-            $dayTif = round($dayTif,2);
-            $dayTisf = round($dayTisf,2);
+            $dayTif   = round($dayTif,2);
+            $dayTisf  = round($dayTisf,2);
             $dayTifac = round($dayTifac,2);
 
             $dayTob = round($dayTos - $dayTib,2);
@@ -405,29 +405,29 @@ foreach ($arr as $user => $value) {
             $dayVacation = $arr[$user]['vacation'][$keyday] ?? 0;
 
             $arr[$user]['data'][$keyday] = [
-                'tos' => $dayTos,
-                'tib' => $dayTib,
-                'tob' => $dayTob,
-                'tif' => $dayTif,
-                'tisf'=> $dayTisf,
-                'tifac'=> $dayTifac,
-                'vacation'=> $dayVacation,
-                'subtotal'=> $dayTib + $dayVacation
+                'tos'      => $dayTos,
+                'tib'      => $dayTib,
+                'tob'      => $dayTob,
+                'tif'      => $dayTif,
+                'tisf'     => $dayTisf,
+                'tifac'    => $dayTifac,
+                'vacation' => $dayVacation,
+                'subtotal' => $dayTib + $dayVacation
             ];
 
             // Accumulate totals
-            $totalTos += $dayTos;
-            $totalTib += $dayTib;
-            $totalTob += $dayTob;
-            $totalTif += $dayTif;
-            $totalTisf += $dayTisf;
-            $totalTifac += $dayTifac;
+            $totalTos      += $dayTos;
+            $totalTib      += $dayTib;
+            $totalTob      += $dayTob;
+            $totalTif      += $dayTif;
+            $totalTisf     += $dayTisf;
+            $totalTifac    += $dayTifac;
             $totalVacation += $dayVacation;
-            $total_hours += $arr[$user]['data'][$keyday]['subtotal'];
+            $total_hours   += $arr[$user]['data'][$keyday]['subtotal'];
 
             $workedDays[$keyday] = true;
             $dow = date('N', strtotime($keyday));
-            if ($dow>=6) $weekendDays[] = $keyday;
+            if ($dow >= 6) $weekendDays[] = $keyday;
         }
     }
 
