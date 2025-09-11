@@ -333,28 +333,33 @@
 $currentMode  = $_GET['mode']  ?? 'balanced';
 $currentStart = $_GET['start'] ?? date('Y-m-01');  // default: first day of month
 $currentEnd   = $_GET['end']   ?? date('Y-m-d');   // default: today
-$currentUser  = $_GET['uid']  ?? $REMOTE_USER[1]; // keep existing user
+$currentUser  = $_GET['uid']   ?? $REMOTE_USER[1]; // keep existing user
 ?>
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
-    <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form" style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
+    <form method="get" action="<?php echo $mybaseurl; ?>/index.php"
+          class="form-inline" role="form"
+          style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
+
+        <!-- Preserve uid -->
+        <input type="hidden" name="uid" value="<?php echo htmlspecialchars($currentUser); ?>">
 
         <!-- Mode Selector -->
         <label for="mode" class="mb-0">Mode:</label>
         <select name="mode" id="mode" class="form-control input-sm">
-            <option value="strict"   <?php echo ($_GET['mode'] ?? '') === 'strict' ? 'selected' : ''; ?>>Strict</option>
-            <option value="balanced" <?php echo ($_GET['mode'] ?? 'balanced') === 'balanced' ? 'selected' : ''; ?>>Balanced</option>
-            <option value="generous" <?php echo ($_GET['mode'] ?? '') === 'generous' ? 'selected' : ''; ?>>Generous</option>
+            <option value="strict"   <?php echo $currentMode === 'strict' ? 'selected' : ''; ?>>Strict</option>
+            <option value="balanced" <?php echo $currentMode === 'balanced' ? 'selected' : ''; ?>>Balanced</option>
+            <option value="generous" <?php echo $currentMode === 'generous' ? 'selected' : ''; ?>>Generous</option>
         </select>
 
         <!-- Start Date -->
         <label for="start" class="mb-0">Start:</label>
         <input type="date" name="start" id="start" class="form-control input-sm"
-               value="<?php echo htmlspecialchars($_GET['start'] ?? date('Y-m-01')); ?>">
+               value="<?php echo htmlspecialchars($currentStart); ?>">
 
         <!-- End Date -->
         <label for="end" class="mb-0">End:</label>
         <input type="date" name="end" id="end" class="form-control input-sm"
-               value="<?php echo htmlspecialchars($_GET['end'] ?? date('Y-m-d')); ?>">
+               value="<?php echo htmlspecialchars($currentEnd); ?>">
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary btn-sm">Apply</button>
