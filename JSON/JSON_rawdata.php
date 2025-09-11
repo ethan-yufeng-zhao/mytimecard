@@ -165,24 +165,24 @@ foreach ($arr as $extsysid => &$person) {
                     $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
 
                     $fixed[] = [
-                        'sourcename' => "Assumed Out",
-                        'sourcealtname' => "Assumed Out",
+                        'sourcename'     => "Assumed Out",
+                        'sourcealtname'  => "Assumed Out",
                         'normalizedname' => ucfirst($category) . " Out",
-                        'trx_timestamp' => date('Y-m-d H:i:sO', $assumedTs),
-                        'assumed' => true
+                        'trx_timestamp'  => date('Y-m-d H:i:sO', $assumedTs),
+                        'assumed'        => true
                     ];
                 }
 
                 // Special: Facility In → close building/mainfab/subfab
                 if ($category === 'facility') {
-                    foreach (['building', 'mainfab', 'subfab'] as $cat) {
+                    foreach (['building','mainfab','subfab'] as $cat) {
                         if ($lastIn[$cat] !== null) {
                             $fixed[] = [
-                                'sourcename' => "Assumed Out",
-                                'sourcealtname' => "Assumed Out",
-                                'normalizedname' => ucfirst($cat) . " Out",
-                                'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
-                                'assumed' => true
+                                'sourcename'     => "Assumed Out",
+                                'sourcealtname'  => "Assumed Out",
+                                'normalizedname' => ucfirst($cat)." Out",
+                                'trx_timestamp'  => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                                'assumed'        => true
                             ];
                             $lastIn[$cat] = null;
                         }
@@ -190,14 +190,14 @@ foreach ($arr as $extsysid => &$person) {
                 }
 
                 // Special: Building/Mainfab/Subfab In → close facility
-                if (in_array($category, ['building', 'mainfab', 'subfab'])) {
+                if (in_array($category, ['building','mainfab','subfab'])) {
                     if ($lastIn['facility'] !== null) {
                         $fixed[] = [
-                            'sourcename' => "Assumed Out",
-                            'sourcealtname' => "Assumed Out",
+                            'sourcename'     => "Assumed Out",
+                            'sourcealtname'  => "Assumed Out",
                             'normalizedname' => "Facility Out",
-                            'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
-                            'assumed' => true
+                            'trx_timestamp'  => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                            'assumed'        => true
                         ];
                         $lastIn['facility'] = null;
                     }
@@ -212,24 +212,24 @@ foreach ($arr as $extsysid => &$person) {
                     $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
 
                     $fixed[] = [
-                        'sourcename' => "Assumed In",
-                        'sourcealtname' => "Assumed In",
+                        'sourcename'     => "Assumed In",
+                        'sourcealtname'  => "Assumed In",
                         'normalizedname' => ucfirst($category) . " In",
-                        'trx_timestamp' => date('Y-m-d H:i:sO', $assumedTs),
-                        'assumed' => true
+                        'trx_timestamp'  => date('Y-m-d H:i:sO', $assumedTs),
+                        'assumed'        => true
                     ];
                 }
 
                 // 🔴 Cascading closures
                 if ($category === 'building') {
-                    foreach (['mainfab', 'subfab'] as $child) {
+                    foreach (['mainfab','subfab'] as $child) {
                         if ($lastIn[$child] !== null) {
                             $fixed[] = [
-                                'sourcename' => "Assumed Out",
-                                'sourcealtname' => "Assumed Out",
+                                'sourcename'     => "Assumed Out",
+                                'sourcealtname'  => "Assumed Out",
                                 'normalizedname' => ucfirst($child) . " Out",
-                                'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
-                                'assumed' => true
+                                'trx_timestamp'  => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                                'assumed'        => true
                             ];
                             $lastIn[$child] = null;
                         }
@@ -239,11 +239,11 @@ foreach ($arr as $extsysid => &$person) {
                 if ($category === 'mainfab') {
                     if ($lastIn['subfab'] !== null) {
                         $fixed[] = [
-                            'sourcename' => "Assumed Out",
-                            'sourcealtname' => "Assumed Out",
+                            'sourcename'     => "Assumed Out",
+                            'sourcealtname'  => "Assumed Out",
                             'normalizedname' => "Subfab Out",
-                            'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
-                            'assumed' => true
+                            'trx_timestamp'  => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                            'assumed'        => true
                         ];
                         $lastIn['subfab'] = null;
                     }
