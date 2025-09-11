@@ -328,6 +328,13 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
+<?php
+// Capture current params or set defaults
+$currentMode  = $_GET['mode']  ?? 'balanced';
+$currentStart = $_GET['start'] ?? date('Y-m-01');  // default: first day of month
+$currentEnd   = $_GET['end']   ?? date('Y-m-d');   // default: today
+$currentUser  = $_GET['uid']  ?? $REMOTE_USER[1]; // keep existing user
+?>
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
     <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form" style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
 
