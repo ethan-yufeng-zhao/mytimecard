@@ -15,22 +15,38 @@ $query_time = $query_end_time . " 23:59:59";
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays     = count($workdaysList);
 
-// ---- Configurable constants ----
 $configs = [
-    'strict'   => 0,   // only count real badge pairs
-    'balanced' => 50,  // give half-credit for missing ranges
-    'generous' => 100, // assume full credit up to cutoff
+    'strict' => [
+        'FACTOR_SPLIT' => 0,    // only count real badge pairs
+        'ASSUMED_GAP'  => 0     // no assumed extension
+    ],
+    'balanced' => [
+        'FACTOR_SPLIT' => 50,   // give half-credit for missing ranges
+        'ASSUMED_GAP'  => 1800  // 30 minutes
+    ],
+    'generous' => [
+        'FACTOR_SPLIT' => 100,  // assume full credit
+        'ASSUMED_GAP'  => 3600  // 1 hour
+    ]
 ];
 
-$FACTOR_SPLIT = $configs['balanced']; // example selection
+// Read mode from query string, default to balanced
+$mode = $_GET['mode'] ?? 'balanced';
+
+// Fallback if mode is invalid
+if (!isset($configs[$mode])) {
+    $mode = 'balanced';
+}
+
+// Apply settings
+$FACTOR_SPLIT = $configs[$mode]['FACTOR_SPLIT'];
+define('ASSUMED_GAP', $configs[$mode]['ASSUMED_GAP']);
 
 const TIMECONVERTER = 3600;
 
 const CUTOFF_DAYS    = "04:00:00"; // cutoff for day shift carryover
 const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
-
-const ASSUMED_GAP = 1800;
 const ASSUMED_1SEC = 1;
 
 $db_pdo = db_connect();
@@ -260,7 +276,8 @@ foreach ($arr as $extsysid => &$person) {
         foreach ($lastIn as $category => $inEvent) {
             if ($inEvent !== null) {
                 $lastInTs = strtotime($inEvent['trx_timestamp']);
-                $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + ASSUMED_GAP;
+//                $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + ASSUMED_GAP;
+                $cutoff = $lastInTs + ASSUMED_GAP;
 
                 $fixed[] = [
                     'sourcename' => "Assumed Out",
