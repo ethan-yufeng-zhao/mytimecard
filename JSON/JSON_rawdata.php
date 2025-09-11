@@ -128,8 +128,8 @@ foreach ($arr as $extsysid => &$person) {
         $fixed = [];
         $lastIn = [
             'building' => null,
-            'mainfab'  => null,
-            'subfab'   => null,
+            'mainfab' => null,
+            'subfab' => null,
             'facility' => null
         ];
 
@@ -144,10 +144,10 @@ foreach ($arr as $extsysid => &$person) {
                 continue;
             }
 
+            // Special case: parking lot muster → ignore duplicate building out
             if (strtolower($e['sourcename']) === 'parking lot muster') {
                 if ($direction === 'out') {
-                    if (strtolower($fixed[count($fixed) - 1]['normalizedname']) === 'building out') {
-                        // already had a building out → ignore this event
+                    if (!empty($fixed) && strtolower(end($fixed)['normalizedname']) === 'building out') {
                         $e['normalizedname'] = '';
                         $fixed[] = $e;
                         continue;
@@ -158,34 +158,31 @@ foreach ($arr as $extsysid => &$person) {
             $txs = strtotime($e['trx_timestamp']);
 
             if ($direction === 'in') {
-                // if same category already inside → insert assumed Out
+                // If same category already inside → insert assumed Out
                 if ($lastIn[$category] !== null) {
                     $prevTs = strtotime($lastIn[$category]['trx_timestamp']);
                     $gap = $txs - $prevTs;
                     $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
 
                     $fixed[] = [
-                        'sourcename'=>"Assumed Out",
-                        'sourcealtname'=>"Assumed Out",
-                        'normalizedname'=>ucfirst($category)." Out",
-                        'trx_timestamp'=>date('Y-m-d H:i:sO', $assumedTs),
-                        'assumed'=>true
+                        'sourcename' => "Assumed Out",
+                        'sourcealtname' => "Assumed Out",
+                        'normalizedname' => ucfirst($category) . " Out",
+                        'trx_timestamp' => date('Y-m-d H:i:sO', $assumedTs),
+                        'assumed' => true
                     ];
                 }
 
                 // Special: Facility In → close building/mainfab/subfab
                 if ($category === 'facility') {
-                    foreach (['building','mainfab','subfab'] as $cat) {
+                    foreach (['building', 'mainfab', 'subfab'] as $cat) {
                         if ($lastIn[$cat] !== null) {
                             $fixed[] = [
-                                'sourcename'=>"Assumed Out",
-                                'sourcealtname'=>"Assumed Out",
-                                'normalizedname'=>ucfirst($cat)." Out",
-                                'trx_timestamp'=>date(
-                                    'Y-m-d H:i:sO',
-                                    $txs - ASSUMED_1SEC
-                                ),
-                                'assumed'=>true
+                                'sourcename' => "Assumed Out",
+                                'sourcealtname' => "Assumed Out",
+                                'normalizedname' => ucfirst($cat) . " Out",
+                                'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                                'assumed' => true
                             ];
                             $lastIn[$cat] = null;
                         }
@@ -193,39 +190,68 @@ foreach ($arr as $extsysid => &$person) {
                 }
 
                 // Special: Building/Mainfab/Subfab In → close facility
-                if (in_array($category, ['building','mainfab','subfab'])) {
+                if (in_array($category, ['building', 'mainfab', 'subfab'])) {
                     if ($lastIn['facility'] !== null) {
                         $fixed[] = [
-                            'sourcename'=>"Assumed Out",
-                            'sourcealtname'=>"Assumed Out",
-                            'normalizedname'=>"Facility Out",
-                            'trx_timestamp'=>date(
-                                'Y-m-d H:i:sO',
-                                $txs - ASSUMED_1SEC
-                            ),
-                            'assumed'=>true
+                            'sourcename' => "Assumed Out",
+                            'sourcealtname' => "Assumed Out",
+                            'normalizedname' => "Facility Out",
+                            'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                            'assumed' => true
                         ];
                         $lastIn['facility'] = null;
                     }
                 }
 
                 $lastIn[$category] = $e;
-            } else { // direction = out
+            } else { // direction === "out"
                 if ($lastIn[$category] === null) {
+                    // Insert assumed In before this Out
                     $prevTs = $fixed ? strtotime(end($fixed)['trx_timestamp']) : $txs - ASSUMED_GAP;
                     $gap = $txs - $prevTs;
                     $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
 
                     $fixed[] = [
-                        'sourcename'=>"Assumed In",
-                        'sourcealtname'=>"Assumed In",
-                        'normalizedname'=>ucfirst($category)." In",
-                        'trx_timestamp'=>date('Y-m-d H:i:sO', $assumedTs),
-                        'assumed'=>true
+                        'sourcename' => "Assumed In",
+                        'sourcealtname' => "Assumed In",
+                        'normalizedname' => ucfirst($category) . " In",
+                        'trx_timestamp' => date('Y-m-d H:i:sO', $assumedTs),
+                        'assumed' => true
                     ];
                 }
+
+                // 🔴 Cascading closures
+                if ($category === 'building') {
+                    foreach (['mainfab', 'subfab'] as $child) {
+                        if ($lastIn[$child] !== null) {
+                            $fixed[] = [
+                                'sourcename' => "Assumed Out",
+                                'sourcealtname' => "Assumed Out",
+                                'normalizedname' => ucfirst($child) . " Out",
+                                'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                                'assumed' => true
+                            ];
+                            $lastIn[$child] = null;
+                        }
+                    }
+                }
+
+                if ($category === 'mainfab') {
+                    if ($lastIn['subfab'] !== null) {
+                        $fixed[] = [
+                            'sourcename' => "Assumed Out",
+                            'sourcealtname' => "Assumed Out",
+                            'normalizedname' => "Subfab Out",
+                            'trx_timestamp' => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
+                            'assumed' => true
+                        ];
+                        $lastIn['subfab'] = null;
+                    }
+                }
+
                 $lastIn[$category] = null;
             }
+
             $fixed[] = $e;
         }
 
@@ -237,11 +263,11 @@ foreach ($arr as $extsysid => &$person) {
                 $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + ASSUMED_GAP;
 
                 $fixed[] = [
-                    'sourcename'     => "Assumed Out",
-                    'sourcealtname'  => "Assumed Out",
+                    'sourcename' => "Assumed Out",
+                    'sourcealtname' => "Assumed Out",
                     'normalizedname' => ucfirst($category) . " Out",
-                    'trx_timestamp'  => date('Y-m-d H:i:sO', $cutoff),
-                    'assumed'        => true
+                    'trx_timestamp' => date('Y-m-d H:i:sO', $cutoff),
+                    'assumed' => true
                 ];
             }
         }
