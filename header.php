@@ -320,10 +320,14 @@
                         echo('</li>');
                     }
                 ?>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+                <ul class="dropdown-menu">
                 <li><a target="_blank" href="https://jireh.smarteru.com/remote-login/login.cfm">SmarterU</a></li>
                 <li><a target="_blank" href="http://www.jfab.aosmd.com">HilWiki</a></li>
 <!--                    <li>--><?php //echo(time()); ?><!--</li>-->
 <!--                    <li><a id="id_db_type" href="" onclick="switchDB()">--><?php //echo(strtoupper($GLOBALS['DB_TYPE'])); ?><!--</a></li>-->
+                </ul>
+                </li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
