@@ -19,7 +19,7 @@
 }
 
 body {
-    font-family: "Inter", Consolas, "Liberation Mono", Monospace, sans-serif;
+    font-family: "Inter", "Liberation Mono", Consolas, Monospace, sans-serif;
     font-size: 16px;
     color: var(--text);
     background: var(--bg);
@@ -170,17 +170,21 @@ a[target="_blank"]:hover { color: var(--primary-2); text-decoration: underline; 
     color: #000 !important;
 }
 
-.history-rawdata-table tbody tr.assumed-overnight > td {
-    background-color: var(--business-red-strong) !important;
-    color: #000 !important;
+.history-rawdata-table tbody tr input {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: 1px solid rgba(0,0,0,0.3) !important; /* clearer border for all inputs */
+    padding: 4px 6px;
+    border-radius: 3px;
 }
 
 .history-rawdata-table tbody tr.assumed-row input,
-.history-rawdata-table tbody tr.overnight-row input,
-.history-rawdata-table tbody tr.assumed-overnight input {
+.history-rawdata-table tbody tr.overnight-row input {
     background-color: transparent !important;
     color: inherit !important;
-    border-color: rgba(0,0,0,0.1) !important;
+    border: 1px solid rgba(0,0,0,0.3) !important; /* darker and clearer */
+    padding: 4px 6px;
+    border-radius: 3px;
 }
 
 /* Stripes use business green-gray */
