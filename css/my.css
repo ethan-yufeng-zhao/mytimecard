@@ -2,7 +2,7 @@ body {
     font-family: Consolas, Monospace, sans-serif;
     font-size: 16px;
     overflow-y: scroll;
-    background: #fff; /* keep clean white background */
+    background: #fff; /* clean white background */
     color: #000;      /* standard black text */
 }
 
@@ -42,7 +42,7 @@ a[target="_blank"]:hover {
     width: 55%;
 }
 
-/* History Rawdata Table — keep colors but tune contrast */
+/* History Rawdata Table — keep highlights, shift to green/yellow theme */
 .history-rawdata-table tbody tr.assumed-row > td {
     background-color: #f5b7b1 !important; /* softer business red */
     color: #000 !important;
@@ -67,9 +67,9 @@ a[target="_blank"]:hover {
     border-color: rgba(0,0,0,0.1) !important;
 }
 
-/* Stripe rows toned down so highlights remain visible */
+/* Table stripes — light green-gray for contrast */
 .history-rawdata-table.table-striped tbody > tr:nth-of-type(odd) > td {
-    background-color: #fafafa !important;
+    background-color: #f1f8f4 !important;
 }
 
 .my-wider-button {
