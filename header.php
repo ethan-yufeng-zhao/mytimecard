@@ -195,18 +195,15 @@
             break;
     }
 
-    // --- Build URLs ---
     $currentQueryUrl    = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $currentStart, $currentEnd, $currentRange); // default/current
 
-//
 //// Debug print
-    if (DEBUG) {
-        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
-        echo "DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a><br>";
-        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
-        echo "</div>";
-    }
-
+//    if (DEBUG) {
+//        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
+//        echo "DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a><br>";
+//        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
+//        echo "</div>";
+//    }
 ?>
 
 <!DOCTYPE html>
