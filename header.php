@@ -360,10 +360,10 @@
     <script type="text/javascript" src="js/my.js"></script>
 </head>
 <body>
+<?php if (DEBUG): ?>
+    <div class="watermark-text">FOR TESTING ONLY!</div>
+<?php endif; ?>
 <div class="container">
-    <?php if (DEBUG): ?>
-        <div class="watermark-text">FOR TESTING ONLY!</div>
-    <?php endif; ?>
 	<div class="navbar navbar-inverse">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -402,24 +402,31 @@
                         echo('</li>');
                     }
                 ?>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<?php echo $thisWeekQueryUrl ?>">This Week</a></li>
-                        <li><a href="<?php echo $thisMonthQueryUrl ?>">This Month</a></li>
-                        <li><a href="<?php echo $thisQuarterQueryUrl ?>">This Quarter</a></li>
-                        <li><a href="<?php echo $thisYearQueryUrl ?>">This Year</a></li>
-                        <li class="divider"></li>
-                        <li><a href="<?php echo $lastWeekQueryUrl ?>">Last Week</a></li>
-                        <li><a href="<?php echo $lastMonthQueryUrl ?>">Last Month</a></li>
-                        <li><a href="<?php echo $lastQuarterQueryUrl ?>">Last Quarter</a></li>
-                        <li><a href="<?php echo $lastYearQueryUrl ?>">Last Year</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
+<!--                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>-->
+<!--                    <ul class="dropdown-menu">-->
+<!--                        <li><a href="--><?php //echo $thisWeekQueryUrl ?><!--">This Week</a></li>-->
+<!--                        <li><a href="--><?php //echo $thisMonthQueryUrl ?><!--">This Month</a></li>-->
+<!--                        <li><a href="--><?php //echo $thisQuarterQueryUrl ?><!--">This Quarter</a></li>-->
+<!--                        <li><a href="--><?php //echo $thisYearQueryUrl ?><!--">This Year</a></li>-->
+<!--                        <li class="divider"></li>-->
+<!--                        <li><a href="--><?php //echo $lastWeekQueryUrl ?><!--">Last Week</a></li>-->
+<!--                        <li><a href="--><?php //echo $lastMonthQueryUrl ?><!--">Last Month</a></li>-->
+<!--                        <li><a href="--><?php //echo $lastQuarterQueryUrl ?><!--">Last Quarter</a></li>-->
+<!--                        <li><a href="--><?php //echo $lastYearQueryUrl ?><!--">Last Year</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Links <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                 <li><a target="_blank" href="https://jireh.smarteru.com/remote-login/login.cfm">SmarterU</a></li>
                 <li><a target="_blank" href="http://hilwiki.jfab.aosmd.com">HilWiki</a></li>
+                <li><a href="https://portal.aosmd.com" target="_blank">Portal</a></li>
+                <li class="divider"></li>
                 <li><a target="_blank" href="http://webx.jfab.aosmd.com/tcs">TCS</a></li>
+                <li><a href="http://web11.jfab.aosmd.com/mts" target="_blank">6S</a></li>
+                <li><a href="http://webx.jfab.aosmd.com/SPCx" target="_blank">SPCx</a></li>
+                <li><a href="http://jfabieapp1.jfab.aosmd.com/tps" target="_blank">TPS</a></li>
+                <li><a href="http://jfabjunoapp.jfab.aosmd.com/juno/juno_data_search/" target="_blank">Juno</a></li>
+
 <!--                    <li>--><?php //echo(time()); ?><!--</li>-->
 <!--                    <li><a id="id_db_type" href="" onclick="switchDB()">--><?php //echo(strtoupper($GLOBALS['DB_TYPE'])); ?><!--</a></li>-->
                 </ul>
@@ -430,7 +437,7 @@
 </div>
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
     <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form"
-          style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
+          style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;" id="toolbarForm">
 
         <!-- Keep user -->
         <input type="hidden" name="uid" value="<?php echo htmlspecialchars($currentUser); ?>">
@@ -444,12 +451,11 @@
         </select>
 
         <!-- Quick Range Selector -->
-        <label for="quickRange" class="mb-0">Quick Range:</label>
+        <label for="quickRange" class="mb-0">Range:</label>
         <select id="quickRange" class="form-control input-sm">
-            <option value="current" selected>Current Query</option>
             <option value="thisWeek">This Week</option>
             <option value="lastWeek">Last Week</option>
-            <option value="thisMonth">This Month</option>
+            <option value="thisMonth" selected>This Month</option>
             <option value="lastMonth">Last Month</option>
             <option value="thisQuarter">This Quarter</option>
             <option value="lastQuarter">Last Quarter</option>
@@ -471,75 +477,30 @@
 </div>
 
 <script>
+    const toolbarForm = document.getElementById('toolbarForm');
+
     const today = new Date();
-
-    // Helper to format date as YYYY-MM-DD
-    function formatDate(d) {
-        return d.toISOString().slice(0,10);
-    }
-
-    function getWeekStart(d) {
-        const day = d.getDay(); // 0=Sun, 1=Mon...
-        const diff = d.getDate() - day + (day===0 ? -6:1); // adjust to Monday
-        return new Date(d.setDate(diff));
-    }
-
-    function getQuarterStart(d) {
-        const q = Math.floor((d.getMonth())/3);
-        return new Date(d.getFullYear(), q*3, 1);
-    }
-
-    function getQuarterEnd(d) {
-        const q = Math.floor((d.getMonth())/3);
-        return new Date(d.getFullYear(), q*3+3, 0);
-    }
+    function formatDate(d) { return d.toISOString().slice(0,10); }
+    function getWeekStart(d) { const day=d.getDay(); const diff=d.getDate()-day+(day===0?-6:1); return new Date(d.setDate(diff)); }
+    function getQuarterStart(d) { const q=Math.floor(d.getMonth()/3); return new Date(d.getFullYear(), q*3, 1); }
+    function getQuarterEnd(d) { const q=Math.floor(d.getMonth()/3); return new Date(d.getFullYear(), q*3+3, 0); }
 
     function setQuickRange(range) {
         let start, end;
         const now = new Date();
         switch(range) {
-            case 'thisWeek':
-                start = getWeekStart(new Date());
-                end = new Date();
-                break;
-            case 'lastWeek':
-                const lastWeek = new Date();
-                lastWeek.setDate(lastWeek.getDate() - 7);
-                start = getWeekStart(lastWeek);
-                end = new Date(start);
-                end.setDate(end.getDate() + 6);
-                break;
-            case 'thisMonth':
-                start = new Date(now.getFullYear(), now.getMonth(), 1);
-                end = new Date();
-                break;
-            case 'lastMonth':
-                start = new Date(now.getFullYear(), now.getMonth()-1, 1);
-                end = new Date(now.getFullYear(), now.getMonth(), 0);
-                break;
-            case 'thisQuarter':
-                start = getQuarterStart(now);
-                end = new Date();
-                break;
-            case 'lastQuarter':
-                const lastQMonth = getQuarterStart(now);
-                lastQMonth.setMonth(lastQMonth.getMonth()-3);
-                start = lastQMonth;
-                end = getQuarterEnd(lastQMonth);
-                break;
-            case 'thisYear':
-                start = new Date(now.getFullYear(), 0, 1);
-                end = new Date();
-                break;
-            case 'lastYear':
-                start = new Date(now.getFullYear()-1, 0, 1);
-                end = new Date(now.getFullYear()-1, 11, 31);
-                break;
-            default: // 'current'
-                return;
+            case 'thisWeek': start=getWeekStart(new Date()); end=new Date(); break;
+            case 'lastWeek': const lw=new Date(); lw.setDate(lw.getDate()-7); start=getWeekStart(lw); end=new Date(start); end.setDate(end.getDate()+6); break;
+            case 'thisMonth': start=new Date(now.getFullYear(), now.getMonth(), 1); end=new Date(); break;
+            case 'lastMonth': start=new Date(now.getFullYear(), now.getMonth()-1, 1); end=new Date(now.getFullYear(), now.getMonth(), 0); break;
+            case 'thisQuarter': start=getQuarterStart(now); end=new Date(); break;
+            case 'lastQuarter': const lq=getQuarterStart(now); lq.setMonth(lq.getMonth()-3); start=lq; end=getQuarterEnd(lq); break;
+            case 'thisYear': start=new Date(now.getFullYear(),0,1); end=new Date(); break;
+            case 'lastYear': start=new Date(now.getFullYear()-1,0,1); end=new Date(now.getFullYear()-1,11,31); break;
         }
-        document.getElementById('start').value = formatDate(start);
-        document.getElementById('end').value = formatDate(end);
+        document.getElementById('start').value=formatDate(start);
+        document.getElementById('end').value=formatDate(end);
+        toolbarForm.submit(); // automatically submit the form
     }
 
     document.getElementById('quickRange').addEventListener('change', function(){
@@ -548,4 +509,4 @@
 </script>
 
 <div class="container">
-    <hr style="border-top: 1px dotted lightgrey; background: none; height: 0; margin-top:5px; margin-bottom:10px;">
+<hr style="border-top: 1px dotted lightgrey; background: none; height: 0; margin-top:5px; margin-bottom:10px;">

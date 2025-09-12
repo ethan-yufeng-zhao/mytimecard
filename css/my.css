@@ -22,7 +22,7 @@ body {
     font-family: "Inter", "Liberation Mono", Consolas, Monospace, sans-serif;
     font-size: 16px;
     color: var(--text);
-    background: var(--bg);
+    /*background: var(--bg);*/
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-y: scroll;
@@ -32,14 +32,15 @@ body {
 /* watermark */
 .watermark-text {
     position: fixed;
-    top: 7%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3rem;
-    color: rgba(11,83,69,0.5);
-    z-index: -1;
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.06); /* subtle */
+    z-index: 0;                 /* behind content */
     white-space: nowrap;
-    pointer-events: none;
+    pointer-events: none;        /* don’t block clicks */
+    user-select: none;           /* can’t highlight */
 }
 
 /* container width preserved */
@@ -145,6 +146,10 @@ a[target="_blank"]:hover { color: var(--primary-2); text-decoration: underline; 
 /* -------------------------
    Modal
    ------------------------- */
+.modal {
+    position: relative;
+    z-index: 1; /* ensures they appear above watermark */
+}
 .modal-dialog.wider-modal { width: 60%; max-width: 1100px; }
 .modal-content { border-radius: 8px; }
 
