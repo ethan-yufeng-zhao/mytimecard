@@ -442,7 +442,7 @@
 
         <!-- Quick Range -->
         <label for="quickRange" class="mb-0">Range:</label>
-        <select name="quickRange" id="quickRange" class="form-control input-sm" onchange="this.form.submit()">
+        <select name="quickRange" id="quickRange" class="form-control input-sm">
             <option value="thisWeek"  <?php echo $currentRange==='thisWeek' ? 'selected' : ''; ?>>This Week</option>
             <option value="lastWeek"  <?php echo $currentRange==='lastWeek' ? 'selected' : ''; ?>>Last Week</option>
             <option value="thisMonth"  <?php echo $currentRange==='thisMonth' ? 'selected' : ''; ?>>This Month</option>
@@ -488,6 +488,30 @@
            echo $currentUser.'_'.
                    date('Ymd').".xls"; ?>">
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const quickRange = document.getElementById("quickRange");
+        const startInput = document.getElementById("start");
+        const endInput   = document.getElementById("end");
+
+        function switchToCustom() {
+            if (quickRange.value !== "custom") {
+                quickRange.value = "custom";
+            }
+        }
+
+        startInput.addEventListener("change", switchToCustom);
+        endInput.addEventListener("change", switchToCustom);
+
+        // auto-submit when selecting a quick range (except custom)
+        quickRange.addEventListener("change", function() {
+            if (this.value !== "custom") {
+                this.form.submit();
+            }
+        });
+    });
+</script>
 
 <!--<script>-->
 <!--    // Auto-apply quick range-->
