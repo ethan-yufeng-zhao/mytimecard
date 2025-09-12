@@ -172,8 +172,13 @@
     } else {
         $lastQuarterYear = date('Y');
     }
+
+    // Start of last quarter
     $lastQuarterStart = date('Y-m-d', strtotime($lastQuarterYear.'-'.(($lastQuarter-1)*3+1).'-01'));
-    $lastQuarterEnd   = date('Y-m-t', strtotime($lastQuarterStart));
+
+    // End of last quarter: last day of the last month in that quarter
+    $lastQuarterEndMonth = $lastQuarter * 3; // March, June, Sep, Dec
+    $lastQuarterEnd = date('Y-m-t', strtotime($lastQuarterYear.'-'.$lastQuarterEndMonth.'-01'));
 
     // Last year
     $lastYearStart = date('Y-01-01', strtotime('-1 year'));
@@ -399,15 +404,15 @@
                 ?>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a target="_blank" href="<?php echo $thisWeekQueryUrl ?>">This Week</a></li>
-                        <li><a target="_blank" href="<?php echo $thisMonthQueryUrl ?>">This Month</a></li>
-                        <li><a target="_blank" href="<?php echo $thisQuarterQueryUrl ?>">This Quarter</a></li>
-                        <li><a target="_blank" href="<?php echo $thisYearQueryUrl ?>">This Year</a></li>
+                        <li><a href="<?php echo $thisWeekQueryUrl ?>">This Week</a></li>
+                        <li><a href="<?php echo $thisMonthQueryUrl ?>">This Month</a></li>
+                        <li><a href="<?php echo $thisQuarterQueryUrl ?>">This Quarter</a></li>
+                        <li><a href="<?php echo $thisYearQueryUrl ?>">This Year</a></li>
                         <li class="divider"></li>
-                        <li><a target="_blank" href="<?php echo $lastWeekQueryUrl ?>">Last Week</a></li>
-                        <li><a target="_blank" href="<?php echo $lastMonthQueryUrl ?>">Last Month</a></li>
-                        <li><a target="_blank" href="<?php echo $lastQuarterQueryUrl ?>">Last Quarter</a></li>
-                        <li><a target="_blank" href="<?php echo $lastYearQueryUrl ?>">Last Year</a></li>
+                        <li><a href="<?php echo $lastWeekQueryUrl ?>">Last Week</a></li>
+                        <li><a href="<?php echo $lastMonthQueryUrl ?>">Last Month</a></li>
+                        <li><a href="<?php echo $lastQuarterQueryUrl ?>">Last Quarter</a></li>
+                        <li><a href="<?php echo $lastYearQueryUrl ?>">Last Year</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
@@ -423,7 +428,6 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
-
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
     <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form"
           style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
@@ -439,6 +443,20 @@
             <option value="generous" <?php echo $currentMode==='generous' ? 'selected' : ''; ?>>Generous</option>
         </select>
 
+        <!-- Quick Range Selector -->
+        <label for="quickRange" class="mb-0">Quick Range:</label>
+        <select id="quickRange" class="form-control input-sm">
+            <option value="current" selected>Current Query</option>
+            <option value="thisWeek">This Week</option>
+            <option value="lastWeek">Last Week</option>
+            <option value="thisMonth">This Month</option>
+            <option value="lastMonth">Last Month</option>
+            <option value="thisQuarter">This Quarter</option>
+            <option value="lastQuarter">Last Quarter</option>
+            <option value="thisYear">This Year</option>
+            <option value="lastYear">Last Year</option>
+        </select>
+
         <!-- Start / End -->
         <label for="start" class="mb-0">Start:</label>
         <input type="date" name="start" id="start" class="form-control input-sm"
@@ -451,6 +469,83 @@
         <button type="submit" class="btn btn-primary btn-sm my-wider-button">Apply</button>
     </form>
 </div>
+
+<script>
+    const today = new Date();
+
+    // Helper to format date as YYYY-MM-DD
+    function formatDate(d) {
+        return d.toISOString().slice(0,10);
+    }
+
+    function getWeekStart(d) {
+        const day = d.getDay(); // 0=Sun, 1=Mon...
+        const diff = d.getDate() - day + (day===0 ? -6:1); // adjust to Monday
+        return new Date(d.setDate(diff));
+    }
+
+    function getQuarterStart(d) {
+        const q = Math.floor((d.getMonth())/3);
+        return new Date(d.getFullYear(), q*3, 1);
+    }
+
+    function getQuarterEnd(d) {
+        const q = Math.floor((d.getMonth())/3);
+        return new Date(d.getFullYear(), q*3+3, 0);
+    }
+
+    function setQuickRange(range) {
+        let start, end;
+        const now = new Date();
+        switch(range) {
+            case 'thisWeek':
+                start = getWeekStart(new Date());
+                end = new Date();
+                break;
+            case 'lastWeek':
+                const lastWeek = new Date();
+                lastWeek.setDate(lastWeek.getDate() - 7);
+                start = getWeekStart(lastWeek);
+                end = new Date(start);
+                end.setDate(end.getDate() + 6);
+                break;
+            case 'thisMonth':
+                start = new Date(now.getFullYear(), now.getMonth(), 1);
+                end = new Date();
+                break;
+            case 'lastMonth':
+                start = new Date(now.getFullYear(), now.getMonth()-1, 1);
+                end = new Date(now.getFullYear(), now.getMonth(), 0);
+                break;
+            case 'thisQuarter':
+                start = getQuarterStart(now);
+                end = new Date();
+                break;
+            case 'lastQuarter':
+                const lastQMonth = getQuarterStart(now);
+                lastQMonth.setMonth(lastQMonth.getMonth()-3);
+                start = lastQMonth;
+                end = getQuarterEnd(lastQMonth);
+                break;
+            case 'thisYear':
+                start = new Date(now.getFullYear(), 0, 1);
+                end = new Date();
+                break;
+            case 'lastYear':
+                start = new Date(now.getFullYear()-1, 0, 1);
+                end = new Date(now.getFullYear()-1, 11, 31);
+                break;
+            default: // 'current'
+                return;
+        }
+        document.getElementById('start').value = formatDate(start);
+        document.getElementById('end').value = formatDate(end);
+    }
+
+    document.getElementById('quickRange').addEventListener('change', function(){
+        setQuickRange(this.value);
+    });
+</script>
 
 <div class="container">
     <hr style="border-top: 1px dotted lightgrey; background: none; height: 0; margin-top:5px; margin-bottom:10px;">
