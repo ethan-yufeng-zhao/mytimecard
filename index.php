@@ -385,7 +385,7 @@
             echo("</div>\n");
 		} else {
 			echo('<div class="alert alert-danger">');
-			echo('<p>No certifications assigned to: "'.$requested_user['user_samaccountname'].'"</p>');
+			echo('<p>No data: "'.$requested_user['user_samaccountname'].'"  From '.$_GET['start'].' to '.$_GET['end'].'</p>');
 			echo('</div>');
 		}
 
