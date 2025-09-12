@@ -150,14 +150,14 @@
          * Begining of content -- certs
          */
         echo("<div id='jfabtable'>");
-		echo('<table style="width:100%; border-collapse:collapse; text-align:left;"><tr><td style="width:18%; border:0px solid #ccc; padding:6px;">');
+		echo('<table style="width:100%; border-collapse:collapse; text-align:left;"><tr><td style="width:20%; border:0px solid #ccc; padding:6px;">');
 		echo('User: <a href="mailto:'.$requested_user['user_email'].'?subject='.$current_url.'?uid='.$requested_user['user_id'].'">');
 		echo($requested_user['user_firstname'].' '.$requested_user['user_lastname']);
 		echo('</a></td>');
-        echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Type:&nbsp;'.($meta['employeetype'] ?? '')."</td>");
-        echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.'<span class="data-shifttype">'.(htmlspecialchars($meta['shifttype'] ?? '')).'</span>'."</td>");
+        echo('<td style="width:15%; border:0px solid #ccc; padding:6px;">Type:&nbsp;'.($meta['employeetype'] ?? '')."</td>");
+        echo('<td style="width:15%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.'<span class="data-shifttype">'.(htmlspecialchars($meta['shifttype'] ?? '')).'</span>'."</td>");
 		if(!empty($requested_user['user_supervisor_id'])){
-			echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">');
+			echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">');
 //            echo('Supervisor: <a href="mailto:'.$requested_user['user_supervisor_id'].'?subject='.$current_url.'">');
 			echo('Supervisor:');
             if($user['user_is_admin'] || $user['user_is_supervisor']) {
@@ -169,22 +169,25 @@
             }
 			echo('</td>');
 		} else {
-            echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">&nbsp;</td>');
+            echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">&nbsp;</td>');
         }
-		echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">');
+		echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">');
 		echo('Time: '.date('Y-m-d H:i:s'));
 		echo('</td>');
 //		echo('</tr></table><p>');
 
+        echo('<td style="width:10%; border:0px solid #ccc; padding:6px;">');
+        echo('Dept.: '. 'ITdep');
+        echo('</td>');
 //		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
 //			echo('<a data-toggle="modal" href="#modal_cert_picker_data" class="btn btn-primary btn-sm hidden-print">Report missing data for '.$requested_user['user_samaccountname'].' </a>&nbsp;&nbsp;');
 //		}
-        echo('<td style="width:10%; border:0px solid #ccc; padding:6px; text-align: right">');
-        echo("<a href='javascript:void(0);' onclick='$(\"#savetoexcelform\").submit();' class='btn btn-primary btn-sm hidden-print'>Save to Excel</a></td></tr></table>");
-        echo("<form action='SaveToExcel.php' name='savetoexcelform' id='savetoexcelform' method='post' target='_blank' onsubmit='return saveToExcel();'>\n");
-        echo("<input type='hidden' id='dataToDisplay' name='dataToDisplay'>");
-        echo("<input type='hidden' id='filename' name='filename' value='MyTimecard_".$requested_user['user_firstname'].'.'.$requested_user['user_lastname'].'_'.date('Ymd').".xls'>");
-        echo("</form>");
+//        echo('<td style="width:10%; border:0px solid #ccc; padding:6px; text-align: right">');
+//        echo("<a href='javascript:void(0);' onclick='$(\"#savetoexcelform\").submit();' class='btn btn-primary btn-sm hidden-print'>Save to Excel</a></td></tr></table>");
+//        echo("<form action='SaveToExcel.php' name='savetoexcelform' id='savetoexcelform' method='post' target='_blank' onsubmit='return saveToExcel();'>\n");
+//        echo("<input type='hidden' id='dataToDisplay' name='dataToDisplay'>");
+//        echo("<input type='hidden' id='filename' name='filename' value='MyTimecard_".$requested_user['user_firstname'].'.'.$requested_user['user_lastname'].'_'.date('Ymd').".xls'>");
+//        echo("</form>");
 
 		$certs = array();
 

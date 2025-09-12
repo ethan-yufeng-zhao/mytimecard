@@ -450,20 +450,21 @@
             <option value="generous" <?php echo $currentMode==='generous' ? 'selected' : ''; ?>>Generous</option>
         </select>
 
-        <!-- Quick Range Selector -->
+        <!-- Quick Range -->
         <label for="quickRange" class="mb-0">Range:</label>
-        <select id="quickRange" class="form-control input-sm">
+        <select name="quickRange" id="quickRange" class="form-control input-sm">
             <option value="thisWeek">This Week</option>
             <option value="lastWeek">Last Week</option>
-            <option value="thisMonth" selected>This Month</option>
+            <option value="thisMonth">This Month</option>
             <option value="lastMonth">Last Month</option>
             <option value="thisQuarter">This Quarter</option>
             <option value="lastQuarter">Last Quarter</option>
             <option value="thisYear">This Year</option>
             <option value="lastYear">Last Year</option>
+            <option value="custom">Custom</option>
         </select>
 
-        <!-- Start / End -->
+        <!-- Start / End (only used if Custom is selected) -->
         <label for="start" class="mb-0">Start:</label>
         <input type="date" name="start" id="start" class="form-control input-sm"
                value="<?php echo htmlspecialchars($currentStart); ?>">
@@ -472,9 +473,52 @@
         <input type="date" name="end" id="end" class="form-control input-sm"
                value="<?php echo htmlspecialchars($currentEnd); ?>">
 
-        <button type="submit" class="btn btn-primary btn-sm my-wider-button">Apply</button>
+        <!-- Apply Button -->
+        <button type="submit" id="applyBtn" class="btn btn-primary btn-sm my-wider-button">Apply</button>
+
+        <!-- Save to Excel -->
+        <a href="javascript:void(0);"
+           onclick="document.getElementById('savetoexcelform').submit();"
+           class="btn btn-success btn-sm hidden-print">
+            <i class="glyphicon glyphicon-download-alt"></i> Excel
+        </a>
     </form>
 </div>
+
+<!-- Hidden Excel Export Form -->
+<form action="SaveToExcel.php"
+      name="savetoexcelform"
+      id="savetoexcelform"
+      method="post"
+      target="_blank"
+      onsubmit="return saveToExcel();">
+    <input type="hidden" id="dataToDisplay" name="dataToDisplay">
+    <input type="hidden" id="filename" name="filename"
+           value="MyTimecard_<?php
+           echo $currentUser.'_'.
+                   date('Ymd').".xls"; ?>">
+</form>
+
+<script>
+    // Auto-apply quick range
+    document.addEventListener("DOMContentLoaded", function() {
+        const quickRange = document.getElementById("quickRange");
+        const applyBtn   = document.getElementById("applyBtn");
+
+        // Restore previous selection from localStorage
+        const saved = localStorage.getItem("quickRange");
+        if (saved) quickRange.value = saved;
+
+        // On change: save + auto-submit
+        quickRange.addEventListener("change", function() {
+            localStorage.setItem("quickRange", this.value);
+
+            if (this.value !== "custom") {
+                applyBtn.click(); // simulate Apply
+            }
+        });
+    });
+</script>
 
 <script>
     const toolbarForm = document.getElementById('toolbarForm');

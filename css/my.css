@@ -146,11 +146,11 @@ a[target="_blank"]:hover { color: var(--primary-2); text-decoration: underline; 
 /* -------------------------
    Modal
    ------------------------- */
-.modal {
-    position: relative;
-    z-index: 1; /* ensures they appear above watermark */
-}
-.modal-dialog.wider-modal { width: 60%; max-width: 1100px; }
+/*.modal {*/
+/*    position: relative;*/
+/*    z-index: 1; !* ensures they appear above watermark *!*/
+/*}*/
+.modal-dialog.wider-modal { width: 65%; max-width: 1100px; }
 .modal-content { border-radius: 8px; }
 
 /* -------------------------
