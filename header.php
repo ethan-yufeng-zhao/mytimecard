@@ -123,86 +123,89 @@
 //		$user = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_samaccountname='.$REMOTE_USER[1]), false, getContextCookies()), true);
 //	}
 
-    $currentUser = $_GET['uid'] ?? $REMOTE_USER[1];
-    $currentMode = $_GET['mode'] ?? 'balanced';
-    $currentStart = $_GET['start'] ?? date('Y-m-01'); // default first day of this month
-    $currentEnd = $_GET['end'] ?? date('Y-m-d');      // default today
+    $currentUser  = $_GET['uid'] ?? $REMOTE_USER[1];
+    $currentMode  = $_GET['mode'] ?? 'balanced';
+    $currentRange = $_GET['quickRange'] ?? 'thisMonth';   // NEW
+    $currentStart = $_GET['start'] ?? date('Y-m-01');
+    $currentEnd   = $_GET['end'] ?? date('Y-m-d');
 
-    // Helper to build query URL
-    function buildQueryUrl($baseUrl, $user, $mode, $start, $end) {
+// Helper to build query URL
+    function buildQueryUrl($baseUrl, $user, $mode, $start, $end, $range) {
         return $baseUrl.'/index.php?'.http_build_query([
                         'uid'   => $user,
                         'mode'  => $mode,
+                        'quickRange' => $range,
                         'start' => $start,
                         'end'   => $end
                 ]);
     }
 
-    // --- Calculate relative periods ---
-    // This week (Monday to today)
-    $thisWeekStart = date('Y-m-d', strtotime('monday this week'));
-    $thisWeekEnd   = date('Y-m-d'); // today
+    switch ($currentRange) {
+        case 'thisWeek':
+            $currentStart = date('Y-m-d', strtotime('monday this week'));
+            $currentEnd   = date('Y-m-d');
+            break;
+        case 'lastWeek':
+            $currentStart = date('Y-m-d', strtotime('monday last week'));
+            $currentEnd   = date('Y-m-d', strtotime('sunday last week'));
+            break;
+        case 'thisMonth':
+            $currentStart = date('Y-m-01');
+            $currentEnd   = date('Y-m-d');
+            break;
+        case 'lastMonth':
+            $currentStart = date('Y-m-01', strtotime('first day of last month'));
+            $currentEnd   = date('Y-m-t', strtotime('last day of last month'));
+            break;
+        case 'thisQuarter':
+            $quarter = ceil(date('n') / 3);
+            $currentStart = date('Y-m-d', strtotime(date('Y').'-'.(($quarter-1)*3+1).'-01'));
+            $currentEnd   = date('Y-m-d'); //date('Y-m-t', strtotime($thisQuarterStart));
+            break;
+        case 'lastQuarter':
+            $quarter = ceil(date('n') / 3);
+            $lastQuarter = $quarter - 1;
+            if ($lastQuarter < 1) {
+                $lastQuarter = 4;
+                $lastQuarterYear = date('Y') - 1;
+            } else {
+                $lastQuarterYear = date('Y');
+            }
 
-    // This month (already default)
-    $thisMonthStart = date('Y-m-01');
-    $thisMonthEnd   = date('Y-m-d');
+            // Start of last quarter
+            $currentStart = date('Y-m-d', strtotime($lastQuarterYear.'-'.(($lastQuarter-1)*3+1).'-01'));
 
-    // This quarter
-    $quarter = ceil(date('n') / 3);
-    $thisQuarterStart = date('Y-m-d', strtotime(date('Y').'-'.(($quarter-1)*3+1).'-01'));
-    $thisQuarterEnd   = date('Y-m-d'); //date('Y-m-t', strtotime($thisQuarterStart));
-
-    // This year
-    $thisYearStart = date('Y-01-01');
-    $thisYearEnd   = date('Y-m-d'); // date('Y-12-31');
-
-    // Last week (Monday to Sunday)
-    $lastWeekStart = date('Y-m-d', strtotime('monday last week'));
-    $lastWeekEnd   = date('Y-m-d', strtotime('sunday last week'));
-
-    // Last month
-    $lastMonthStart = date('Y-m-01', strtotime('first day of last month'));
-    $lastMonthEnd   = date('Y-m-t', strtotime('last day of last month'));
-
-    // Last quarter
-    $lastQuarter = $quarter - 1;
-    if ($lastQuarter < 1) {
-        $lastQuarter = 4;
-        $lastQuarterYear = date('Y') - 1;
-    } else {
-        $lastQuarterYear = date('Y');
+            // End of last quarter: last day of the last month in that quarter
+            $lastQuarterEndMonth = $lastQuarter * 3; // March, June, Sep, Dec
+            $currentEnd = date('Y-m-t', strtotime($lastQuarterYear.'-'.$lastQuarterEndMonth.'-01'));
+            break;
+        case 'thisYear':
+            $currentStart = date('Y-01-01');
+            $currentEnd   = date('Y-m-d');
+            break;
+        case 'lastYear':
+            $currentStart = date('Y-01-01', strtotime('last year'));
+            $currentEnd   = date('Y-12-31', strtotime('last year'));
+            break;
+        case 'custom':
+        default:
+            // Respect user input if custom
+            $currentStart = $_GET['start'] ?? date('Y-m-01');
+            $currentEnd   = $_GET['end'] ?? date('Y-m-d');
+            break;
     }
 
-    // Start of last quarter
-    $lastQuarterStart = date('Y-m-d', strtotime($lastQuarterYear.'-'.(($lastQuarter-1)*3+1).'-01'));
-
-    // End of last quarter: last day of the last month in that quarter
-    $lastQuarterEndMonth = $lastQuarter * 3; // March, June, Sep, Dec
-    $lastQuarterEnd = date('Y-m-t', strtotime($lastQuarterYear.'-'.$lastQuarterEndMonth.'-01'));
-
-    // Last year
-    $lastYearStart = date('Y-01-01', strtotime('-1 year'));
-    $lastYearEnd   = date('Y-12-31', strtotime('-1 year'));
-
     // --- Build URLs ---
-    $currentQueryUrl    = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $currentStart, $currentEnd); // default/current
-    $thisWeekQueryUrl   = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $thisWeekStart, $thisWeekEnd);
-    $thisMonthQueryUrl  = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $thisMonthStart, $thisMonthEnd);
-    $thisQuarterQueryUrl= buildQueryUrl($mybaseurl, $currentUser, $currentMode, $thisQuarterStart, $thisQuarterEnd);
-    $thisYearQueryUrl   = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $thisYearStart, $thisYearEnd);
-    $lastWeekQueryUrl   = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $lastWeekStart, $lastWeekEnd);
-    $lastMonthQueryUrl  = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $lastMonthStart, $lastMonthEnd);
-    $lastQuarterQueryUrl= buildQueryUrl($mybaseurl, $currentUser, $currentMode, $lastQuarterStart, $lastQuarterEnd);
-    $lastYearQueryUrl   = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $lastYearStart, $lastYearEnd);
+    $currentQueryUrl    = buildQueryUrl($mybaseurl, $currentUser, $currentMode, $currentStart, $currentEnd, $currentRange); // default/current
 
 //
 //// Debug print
-//    if (DEBUG) {
-//        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
-//        echo "DEBUG URL: <a href='$debugUrl'>$debugUrl</a><br>";
-//        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
-//        echo "</div>";
-//    }
+    if (DEBUG) {
+        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
+        echo "DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a><br>";
+        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
+        echo "</div>";
+    }
 
 ?>
 
@@ -402,19 +405,6 @@
                         echo('</li>');
                     }
                 ?>
-<!--                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>-->
-<!--                    <ul class="dropdown-menu">-->
-<!--                        <li><a href="--><?php //echo $thisWeekQueryUrl ?><!--">This Week</a></li>-->
-<!--                        <li><a href="--><?php //echo $thisMonthQueryUrl ?><!--">This Month</a></li>-->
-<!--                        <li><a href="--><?php //echo $thisQuarterQueryUrl ?><!--">This Quarter</a></li>-->
-<!--                        <li><a href="--><?php //echo $thisYearQueryUrl ?><!--">This Year</a></li>-->
-<!--                        <li class="divider"></li>-->
-<!--                        <li><a href="--><?php //echo $lastWeekQueryUrl ?><!--">Last Week</a></li>-->
-<!--                        <li><a href="--><?php //echo $lastMonthQueryUrl ?><!--">Last Month</a></li>-->
-<!--                        <li><a href="--><?php //echo $lastQuarterQueryUrl ?><!--">Last Quarter</a></li>-->
-<!--                        <li><a href="--><?php //echo $lastYearQueryUrl ?><!--">Last Year</a></li>-->
-<!--                    </ul>-->
-<!--                </li>-->
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Links <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                 <li><a target="_blank" href="https://jireh.smarteru.com/remote-login/login.cfm">SmarterU</a></li>
@@ -452,19 +442,19 @@
 
         <!-- Quick Range -->
         <label for="quickRange" class="mb-0">Range:</label>
-        <select name="quickRange" id="quickRange" class="form-control input-sm">
-            <option value="thisWeek">This Week</option>
-            <option value="lastWeek">Last Week</option>
-            <option value="thisMonth">This Month</option>
-            <option value="lastMonth">Last Month</option>
-            <option value="thisQuarter">This Quarter</option>
-            <option value="lastQuarter">Last Quarter</option>
-            <option value="thisYear">This Year</option>
-            <option value="lastYear">Last Year</option>
-            <option value="custom">Custom</option>
+        <select name="quickRange" id="quickRange" class="form-control input-sm" onchange="this.form.submit()">
+            <option value="thisWeek"  <?php echo $currentRange==='thisWeek' ? 'selected' : ''; ?>>This Week</option>
+            <option value="lastWeek"  <?php echo $currentRange==='lastWeek' ? 'selected' : ''; ?>>Last Week</option>
+            <option value="thisMonth"  <?php echo $currentRange==='thisMonth' ? 'selected' : ''; ?>>This Month</option>
+            <option value="lastMonth"  <?php echo $currentRange==='lastMonth' ? 'selected' : ''; ?>>Last Month</option>
+            <option value="thisQuarter"  <?php echo $currentRange==='thisQuarter' ? 'selected' : ''; ?>>This Quarter</option>
+            <option value="lastQuarter"  <?php echo $currentRange==='lastQuarter' ? 'selected' : ''; ?>>Last Quarter</option>
+            <option value="thisYear"   <?php echo $currentRange==='thisYear' ? 'selected' : ''; ?>>This Year</option>
+            <option value="lastYear"   <?php echo $currentRange==='lastYear' ? 'selected' : ''; ?>>Last Year</option>
+            <option value="custom"     <?php echo $currentRange==='custom' ? 'selected' : ''; ?>>Custom</option>
         </select>
 
-        <!-- Start / End (only used if Custom is selected) -->
+        <!-- Start / End -->
         <label for="start" class="mb-0">Start:</label>
         <input type="date" name="start" id="start" class="form-control input-sm"
                value="<?php echo htmlspecialchars($currentStart); ?>">
@@ -499,26 +489,26 @@
                    date('Ymd').".xls"; ?>">
 </form>
 
-<script>
-    // Auto-apply quick range
-    document.addEventListener("DOMContentLoaded", function() {
-        const quickRange = document.getElementById("quickRange");
-        const applyBtn   = document.getElementById("applyBtn");
-
-        // Restore previous selection from localStorage
-        const saved = localStorage.getItem("quickRange");
-        if (saved) quickRange.value = saved;
-
-        // On change: save + auto-submit
-        quickRange.addEventListener("change", function() {
-            localStorage.setItem("quickRange", this.value);
-
-            if (this.value !== "custom") {
-                applyBtn.click(); // simulate Apply
-            }
-        });
-    });
-</script>
+<!--<script>-->
+<!--    // Auto-apply quick range-->
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--        const quickRange = document.getElementById("quickRange");-->
+<!--        const applyBtn   = document.getElementById("applyBtn");-->
+<!---->
+<!--        // Restore previous selection from localStorage-->
+<!--        const saved = localStorage.getItem("quickRange");-->
+<!--        if (saved) quickRange.value = saved;-->
+<!---->
+<!--        // On change: save + auto-submit-->
+<!--        quickRange.addEventListener("change", function() {-->
+<!--            localStorage.setItem("quickRange", this.value);-->
+<!---->
+<!--            if (this.value !== "custom") {-->
+<!--                applyBtn.click(); // simulate Apply-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 <script>
     const toolbarForm = document.getElementById('toolbarForm');
