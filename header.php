@@ -336,21 +336,21 @@ $currentEnd   = $_GET['end']   ?? date('Y-m-d');
 $currentUser  = $_GET['uid']   ?? $REMOTE_USER[1];
 
 // Build current query string for debug
-$debugQuery = http_build_query([
-        'uid'   => $currentUser,
-        'mode'  => $currentMode,
-        'start' => $currentStart,
-        'end'   => $currentEnd,
-]);
-$debugUrl = $mybaseurl.'/index.php?'.$debugQuery;
-
-// Debug print
-if (DEBUG) {
-    echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
-    echo "DEBUG URL: <a href='$debugUrl'>$debugUrl</a><br>";
-    echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
-    echo "</div>";
-}
+//$debugQuery = http_build_query([
+//        'uid'   => $currentUser,
+//        'mode'  => $currentMode,
+//        'start' => $currentStart,
+//        'end'   => $currentEnd,
+//]);
+//$debugUrl = $mybaseurl.'/index.php?'.$debugQuery;
+//
+//// Debug print
+//if (DEBUG) {
+//    echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
+//    echo "DEBUG URL: <a href='$debugUrl'>$debugUrl</a><br>";
+//    echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
+//    echo "</div>";
+//}
 ?>
 
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
