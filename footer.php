@@ -7,9 +7,6 @@ $execution_time = round($end_time - $start_time, 2);
 
 //$protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 //$url = urlencode($protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-$APP_HOST = $_SERVER["SERVER_NAME"] ? $_SERVER["SERVER_NAME"] : $_SERVER["HTTP_HOST"];
-$APP_PORT = $_SERVER["SERVER_PORT"] == 80 ? '' : ':'.$_SERVER["SERVER_PORT"];
-$url = urlencode($_SERVER['REQUEST_SCHEME'].'://'.$APP_HOST.$APP_PORT.$_SERVER['REQUEST_URI']);
 
 $currentYear = date('Y');
 
@@ -31,7 +28,7 @@ if (isset($remoteUser)) {
 
 echo "<br>BACKEND: <b>".($APP_HOST?extractSubdomainOrIP($APP_HOST):'')."</b>";
 echo " | DB: <b>".($GLOBALS['DB_HOST']??$APP_HOST)."</b>";
-echo " | <a href='mailto:ethan.zhao@jfab.aosmd.com?subject=".$url."'>Report Issue</a>";
+echo " | <a href='mailto:ethan.zhao@jfab.aosmd.com?subject=".$current_url."'>Report Issue</a>";
 echo " | &#169; JFAB (<b>$currentYear</b>)";
 //echo "Page Viewed: <strike>N/A</strike>";
 

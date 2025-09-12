@@ -54,6 +54,10 @@
     $HTTP_ROOTURL = dirname($mybaseurl);
     define("HTTP_BASEURL", $mybaseurl);
 
+    $APP_HOST = $_SERVER["SERVER_NAME"] ? $_SERVER["SERVER_NAME"] : $_SERVER["HTTP_HOST"];
+    $APP_PORT = $_SERVER["SERVER_PORT"] == 80 ? '' : ':'.$_SERVER["SERVER_PORT"];
+    $current_url = urlencode($_SERVER['REQUEST_SCHEME'].'://'.$APP_HOST.$APP_PORT.$_SERVER['REQUEST_URI']);
+
     function session_clean(){
         session_start();
         $_SESSION = array();

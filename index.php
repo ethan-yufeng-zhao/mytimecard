@@ -151,14 +151,14 @@
          */
         echo("<div id='jfabtable'>");
 		echo('<table style="width:100%; border-collapse:collapse; text-align:left;"><tr><td style="width:18%; border:0px solid #ccc; padding:6px;">');
-		echo('User: <a href="mailto:'.$requested_user['user_email'].'">');
+		echo('User: <a href="mailto:'.$requested_user['user_email'].'?subject='.$current_url.'">');
 		echo($requested_user['user_firstname'].' '.$requested_user['user_lastname']);
 		echo('</a></td>');
         echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Type:&nbsp;'.($meta['employeetype'] ?? '')."</td>");
         echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.'<span class="data-shifttype">'.(htmlspecialchars($meta['shifttype'] ?? '')).'</span>'."</td>");
 		if(!empty($requested_user['user_supervisor_id'])){
 			echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">');
-			echo('Supervisor: <a href="mailto:'.$requested_user_supervisor['user_email'].'">');
+			echo('Supervisor: <a href="'.$mybaseurl.'/index.php?uid='.$requested_user['user_supervisor_id'].'">');
 			echo($requested_user_supervisor['user_firstname'].' '.$requested_user_supervisor['user_lastname']);
 			echo('</a>');
 			echo('</td>');
