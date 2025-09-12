@@ -370,9 +370,9 @@
             }
 			echo("</tbody>");
             echo("</tfoot>");
-            echo("<tr><th colspan='2'>Total:</th><th>".$summary['total_tos']."</th><th>".$summary['total_tib']."</th><th>".$summary['total_tob']."</th>");
+            echo("<tr><th>Total:</th><th>".$summary['actual_workdays']."</th><th>".$summary['total_tos']."</th><th>".$summary['total_tib']."</th><th>".$summary['total_tob']."</th>");
             echo("<th>".$summary['total_tif']."</th><th>".$summary['total_tisf']."</th><th>".$summary['total_tifac']."</th><th>".$summary['total_vacation']."</th><th>".$summary['total_hours']."</th></tr>");
-            echo("<tr><th colspan='2'>Average:</th><th>".$summary['avg_tos']."</th><th>".$summary['avg_tib']."</th><th>".$summary['avg_tob']."</th>");
+            echo("<tr><th>Average:</th><th>".$summary['workdays']."</th><th>".$summary['avg_tos']."</th><th>".$summary['avg_tib']."</th><th>".$summary['avg_tob']."</th>");
             echo("<th>".$summary['avg_tif']."</th><th>".$summary['avg_tisf']."</th><th>".$summary['avg_tifac']."</th><th>".$summary['avg_vacation']."</th><th>".$summary['avg_hours']."</th></tr>");
             echo("</tfoot>");
 			echo("</table>\n");
