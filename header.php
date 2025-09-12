@@ -347,11 +347,12 @@
 			});
 		});
 
-		function saveToExcel(){
-			$('#dataToDisplay').val($('#jfabtable').html());
-			return true;
-		}
-	</script>
+        function saveToExcel() {
+            $('#dataToDisplay').val($('#jfabtable').html());
+            document.getElementById('savetoexcelform').submit();
+            return false; // stop link navigation
+        }
+    </script>
 
 	<link type="text/css" href="css/redmond/jquery-ui-1.9.2.custom.min.css" rel="stylesheet"> <!-- used only for datepicker -->
 	<script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script> <!-- used only for datepicker -->
@@ -463,9 +464,9 @@
         <!-- Apply Button -->
         <button type="submit" id="applyBtn" class="btn btn-primary btn-sm my-wider-button">Apply</button>
 
-        <!-- Save to Excel -->
+        <!-- Excel button -->
         <a href="javascript:void(0);"
-           onclick="document.getElementById('savetoexcelform').submit();"
+           onclick="return saveToExcel();"
            class="btn btn-success btn-sm hidden-print">
             <i class="glyphicon glyphicon-download-alt"></i> Excel
         </a>
@@ -473,17 +474,9 @@
 </div>
 
 <!-- Hidden Excel Export Form -->
-<form action="SaveToExcel.php"
-      name="savetoexcelform"
-      id="savetoexcelform"
-      method="post"
-      target="_blank"
-      onsubmit="return saveToExcel();">
+<form action="SaveToExcel.php" name="savetoexcelform" id="savetoexcelform" method="post" target="_blank" onsubmit="return saveToExcel();">
     <input type="hidden" id="dataToDisplay" name="dataToDisplay">
-    <input type="hidden" id="filename" name="filename"
-           value="MyTimecard_<?php
-           echo $currentUser.'_'.
-                   date('Ymd').".xls"; ?>">
+    <input type="hidden" id="filename" name="filename" value="MyTimecard_<?php echo $currentUser.'_'.date('Ymd'); ?>.xls">
 </form>
 
 <script>
@@ -509,27 +502,6 @@
         });
     });
 </script>
-
-<!--<script>-->
-<!--    // Auto-apply quick range-->
-<!--    document.addEventListener("DOMContentLoaded", function() {-->
-<!--        const quickRange = document.getElementById("quickRange");-->
-<!--        const applyBtn   = document.getElementById("applyBtn");-->
-<!---->
-<!--        // Restore previous selection from localStorage-->
-<!--        const saved = localStorage.getItem("quickRange");-->
-<!--        if (saved) quickRange.value = saved;-->
-<!---->
-<!--        // On change: save + auto-submit-->
-<!--        quickRange.addEventListener("change", function() {-->
-<!--            localStorage.setItem("quickRange", this.value);-->
-<!---->
-<!--            if (this.value !== "custom") {-->
-<!--                applyBtn.click(); // simulate Apply-->
-<!--            }-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 
 <script>
     const toolbarForm = document.getElementById('toolbarForm');
