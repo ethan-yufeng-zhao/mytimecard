@@ -331,37 +331,52 @@
 <?php
 // Capture current params or set defaults
 $currentMode  = $_GET['mode']  ?? 'balanced';
-$currentStart = $_GET['start'] ?? date('Y-m-01');  // default: first day of month
-$currentEnd   = $_GET['end']   ?? date('Y-m-d');   // default: today
-$currentUser  = $_GET['uid']   ?? $REMOTE_USER[1]; // keep existing user
+$currentStart = $_GET['start'] ?? date('Y-m-01');
+$currentEnd   = $_GET['end']   ?? date('Y-m-d');
+$currentUser  = $_GET['uid']   ?? $REMOTE_USER[1];
+
+// Build current query string for debug
+$debugQuery = http_build_query([
+        'uid'   => $currentUser,
+        'mode'  => $currentMode,
+        'start' => $currentStart,
+        'end'   => $currentEnd,
+]);
+$debugUrl = $mybaseurl.'/index.php?'.$debugQuery;
+
+// Debug print
+if (DEBUG) {
+    echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
+    echo "DEBUG URL: <a href='$debugUrl'>$debugUrl</a><br>";
+    echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
+    echo "</div>";
+}
 ?>
+
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
-    <form method="get" action="<?php echo $mybaseurl; ?>/index.php"
-          class="form-inline" role="form"
+    <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form"
           style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;">
 
-        <!-- Preserve uid -->
+        <!-- Keep user -->
         <input type="hidden" name="uid" value="<?php echo htmlspecialchars($currentUser); ?>">
 
         <!-- Mode Selector -->
         <label for="mode" class="mb-0">Mode:</label>
         <select name="mode" id="mode" class="form-control input-sm">
-            <option value="strict"   <?php echo $currentMode === 'strict' ? 'selected' : ''; ?>>Strict</option>
-            <option value="balanced" <?php echo $currentMode === 'balanced' ? 'selected' : ''; ?>>Balanced</option>
-            <option value="generous" <?php echo $currentMode === 'generous' ? 'selected' : ''; ?>>Generous</option>
+            <option value="strict"   <?php echo $currentMode==='strict' ? 'selected' : ''; ?>>Strict</option>
+            <option value="balanced" <?php echo $currentMode==='balanced' ? 'selected' : ''; ?>>Balanced</option>
+            <option value="generous" <?php echo $currentMode==='generous' ? 'selected' : ''; ?>>Generous</option>
         </select>
 
-        <!-- Start Date -->
+        <!-- Start / End -->
         <label for="start" class="mb-0">Start:</label>
         <input type="date" name="start" id="start" class="form-control input-sm"
                value="<?php echo htmlspecialchars($currentStart); ?>">
 
-        <!-- End Date -->
         <label for="end" class="mb-0">End:</label>
         <input type="date" name="end" id="end" class="form-control input-sm"
                value="<?php echo htmlspecialchars($currentEnd); ?>">
 
-        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary btn-sm">Apply</button>
     </form>
 </div>

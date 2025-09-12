@@ -132,7 +132,13 @@
 			unset($json_add_user_cert);
 		}
 
-        $json = json_decode(file_get_contents(request_json_api('/JSON/JSON_rawdata.php?user_id='.$requested_user['user_id']) , false, getContextCookies()), true);
+        $apiUrl = '/JSON/JSON_rawdata.php?user_id=' . urlencode($requested_user['user_id'])
+                . '&mode=' . urlencode($_GET['mode'] ?? 'balanced')
+                . '&start=' . urlencode($_GET['start'] ?? date('Y-m-01'))
+                . '&end=' . urlencode($_GET['end'] ?? date('Y-m-d'));
+
+        $json = json_decode(file_get_contents(request_json_api($apiUrl), false, getContextCookies()), true);
+
         $meta = $json[$requested_user['user_id']]['meta'] ?? null;
         $rawdata = $json[$requested_user['user_id']]['rawdata'] ?? null;
         $vacations = $json[$requested_user['user_id']]['vacation'] ?? null;
