@@ -122,13 +122,14 @@ body {
     border: 1px solid rgba(13,51,73,0.06);
 }
 .bootstrap-header {
-    background: linear-gradient(180deg, rgba(17,118,100,0.98), rgba(11,83,69,0.95));
-    color: #ffffff !important;
+    background: linear-gradient(180deg, rgba(90, 180, 150, 0.75), rgba(70, 150, 120, 0.75));
+    color: black !important;
     font-weight: 600;
     vertical-align: middle;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    text-shadow: none;
+    /*border-bottom: 1px solid #bfe3dd;*/
 }
-.tablesorter .tablesorter-header .glyphicon { color: rgba(255,255,255,0.9); }
+.tablesorter .tablesorter-header .glyphicon { color: #0d3349; }
 .table.table-striped > tbody > tr:nth-of-type(odd) > td {
     background-color: #f4faf8; /* light subtle green-tint stripe */
 }
