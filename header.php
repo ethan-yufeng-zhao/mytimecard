@@ -377,9 +377,9 @@ $currentUser  = $_GET['uid']   ?? $REMOTE_USER[1];
         <input type="date" name="end" id="end" class="form-control input-sm"
                value="<?php echo htmlspecialchars($currentEnd); ?>">
 
-        <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+        <button type="submit" class="btn btn-primary btn-sm my-wider-button">Apply</button>
     </form>
 </div>
 
 <div class="container">
-    <hr style="border:0; height:1px; background: lightgrey; margin-top:5px; margin-bottom:10px;">
+    <hr style="border-top: 1px dotted lightgrey; background: none; height: 0; margin-top:5px; margin-bottom:10px;">

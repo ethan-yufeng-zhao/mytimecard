@@ -2,92 +2,76 @@ body {
     font-family: Consolas, Monospace, sans-serif;
     font-size: 16px;
     overflow-y: scroll;
-    /*background: url('../watermark.png') no-repeat center center fixed;*/
-    /*background-size: cover;*/
-    /*opacity: 1;*/
-    /*color: #000;*/
-    /*background: url('../watermark.png') repeat;*/
-    /*background-size: 64px 64px;*/
-    /*color: #000;*/
+    background: #fff; /* keep clean white background */
+    color: #000;      /* standard black text */
 }
+
 .watermark-text {
     position: fixed;
     top: 7%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 4rem; /* Adjust font size */
-    color: rgba(0, 0, 0, 0.1); /* Transparent black text */
-    z-index: -1; /* Sends the text behind other content */
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.06); /* lighter, less distracting watermark */
+    z-index: -1;
     white-space: nowrap;
-    pointer-events: none; /* Makes the text non-interactive */
+    pointer-events: none;
 }
+
 .container {
     width: 75%;
     max-width: 1900px;
     padding: 1px;
     margin: 0 auto;
 }
-/*.tablesorter tr th:nth-child(2) {*/
-/*        width: 300px;*/
-/*}*/
-/*.tablesorter tr td:nth-child(2) {*/
-/*    font-weight: bold;*/
-/*    white-space: nowrap;*/
-/*}*/
 
-/*a[target="_blank"] {*/
-/*    display: inline-block;*/
-/*    font-weight: bold;*/
-/*    color: #333;*/
-/*    text-decoration: none;*/
-/*    padding: 5px 10px;*/
-/*    border: 1px solid #333;*/
-/*}*/
 a[target="_blank"]:hover {
-    /*background-color: #333;*/
-    color: #0d3349;
+    color: #005580; /* toned down corporate blue hover */
 }
+
 .hltext {
-    color: purple;
+    color: #5a2a82; /* darker purple for emphasis, but less playful */
 }
+
 .edit-vacation-icon {
     cursor: pointer;
-    /*border: 1px solid #337ab7;*/
-    /*padding: 4px;*/
-    /*border-radius: 2px;*/
-    /*color: #337ab7;*/
-}
-.modal-dialog.wider-modal {
-    width: 55%;
-    /*max-width: 90%; !* Or any percentage or pixel value you want *!*/
 }
 
-/* target the specific history table so Bootstrap doesn't win */
+/* Modal width unchanged */
+.modal-dialog.wider-modal {
+    width: 55%;
+}
+
+/* History Rawdata Table — keep colors but tune contrast */
 .history-rawdata-table tbody tr.assumed-row > td {
-    background-color: #f8d7da !important; /* light red */
+    background-color: #f5b7b1 !important; /* softer business red */
     color: #000 !important;
 }
 
 .history-rawdata-table tbody tr.overnight-row > td {
-    background-color: #fff3cd !important; /* light yellow */
+    background-color: #f9e79f !important; /* muted yellow */
     color: #000 !important;
 }
 
 .history-rawdata-table tbody tr.assumed-overnight > td {
-    background-color: #f5c6cb !important; /* darker red */
+    background-color: #ec7063 !important; /* stronger red, but still clear */
     color: #000 !important;
 }
 
-/* make readonly inputs inside highlighted rows readable and transparent */
+/* Inputs inside colored rows */
 .history-rawdata-table tbody tr.assumed-row input,
 .history-rawdata-table tbody tr.overnight-row input,
 .history-rawdata-table tbody tr.assumed-overnight input {
     background-color: transparent !important;
     color: inherit !important;
-    border-color: rgba(0,0,0,0.05) !important; /* keep the input visible */
+    border-color: rgba(0,0,0,0.1) !important;
 }
 
-/* optionally reduce stripe interference — but not required */
+/* Stripe rows toned down so highlights remain visible */
 .history-rawdata-table.table-striped tbody > tr:nth-of-type(odd) > td {
-    background-color: transparent !important;
+    background-color: #fafafa !important;
+}
+
+.my-wider-button {
+    width: 400px;
 }
