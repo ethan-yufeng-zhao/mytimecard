@@ -151,16 +151,22 @@
          */
         echo("<div id='jfabtable'>");
 		echo('<table style="width:100%; border-collapse:collapse; text-align:left;"><tr><td style="width:18%; border:0px solid #ccc; padding:6px;">');
-		echo('User: <a href="mailto:'.$requested_user['user_email'].'?subject='.$current_url.'">');
+		echo('User: <a href="mailto:'.$requested_user['user_email'].'?subject='.$current_url.'?uid='.$requested_user['user_id'].'">');
 		echo($requested_user['user_firstname'].' '.$requested_user['user_lastname']);
 		echo('</a></td>');
         echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Type:&nbsp;'.($meta['employeetype'] ?? '')."</td>");
         echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.'<span class="data-shifttype">'.(htmlspecialchars($meta['shifttype'] ?? '')).'</span>'."</td>");
 		if(!empty($requested_user['user_supervisor_id'])){
 			echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">');
-			echo('Supervisor: <a href="'.$mybaseurl.'/index.php?uid='.$requested_user['user_supervisor_id'].'">');
+//            echo('Supervisor: <a href="mailto:'.$requested_user['user_supervisor_id'].'?subject='.$current_url.'">');
+			echo('Supervisor:');
+            if($user['user_is_admin'] || $user['user_is_supervisor']) {
+                echo('<a href="' . $mybaseurl . '/index.php?uid=' . $requested_user['user_supervisor_id'] . '">');
+            }
 			echo($requested_user_supervisor['user_firstname'].' '.$requested_user_supervisor['user_lastname']);
-			echo('</a>');
+            if($user['user_is_admin'] || $user['user_is_supervisor']) {
+                echo('</a>');
+            }
 			echo('</td>');
 		} else {
             echo('<td style="width:18%; border:0px solid #ccc; padding:6px;">&nbsp;</td>');
@@ -291,11 +297,11 @@
 
                 echo("<td style='display: flex; justify-content: space-between; align-items: center;'>");
                 echo('<span style="text-align: left;">' . ($value['subtotal'] ?? 0) . '</span>');
-                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
+//                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
                     if ($value['subtotal'] > 0) {
                         echo('<span class="view-history-icon glyphicon glyphicon-list-alt text-secondary" style="cursor: pointer;" title="View/Edit Badging His" data-day_of_month="' . htmlspecialchars($day) . '"></span>');
                     }
-                }
+//                }
                 echo('</td>');
 
 //                echo("<td>");

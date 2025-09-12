@@ -5,7 +5,7 @@
     set_the_cookies();
 
     if (DEBUG) {
-        $_SERVER["REMOTE_USER"] = "\\ethan.zhao"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
+        $_SERVER["REMOTE_USER"] = "\\peng.kuah"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
 //	if(!isset($_SERVER["REMOTE_USER"]) || $_SERVER["REMOTE_USER"] == '') {
 //		header('HTTP/1.1 401 Unauthorized');
 //		header('WWW-Authenticate: Negotiate');
@@ -122,6 +122,34 @@
 //		unset($user);
 //		$user = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_samaccountname='.$REMOTE_USER[1]), false, getContextCookies()), true);
 //	}
+
+// Capture current params or set defaults
+    $currentUser = $_GET['uid'] ?? $REMOTE_USER[1];
+    $currentMode = $_GET['mode'] ?? 'balanced';
+    $currentStart = $_GET['start'] ?? date('Y-m-01');
+    $currentEnd = $_GET['end'] ?? date('Y-m-d');
+    $lastWeekStart = $_GET['start'] ?? date('Y-m-01');
+    $lastWeekEnd = $_GET['end'] ?? date('Y-m-d');
+    $lastMonthStart = $_GET['start'] ?? date('Y-m-01');
+    $lastMonthEnd = $_GET['end'] ?? date('Y-m-d');
+
+// Build current query string for debug
+    $currentQuery = http_build_query([
+            'uid'   => $currentUser,
+            'mode'  => $currentMode,
+            'start' => $currentStart,
+            'end'   => $currentEnd,
+    ]);
+    $debugUrl = $mybaseurl.'/index.php?'.$currentQuery;
+//
+//// Debug print
+    if (DEBUG) {
+        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
+        echo "DEBUG URL: <a href='$debugUrl'>$debugUrl</a><br>";
+        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
+        echo "</div>";
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -320,10 +348,16 @@
                         echo('</li>');
                     }
                 ?>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a target="_blank" href="<?php echo $debugUrl ?>">Last Week</a></li>
+                    </ul>
+                </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                 <li><a target="_blank" href="https://jireh.smarteru.com/remote-login/login.cfm">SmarterU</a></li>
-                <li><a target="_blank" href="http://www.jfab.aosmd.com">HilWiki</a></li>
+                <li><a target="_blank" href="http://hilwiki.jfab.aosmd.com">HilWiki</a></li>
+                <li><a target="_blank" href="http://webx.jfab.aosmd.com/tcs">TCS</a></li>
 <!--                    <li>--><?php //echo(time()); ?><!--</li>-->
 <!--                    <li><a id="id_db_type" href="" onclick="switchDB()">--><?php //echo(strtoupper($GLOBALS['DB_TYPE'])); ?><!--</a></li>-->
                 </ul>
@@ -332,30 +366,6 @@
         </div><!--/.nav-collapse -->
     </div>
 </div>
-<?php
-// Capture current params or set defaults
-$currentMode  = $_GET['mode']  ?? 'balanced';
-$currentStart = $_GET['start'] ?? date('Y-m-01');
-$currentEnd   = $_GET['end']   ?? date('Y-m-d');
-$currentUser  = $_GET['uid']   ?? $REMOTE_USER[1];
-
-// Build current query string for debug
-//$debugQuery = http_build_query([
-//        'uid'   => $currentUser,
-//        'mode'  => $currentMode,
-//        'start' => $currentStart,
-//        'end'   => $currentEnd,
-//]);
-//$debugUrl = $mybaseurl.'/index.php?'.$debugQuery;
-//
-//// Debug print
-//if (DEBUG) {
-//    echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
-//    echo "DEBUG URL: <a href='$debugUrl'>$debugUrl</a><br>";
-//    echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
-//    echo "</div>";
-//}
-?>
 
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
     <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form"
