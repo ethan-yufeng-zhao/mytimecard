@@ -1,18 +1,32 @@
+:root {
+    --business-green: #2e7d32;       /* main accent */
+    --business-green-dark: #1b5e20;  /* navbar background */
+    --business-green-light: #e8f5e9; /* soft green highlight */
+    --business-green-mid: #a5d6a7;   /* borders / accents */
+    --business-green-hover: #145a17; /* darker hover */
+    --business-yellow: #f9e79f;
+    --business-red-light: #f5b7b1;
+    --business-red-strong: #ec7063;
+    --business-purple: #5a2a82;
+}
+
+/* Base page */
 body {
     font-family: Consolas, Monospace, sans-serif;
     font-size: 16px;
     overflow-y: scroll;
-    background: #fff; /* clean white background */
-    color: #000;      /* standard black text */
+    background: #fff;
+    color: #000;
 }
 
+/* Watermark stays subtle */
 .watermark-text {
     position: fixed;
     top: 7%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 4rem;
-    color: rgba(0, 0, 0, 0.06); /* lighter, less distracting watermark */
+    color: rgba(0, 0, 0, 0.06);
     z-index: -1;
     white-space: nowrap;
     pointer-events: none;
@@ -25,12 +39,14 @@ body {
     margin: 0 auto;
 }
 
+/* Links */
 a[target="_blank"]:hover {
-    color: #005580; /* toned down corporate blue hover */
+    color: var(--business-green);
 }
 
+/* Highlight text */
 .hltext {
-    color: #5a2a82; /* darker purple for emphasis, but less playful */
+    color: var(--business-purple);
 }
 
 .edit-vacation-icon {
@@ -42,23 +58,24 @@ a[target="_blank"]:hover {
     width: 55%;
 }
 
-/* History Rawdata Table — keep highlights, shift to green/yellow theme */
+/* ====================== */
+/* History Rawdata Table  */
+/* ====================== */
 .history-rawdata-table tbody tr.assumed-row > td {
-    background-color: #f5b7b1 !important; /* softer business red */
+    background-color: var(--business-red-light) !important;
     color: #000 !important;
 }
 
 .history-rawdata-table tbody tr.overnight-row > td {
-    background-color: #f9e79f !important; /* muted yellow */
+    background-color: var(--business-yellow) !important;
     color: #000 !important;
 }
 
 .history-rawdata-table tbody tr.assumed-overnight > td {
-    background-color: #ec7063 !important; /* stronger red, but still clear */
+    background-color: var(--business-red-strong) !important;
     color: #000 !important;
 }
 
-/* Inputs inside colored rows */
 .history-rawdata-table tbody tr.assumed-row input,
 .history-rawdata-table tbody tr.overnight-row input,
 .history-rawdata-table tbody tr.assumed-overnight input {
@@ -67,11 +84,19 @@ a[target="_blank"]:hover {
     border-color: rgba(0,0,0,0.1) !important;
 }
 
-/* Table stripes — light green-gray for contrast */
+/* Stripes use business green-gray */
 .history-rawdata-table.table-striped tbody > tr:nth-of-type(odd) > td {
-    background-color: #f1f8f4 !important;
+    background-color: var(--business-green-light) !important;
 }
 
+/* Wider buttons can also use the green theme */
 .my-wider-button {
     width: 400px;
+    background-color: var(--business-green-light);
+    border: 1px solid var(--business-green-mid);
+    color: var(--business-green);
+}
+.my-wider-button:hover {
+    background-color: var(--business-green-mid);
+    color: #fff;
 }
