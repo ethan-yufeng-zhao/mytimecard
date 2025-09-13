@@ -189,7 +189,7 @@
 // Current time
         echo('<td><strong>Time:</strong> ' . date('Y-m-d H:i:s') . '</td>');
 
-        echo('</tr></table>');
+        echo('</tr></table><p></p>');
 
 
 //		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
