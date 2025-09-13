@@ -6,7 +6,12 @@ $current_timestamp = time();
 
 $arr = array();
 
-$user_id    = $_GET['user_id'] ?? '';
+if(isset($_GET['uid']) && strlen($_GET['uid']) > 0) {
+    $user_id     = $_GET['uid'];
+} else {
+    $user_id     = $_GET['user_id'] ?? '';
+}
+
 $start_time = $_GET['start'] ?? date('Y-m-01', strtotime('first day of last month'));
 $end_time   = $_GET['end']   ?? date('Y-m-d', strtotime('last day of last month'));
 $query_end_time = date("Y-m-d", strtotime($end_time . " +1 day"));

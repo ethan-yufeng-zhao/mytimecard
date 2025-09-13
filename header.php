@@ -5,7 +5,7 @@
     set_the_cookies();
 
     if (DEBUG) {
-        $_SERVER["REMOTE_USER"] = "\\sean.allen"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
+        $_SERVER["REMOTE_USER"] = "\\winston.wu"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
 //	if(!isset($_SERVER["REMOTE_USER"]) || $_SERVER["REMOTE_USER"] == '') {
 //		header('HTTP/1.1 401 Unauthorized');
 //		header('WWW-Authenticate: Negotiate');
@@ -476,7 +476,7 @@
 <!-- Hidden Excel Export Form -->
 <form action="SaveToExcel.php" name="savetoexcelform" id="savetoexcelform" method="post" target="_blank" onsubmit="return saveToExcel();">
     <input type="hidden" id="dataToDisplay" name="dataToDisplay">
-    <input type="hidden" id="filename" name="filename" value="MyTimecard_<?php echo $currentUser.'_'.date('Ymd'); ?>.xls">
+    <input type="hidden" id="filename" name="filename" value="MyTimecard_<?php echo $currentUser.'_'.$currentRange.'_'.date('Ymd'); ?>.xls">
 </form>
 
 <script>

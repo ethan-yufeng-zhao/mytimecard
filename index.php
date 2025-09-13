@@ -158,7 +158,7 @@
         echo('</a></td>');
 
 // Employee type
-        echo('<td><strong>Type:</strong> ' . ($meta['employeetype'] ?? $meta['employeetype2']) . '</td>');
+        echo('<td><strong>Type:</strong> ' . ($meta['employeetype'] ?? $meta['employeetype2'] ?? '') . '</td>');
 
 // Shift
         echo('<td><strong>Shift:</strong> <span class="data-shifttype">' . htmlspecialchars($meta['shifttype'] ?? '') . '</span></td>');
@@ -184,7 +184,7 @@
         echo('<td><strong>Employee ID:</strong> ' . ($meta['employeeid'] ?? '') . '</td>');
 
 // Phone
-        echo('<td><strong>Phone:</strong> ' . ($meta['telephonenumber'] ?? $meta['ipphone']) . '</td>');
+        echo('<td><strong>Phone:</strong> ' . ($meta['telephonenumber'] ?? $meta['ipphone'] ?? '') . '</td>');
 
 // Current time
         echo('<td><strong>Time:</strong> ' . date('Y-m-d H:i:s') . '</td>');
