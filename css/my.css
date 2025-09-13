@@ -222,3 +222,19 @@ a[target="_blank"]:hover { color: var(--primary-2); text-decoration: underline; 
     background-color: var(--business-green-mid);
     color: #fff;
 }
+
+.employee-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    table-layout: auto;
+}
+
+.employee-info-table td {
+    padding: 6px;
+    border: 1px solid #ddd;       /* light grey border */
+}
+
+.employee-info-table td strong {
+    font-weight: bold;            /* highlight labels */
+}

@@ -152,19 +152,21 @@
         echo("<div id='jfabtable'>");
         echo('<table style="width:100%; border-collapse:collapse; text-align:left; table-layout:auto;">');
         echo('<tr>');
-        // User info with email
-        echo('<td style="padding:6px;">');
-        echo('User: <a href="mailto:' . $requested_user['user_email'] . '?subject=' . $current_url . '?uid=' . $requested_user['user_id'] . '">');
+// User info with email
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<strong>User:</strong> <a href="mailto:' . $requested_user['user_email'] . '?subject=' . $current_url . '?uid=' . $requested_user['user_id'] . '">');
         echo($requested_user['user_firstname'] . ' ' . $requested_user['user_lastname']);
         echo('</a></td>');
-        // Employee type
-        echo('<td style="padding:6px;">Type: ' . ($meta['employeetype'] ?? $meta['employeetype2']) . '</td>');
-        // Shift
-        echo('<td style="padding:6px;">Shift: <span class="data-shifttype">' . htmlspecialchars($meta['shifttype'] ?? '') . '</span></td>');
-        // Supervisor
-        echo('<td style="padding:6px;">');
+// Employee type
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<strong>Type:</strong> ' . ($meta['employeetype'] ?? $meta['employeetype2']) . '</td>');
+// Shift
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<strong>Shift:</strong> <span class="data-shifttype">' . htmlspecialchars($meta['shifttype'] ?? '') . '</span></td>');
+// Supervisor
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
         if(!empty($requested_user['user_supervisor_id'])) {
-            echo('Supervisor: ');
+            echo('<strong>Supervisor:</strong> ');
             if($user['user_is_admin'] || $user['user_is_supervisor']) {
                 echo('<a href="' . $mybaseurl . '/index.php?uid=' . $requested_user['user_supervisor_id'] . '">');
             }
@@ -174,14 +176,18 @@
             }
         }
         echo('</td>');
-        // Department
-        echo('<td style="padding:6px;">Dept.: ' . ($meta['department'] ?? '') . '</td>');
-        // Employee ID (new)
-        echo('<td style="padding:6px;">Employee ID: ' . ($meta['employeeid'] ?? '') . '</td>');
-        // Phone number (new)
-        echo('<td style="padding:6px;">Phone: ' . ($meta['telephonenumber'] ?? $meta['ipphone']) . '</td>');
-        // Current time
-        echo('<td style="padding:6px;">Time: ' . date('Y-m-d H:i:s') . '</td>');
+// Department
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<strong>Dept.:</strong> ' . ($meta['department'] ?? '') . '</td>');
+// Employee ID (new)
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<strong>Employee ID:</strong> ' . ($meta['employeeid'] ?? '') . '</td>');
+// Phone number (new)
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<strong>Phone:</strong> ' . ($meta['telephonenumber'] ?? $meta['ipphone']) . '</td>');
+// Current time
+        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<strong>Time:</strong> ' . date('Y-m-d H:i:s') . '</td>');
         echo('</tr></table>');
 
 //		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
