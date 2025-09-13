@@ -150,36 +150,39 @@
          * Begining of content -- certs
          */
         echo("<div id='jfabtable'>");
-		echo('<table style="width:100%; border-collapse:collapse; text-align:left;"><tr><td style="width:20%; border:0px solid #ccc; padding:6px;">');
-		echo('User: <a href="mailto:'.$requested_user['user_email'].'?subject='.$current_url.'?uid='.$requested_user['user_id'].'">');
-		echo($requested_user['user_firstname'].' '.$requested_user['user_lastname']);
-		echo('</a></td>');
-        echo('<td style="width:15%; border:0px solid #ccc; padding:6px;">Type:&nbsp;'.($meta['employeetype'] ?? '')."</td>");
-        echo('<td style="width:15%; border:0px solid #ccc; padding:6px;">Shift:&nbsp;'.'<span class="data-shifttype">'.(htmlspecialchars($meta['shifttype'] ?? '')).'</span>'."</td>");
-		if(!empty($requested_user['user_supervisor_id'])){
-			echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">');
-//            echo('Supervisor: <a href="mailto:'.$requested_user['user_supervisor_id'].'?subject='.$current_url.'">');
-			echo('Supervisor:');
+        echo('<table style="width:100%; border-collapse:collapse; text-align:left; table-layout:auto;">');
+        echo('<tr>');
+        // User info with email
+        echo('<td style="padding:6px;">');
+        echo('User: <a href="mailto:' . $requested_user['user_email'] . '?subject=' . $current_url . '?uid=' . $requested_user['user_id'] . '">');
+        echo($requested_user['user_firstname'] . ' ' . $requested_user['user_lastname']);
+        echo('</a></td>');
+        // Employee type
+        echo('<td style="padding:6px;">Type: ' . ($meta['employeetype'] ?? $meta['employeetype2']) . '</td>');
+        // Shift
+        echo('<td style="padding:6px;">Shift: <span class="data-shifttype">' . htmlspecialchars($meta['shifttype'] ?? '') . '</span></td>');
+        // Supervisor
+        echo('<td style="padding:6px;">');
+        if(!empty($requested_user['user_supervisor_id'])) {
+            echo('Supervisor: ');
             if($user['user_is_admin'] || $user['user_is_supervisor']) {
                 echo('<a href="' . $mybaseurl . '/index.php?uid=' . $requested_user['user_supervisor_id'] . '">');
             }
-			echo($requested_user_supervisor['user_firstname'].' '.$requested_user_supervisor['user_lastname']);
+            echo($requested_user_supervisor['user_firstname'].' '.$requested_user_supervisor['user_lastname']);
             if($user['user_is_admin'] || $user['user_is_supervisor']) {
                 echo('</a>');
             }
-			echo('</td>');
-		} else {
-            echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">&nbsp;</td>');
         }
-
-        echo('<td style="width:10%; border:0px solid #ccc; padding:6px;">');
-        echo('Dept.: '. $meta['department'] ?? '');
         echo('</td>');
-
-		echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">');
-		echo('Time: '.date('Y-m-d H:i:s'));
-		echo('</td>');
-//		echo('</tr></table><p>');
+        // Department
+        echo('<td style="padding:6px;">Dept.: ' . ($meta['department'] ?? '') . '</td>');
+        // Employee ID (new)
+        echo('<td style="padding:6px;">Employee ID: ' . ($meta['employeeid'] ?? '') . '</td>');
+        // Phone number (new)
+        echo('<td style="padding:6px;">Phone: ' . ($meta['telephonenumber'] ?? $meta['ipphone']) . '</td>');
+        // Current time
+        echo('<td style="padding:6px;">Time: ' . date('Y-m-d H:i:s') . '</td>');
+        echo('</tr></table>');
 
 //		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
 //			echo('<a data-toggle="modal" href="#modal_cert_picker_data" class="btn btn-primary btn-sm hidden-print">Report missing data for '.$requested_user['user_samaccountname'].' </a>&nbsp;&nbsp;');

@@ -324,15 +324,15 @@ foreach ($arr as $user => $value) {
     $querystring3 = "SELECT * FROM hr.employee WHERE samaccountname = '".$user."'";
     $db_arr3 = db_query($db_pdo, $querystring3);
     foreach ($db_arr3 as $data) {
-        $arr[$user]['meta']['employeetype2'] = $data['employeetype'];
-        $arr[$user]['meta']['employeeid'] = $data['employeeid'];
-        $arr[$user]['meta']['givenname'] = $data['givenname'];
-        $arr[$user]['meta']['sn'] = $data['sn'];
-        $arr[$user]['meta']['mail'] = $data['mail'];
-        $arr[$user]['meta']['department'] = $data['department'];
-        $arr[$user]['meta']['departmentnumber'] = $data['departmentnumber'];
-        $arr[$user]['meta']['ipphone'] = $data['ipphone'];
-        $arr[$user]['meta']['telephonenumber'] = $data['telephonenumber'];
+        $arr[$user]['meta']['employeetype2'] = $data['employeetype'] ?? '';
+        $arr[$user]['meta']['employeeid'] = $data['employeeid'] ?? '';
+        $arr[$user]['meta']['givenname'] = $data['givenname'] ?? '';
+        $arr[$user]['meta']['sn'] = $data['sn'] ?? '';
+        $arr[$user]['meta']['mail'] = $data['mail'] ?? '';
+        $arr[$user]['meta']['department'] = $data['department'] ?? '';
+        $arr[$user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
+        $arr[$user]['meta']['ipphone'] = $data['ipphone'] ?? '';
+        $arr[$user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
     }
 
     foreach ($rawvalue as $keyday => $eventvalue) {
