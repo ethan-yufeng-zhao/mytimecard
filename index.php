@@ -150,21 +150,21 @@
          * Begining of content -- certs
          */
         echo("<div id='jfabtable'>");
-        echo('<table style="width:100%; border-collapse:collapse; text-align:left; table-layout:auto;">');
-        echo('<tr>');
+        echo('<table class="employee-info-table"><tr>');
+
 // User info with email
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
-        echo('<strong>User:</strong> <a href="mailto:' . $requested_user['user_email'] . '?subject=' . $current_url . '?uid=' . $requested_user['user_id'] . '">');
+        echo('<td><strong>User:</strong> <a href="mailto:' . $requested_user['user_email'] . '?subject=' . $current_url . '?uid=' . $requested_user['user_id'] . '">');
         echo($requested_user['user_firstname'] . ' ' . $requested_user['user_lastname']);
         echo('</a></td>');
+
 // Employee type
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
-        echo('<strong>Type:</strong> ' . ($meta['employeetype'] ?? $meta['employeetype2']) . '</td>');
+        echo('<td><strong>Type:</strong> ' . ($meta['employeetype'] ?? $meta['employeetype2']) . '</td>');
+
 // Shift
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
-        echo('<strong>Shift:</strong> <span class="data-shifttype">' . htmlspecialchars($meta['shifttype'] ?? '') . '</span></td>');
+        echo('<td><strong>Shift:</strong> <span class="data-shifttype">' . htmlspecialchars($meta['shifttype'] ?? '') . '</span></td>');
+
 // Supervisor
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
+        echo('<td>');
         if(!empty($requested_user['user_supervisor_id'])) {
             echo('<strong>Supervisor:</strong> ');
             if($user['user_is_admin'] || $user['user_is_supervisor']) {
@@ -176,19 +176,21 @@
             }
         }
         echo('</td>');
+
 // Department
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
-        echo('<strong>Dept.:</strong> ' . ($meta['department'] ?? '') . '</td>');
-// Employee ID (new)
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
-        echo('<strong>Employee ID:</strong> ' . ($meta['employeeid'] ?? '') . '</td>');
-// Phone number (new)
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
-        echo('<strong>Phone:</strong> ' . ($meta['telephonenumber'] ?? $meta['ipphone']) . '</td>');
+        echo('<td><strong>Dept.:</strong> ' . ($meta['department'] ?? '') . '</td>');
+
+// Employee ID
+        echo('<td><strong>Employee ID:</strong> ' . ($meta['employeeid'] ?? '') . '</td>');
+
+// Phone
+        echo('<td><strong>Phone:</strong> ' . ($meta['telephonenumber'] ?? $meta['ipphone']) . '</td>');
+
 // Current time
-        echo('<td style="padding:6px; border:1px dotted #ddd;">');
-        echo('<strong>Time:</strong> ' . date('Y-m-d H:i:s') . '</td>');
+        echo('<td><strong>Time:</strong> ' . date('Y-m-d H:i:s') . '</td>');
+
         echo('</tr></table>');
+
 
 //		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
 //			echo('<a data-toggle="modal" href="#modal_cert_picker_data" class="btn btn-primary btn-sm hidden-print">Report missing data for '.$requested_user['user_samaccountname'].' </a>&nbsp;&nbsp;');

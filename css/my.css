@@ -231,8 +231,8 @@ a[target="_blank"]:hover { color: var(--primary-2); text-decoration: underline; 
 }
 
 .employee-info-table td {
-    padding: 6px;
-    border: 1px solid #ddd;       /* light grey border */
+    padding: 1px;
+    border: 1px dotted #ddd;       /* light grey border */
 }
 
 .employee-info-table td strong {
