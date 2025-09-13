@@ -171,14 +171,16 @@
 		} else {
             echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">&nbsp;</td>');
         }
+
+        echo('<td style="width:10%; border:0px solid #ccc; padding:6px;">');
+        echo('Dept.: '. $meta['department'] ?? '');
+        echo('</td>');
+
 		echo('<td style="width:20%; border:0px solid #ccc; padding:6px;">');
 		echo('Time: '.date('Y-m-d H:i:s'));
 		echo('</td>');
 //		echo('</tr></table><p>');
 
-        echo('<td style="width:10%; border:0px solid #ccc; padding:6px;">');
-        echo('Dept.: '. 'ITdep');
-        echo('</td>');
 //		if($user['user_is_admin']) { // || ($authorized && $user['user_id'] != $requested_user['user_id'])) {
 //			echo('<a data-toggle="modal" href="#modal_cert_picker_data" class="btn btn-primary btn-sm hidden-print">Report missing data for '.$requested_user['user_samaccountname'].' </a>&nbsp;&nbsp;');
 //		}

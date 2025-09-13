@@ -104,17 +104,18 @@ function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_ni
 }
 
 foreach ($db_arr as $key => $data) {
-    if (!isset($arr[$data['extsysid']])) {
-        $arr[$data['extsysid']] = [];
+    $extsysid1 = $data['extsysid'];
+    if (!isset($arr[$extsysid1])) {
+        $arr[$extsysid1] = [];
     }
-    if (!isset($arr[$data['extsysid']]['meta']['employeetype']) || $arr[$data['extsysid']]['meta']['employeetype'] === '') {
-        $arr[$data['extsysid']]['meta']['employeetype'] = $data['identitytype'] ?? 'Employee';
+    if (!isset($arr[$extsysid1]['meta']['employeetype']) || $arr[$extsysid1]['meta']['employeetype'] === '') {
+        $arr[$extsysid1]['meta']['employeetype'] = $data['identitytype'] ?? 'Employee';
     }
-    if (!isset($arr[$data['extsysid']]['meta']['shifttype']) || $arr[$data['extsysid']]['meta']['shifttype'] === '') {
-        $arr[$data['extsysid']]['meta']['shifttype'] = $data['identitydivision'] ?? 'Days';
+    if (!isset($arr[$extsysid1]['meta']['shifttype']) || $arr[$extsysid1]['meta']['shifttype'] === '') {
+        $arr[$extsysid1]['meta']['shifttype'] = $data['identitydivision'] ?? 'Days';
     }
 
-    $shifttype = $arr[$data['extsysid']]['meta']['shifttype'];
+    $shifttype = $arr[$extsysid1]['meta']['shifttype'];
     $ts = strtotime($data['trx_timestamp']);
     $dateOnly = assign_shift_day($ts, $shifttype);
 
@@ -127,7 +128,7 @@ foreach ($db_arr as $key => $data) {
             'assumed'        => false  // mark real records
         ];
 
-        $arr[$data['extsysid']]['rawdata'][$dateOnly][] = $temp_arr;
+        $arr[$extsysid1]['rawdata'][$dateOnly][] = $temp_arr;
         unset($temp_arr);
     }
 }
@@ -317,6 +318,21 @@ foreach ($arr as $user => $value) {
     $db_arr2 = db_query($db_pdo, $querystring2);
     foreach ($db_arr2 as $data) {
         $arr[$user]['vacation'][$data['day_of_month']] = $data['vacation'];
+    }
+
+    // department
+    $querystring3 = "SELECT * FROM hr.employee WHERE samaccountname = '".$user."'";
+    $db_arr3 = db_query($db_pdo, $querystring3);
+    foreach ($db_arr3 as $data) {
+        $arr[$user]['meta']['employeetype2'] = $data['employeetype'];
+        $arr[$user]['meta']['employeeid'] = $data['employeeid'];
+        $arr[$user]['meta']['givenname'] = $data['givenname'];
+        $arr[$user]['meta']['sn'] = $data['sn'];
+        $arr[$user]['meta']['mail'] = $data['mail'];
+        $arr[$user]['meta']['department'] = $data['department'];
+        $arr[$user]['meta']['departmentnumber'] = $data['departmentnumber'];
+        $arr[$user]['meta']['ipphone'] = $data['ipphone'];
+        $arr[$user]['meta']['telephonenumber'] = $data['telephonenumber'];
     }
 
     foreach ($rawvalue as $keyday => $eventvalue) {
