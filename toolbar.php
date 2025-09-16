@@ -61,3 +61,59 @@ $end   = $_GET['end']   ?? date('Y-m-d');
     <input type="hidden" id="dataToDisplay" name="dataToDisplay">
     <input type="hidden" id="filename" name="filename" value="MyTimecard_<?php echo $currentUser.'_'.$currentRange.'_'.date('Ymd'); ?>.xls">
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const quickRange = document.getElementById("quickRange");
+        const startInput = document.getElementById("start");
+        const endInput   = document.getElementById("end");
+
+        function switchToCustom() {
+            if (quickRange.value !== "custom") {
+                quickRange.value = "custom";
+            }
+        }
+
+        startInput.addEventListener("change", switchToCustom);
+        endInput.addEventListener("change", switchToCustom);
+
+        // auto-submit when selecting a quick range (except custom)
+        quickRange.addEventListener("change", function() {
+            if (this.value !== "custom") {
+                this.form.submit();
+            }
+        });
+    });
+</script>
+
+<script>
+    const toolbarForm = document.getElementById('toolbarForm');
+
+    const today = new Date();
+    function formatDate(d) { return d.toISOString().slice(0,10); }
+    function getWeekStart(d) { const day=d.getDay(); const diff=d.getDate()-day+(day===0?-6:1); return new Date(d.setDate(diff)); }
+    function getQuarterStart(d) { const q=Math.floor(d.getMonth()/3); return new Date(d.getFullYear(), q*3, 1); }
+    function getQuarterEnd(d) { const q=Math.floor(d.getMonth()/3); return new Date(d.getFullYear(), q*3+3, 0); }
+
+    function setQuickRange(range) {
+        let start, end;
+        const now = new Date();
+        switch(range) {
+            case 'thisWeek': start=getWeekStart(new Date()); end=new Date(); break;
+            case 'lastWeek': const lw=new Date(); lw.setDate(lw.getDate()-7); start=getWeekStart(lw); end=new Date(start); end.setDate(end.getDate()+6); break;
+            case 'thisMonth': start=new Date(now.getFullYear(), now.getMonth(), 1); end=new Date(); break;
+            case 'lastMonth': start=new Date(now.getFullYear(), now.getMonth()-1, 1); end=new Date(now.getFullYear(), now.getMonth(), 0); break;
+            case 'thisQuarter': start=getQuarterStart(now); end=new Date(); break;
+            case 'lastQuarter': const lq=getQuarterStart(now); lq.setMonth(lq.getMonth()-3); start=lq; end=getQuarterEnd(lq); break;
+            case 'thisYear': start=new Date(now.getFullYear(),0,1); end=new Date(); break;
+            case 'lastYear': start=new Date(now.getFullYear()-1,0,1); end=new Date(now.getFullYear()-1,11,31); break;
+        }
+        document.getElementById('start').value=formatDate(start);
+        document.getElementById('end').value=formatDate(end);
+        toolbarForm.submit(); // automatically submit the form
+    }
+
+    document.getElementById('quickRange').addEventListener('change', function(){
+        setQuickRange(this.value);
+    });
+</script>
