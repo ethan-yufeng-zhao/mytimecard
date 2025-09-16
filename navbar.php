@@ -1,0 +1,63 @@
+<?php
+// navbar.php
+?>
+<div class="container">
+    <div class="navbar navbar-inverse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand visible-xs visible-sm" href="<?php echo($mybaseurl); ?>/index.php" title="My Timecard">MTR</a>
+            <a class="navbar-brand visible-md visible-lg" href="<?php echo($mybaseurl); ?>/index.php">My Timecard</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="<?php echo($mybaseurl); ?>/index.php"><?php echo($user['user_firstname'].' '.$user['user_lastname']); ?></a></li>
+                <?php
+                if($user['user_is_admin']) {
+                    echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>');
+                    echo('<ul class="dropdown-menu">');
+                    echo('<li><a href="'.$mybaseurl.'/all_users.php">All Users</a></li>');
+                    // echo('<li><a href="'.$mybaseurl.'/all_users_templates.php">Users Templates Report</a></li>');
+                    echo('<li class="divider"></li>');
+                    echo('<li><a target="_blank" href="https://hydrogen.jfab.aosmd.com/rptp/public/authorization_center/index.html?system=tcs">Manage Admin</a></li>');
+//                        echo('<li><a href="'.$mybaseurl.'/rebuild_template_users_by_department.php">Rebuild template users by Dept.</a></li>');
+//                        echo('<li><a href="'.$mybaseurl.'/rebuild_template_certs.php">Rebuild template certs</a></li>');
+                    echo('</ul>');
+                    echo('</li>');
+                }
+
+                if($user['user_is_admin'] || $user['user_is_supervisor']) {
+                    echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Supervisor <b class="caret"></b></a>');
+                    echo('<ul class="dropdown-menu">');
+                    echo('<li><a href="'.$mybaseurl.'/team_users.php">Team Users</a></li>');
+//                            echo('<li><a href="'.$mybaseurl.'/sync_users_with_ldap.php">Re-sync user list with LDAP</a></li>');
+//                            echo('<li class="divider"></li>');
+//                            echo('<li><a target="_blank" href="https://hydrogen.jfab.aosmd.com/rptp/public/authorization_center/index.html?system=tcs">Manage Supervisor</a></li>');
+                    echo('</ul>');
+                    echo('</li>');
+                }
+                ?>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Links <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a target="_blank" href="https://jireh.smarteru.com/remote-login/login.cfm">SmarterU</a></li>
+                        <li><a target="_blank" href="http://hilwiki.jfab.aosmd.com">HilWiki</a></li>
+                        <li><a href="https://portal.aosmd.com" target="_blank">Portal</a></li>
+                        <li class="divider"></li>
+                        <li><a target="_blank" href="http://webx.jfab.aosmd.com/tcs">TCS</a></li>
+                        <li><a href="http://web11.jfab.aosmd.com/mts" target="_blank">6S</a></li>
+                        <li><a href="http://webx.jfab.aosmd.com/SPCx" target="_blank">SPCx</a></li>
+                        <li><a href="http://jfabieapp1.jfab.aosmd.com/tps" target="_blank">TPS</a></li>
+                        <li><a href="http://jfabjunoapp.jfab.aosmd.com/juno/juno_data_search/" target="_blank">Juno</a></li>
+
+                        <!--                    <li>--><?php //echo(time()); ?><!--</li>-->
+                        <!--                    <li><a id="id_db_type" href="" onclick="switchDB()">--><?php //echo(strtoupper($GLOBALS['DB_TYPE'])); ?><!--</a></li>-->
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+
