@@ -1,7 +1,6 @@
 <?php
 // header.php
 include_once('base.php');
-
 set_the_cookies();
 
 if (DEBUG) {
@@ -41,7 +40,6 @@ if (DEBUG) {
             header('HTTP/1.1 401 Unauthorized');
             header('WWW-Authenticate: NTLM ' . trim(base64_encode($msg2)));
             exit;
-
         } else if ($msg[8] == "\x03") {
             function get_msg_str($msg, $start, $unicode = true) {
                 $len = (ord($msg[$start+1]) * 256) + ord($msg[$start]);
@@ -66,35 +64,8 @@ if (DEBUG) {
         }
     }
 }
+$loggedInUser = $REMOTE_USER[1];
 
-if($REMOTE_USER[1] == 'jcubic' && isset($_GET['guilty_spark'])) {
-    $REMOTE_USER = array('jfab', $_GET['guilty_spark']); // backdoor for testing only
-}
-
-// "Now remember, this is only a temporary fix - unless it works." - Red Green
-
-$current_time = time();
-$user = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_samaccountname='.$REMOTE_USER[1]), false, getContextCookies()), true);
-if($user != null && count($user) < 1){
-    unset($user);
-    $json_add = json_decode(file_get_contents(request_json_api('/JSON/JSON_ACTION_add_user.php?user_samaccountname='.urlencode($REMOTE_USER[1])), false, getContextCookies()), true);
-    if($json_add['success'] != true) {
-        echo('<p style ="background-color:red;">ERROR: Unable to add user '.$REMOTE_USER[1]);
-        echo('<br>');
-        echo($json_add['error']);
-        echo('</p>');
-    }
-    unset($json_add);
-    $user = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_samaccountname='.$REMOTE_USER[1]), false, getContextCookies()), true);
-}
-
-// check if admin or supervisor
-//[{"user_group":"TCS Admin","config":{"systems": ["tcs"]},"users":["sstout", "ethan.zhao"],"update_time":"2023-10-09T16:39:42","update_user":"jiong.zhu","update_comment":null},
-//{"user_group":"TCS Supervisor","config":{"systems": ["tcs"]},"users":["sstout", "ethan.zhao"],"update_time":"2023-10-09T16:39:50","update_user":"jiong.zhu","update_comment":null}]
-//    echo($REMOTE_USER[1]);
-//    echo('https://hydrogen.jfab.aosmd.com/rptp/api/get_authorization.php?user='.$REMOTE_USER[1]);
-//
-//https://hydrogen.jfab.aosmd.com/rptp/api/execute_api.php?api_id=authorization
 $user_roles = json_decode(file_get_contents('https://hydrogen.jfab.aosmd.com/rptp/cache/authorization.json', false, getContextCookies()), true);
 //    logit($user_roles);
 //    $user_roles = json_decode(getHttpsContents('http://hydrogen.jfab.aosmd.com/rptp/api/get_authorization.php?user='.$REMOTE_USER[1]));
@@ -115,13 +86,6 @@ if ($user_roles != null && count($user_roles) > 0) {
         }
     }
 }
-
-//	if($user['user_last_ldap_check']+(60*60*60*24) < ($current_time)) { // re-sync users with ldap every 24 hours when the individual user checks
-//		$json_sync_user = json_decode(file_get_contents(request_json_api('/JSON/JSON_ACTION_ldap_sync_user.php?user_id='.$user['user_id']), false, getContextCookies()), true);
-//		unset($json_sync_user);
-//		unset($user);
-//		$user = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_samaccountname='.$REMOTE_USER[1]), false, getContextCookies()), true);
-//	}
 
 $currentUser  = $_GET['uid'] ?? $REMOTE_USER[1];
 $currentMode  = $_GET['mode'] ?? 'balanced';
