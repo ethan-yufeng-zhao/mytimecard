@@ -26,10 +26,21 @@
                     echo('</li>');
                 }
 
-                if($user['user_is_admin'] || $user['user_is_supervisor']) {
+                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
+                    // Collect current toolbar params
+                    $params = [
+                        'uid'        => $_GET['uid']        ?? $user['user_id'] ?? '',
+                        'mode'       => $_GET['mode']       ?? 'balanced',
+                        'start'      => $_GET['start']      ?? date('Y-m-01'),
+                        'end'        => $_GET['end']        ?? date('Y-m-d'),
+                        'quickRange' => $_GET['quickRange'] ?? 'thisMonth',
+                        'team'       => $_GET['team']       ?? 'team',
+                    ];
+                    $teamUsersUrl = $mybaseurl . '/team_users.php?' . http_build_query($params);
+
                     echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Supervisor <b class="caret"></b></a>');
                     echo('<ul class="dropdown-menu">');
-                    echo('<li><a href="'.$mybaseurl.'/team_users.php">Team Users</a></li>');
+                    echo('<li><a href="'.$teamUsersUrl.'">Team Users</a></li>');
                     echo('</ul>');
                     echo('</li>');
                 }

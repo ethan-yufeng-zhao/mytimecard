@@ -336,7 +336,7 @@ function arrayToPgInList(array $arr): string {
     return "(" . implode(",", $escaped) . ")";
 }
 
-function buildQueryUrl($baseUrl, $user, $mode, $start, $end, $range = 'custom', $team='') {
+function buildQueryUrl($baseUrl, $user, $mode, $start, $end, $range = 'thisMonth', $team='') {
     $params = [
         'uid'   => $user,
         'mode'  => $mode,
