@@ -66,13 +66,6 @@ switch ($currentRange) {
 
 $currentQueryUrl = buildQueryUrl($mybaseurl.'/index.php?', $currentUser, $currentMode, $currentStart, $currentEnd, $currentRange, $currentTeam); // default/current
 
-// Debug print
-if (DEBUG) {
-    echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
-    echo "DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a><br>";
-    echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
-    echo "</div>";
-}
 ?>
 
 <div class="container" style="margin-top:5px; margin-bottom:5px;">

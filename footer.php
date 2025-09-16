@@ -81,7 +81,13 @@ if ($osVersion) {
 } else {
     echo " | OS: <b>" . php_uname("s")."</b>";
 }
-
+// Debug print
+if (DEBUG) {
+//    echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
+    echo "<br>DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a>";
+//    echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
+//    echo "</div>";
+}
 ?>
 </div>
 
