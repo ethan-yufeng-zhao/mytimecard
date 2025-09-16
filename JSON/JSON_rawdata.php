@@ -66,35 +66,13 @@ $user_list = [];
 
 $db_pdo = db_connect();
 
-$querystring_current_user = "SELECT * FROM hr.employee WHERE samaccountname = '".$user_id."'";
-$db_arr_current_user = db_query($db_pdo, $querystring_current_user);
-if ($db_arr_current_user) {
-    foreach ($db_arr_current_user as $data) {
-        $arr[$user_id]['meta']['employeetype2'] = $data['employeetype'] ?? '';
-        $arr[$user_id]['meta']['employeeid'] = $data['employeeid'] ?? '';
-        $arr[$user_id]['meta']['givenname'] = $data['givenname'] ?? '';
-        $arr[$user_id]['meta']['sn'] = $data['sn'] ?? '';
-        $arr[$user_id]['meta']['mail'] = $data['mail'] ?? '';
-        $arr[$user_id]['meta']['department'] = $data['department'] ?? '';
-        $arr[$user_id]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
-        $arr[$user_id]['meta']['ipphone'] = $data['ipphone'] ?? '';
-        $arr[$user_id]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
-        $arr[$user_id]['meta']['manager'] = $data['manager_samaccountname'] ?? '';
-    }
-    $user_list[] = $user_id;
-} else {
-    $arr['error'] = 'Cannot find the user: ' . $user_id;
+$arr = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_meta.php?uid='.$user_id), false, getContextCookies()), true);
+if ($arr && isset($arr['error'])) {
     header('Content-Type: application/json');
     echo(json_encode($arr));
     return;
 }
-
-$json_role = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_role.php?uid='.$user_id), false, getContextCookies()), true);
-if ($json_role) {
-    $arr[$user_id]['meta']['role'] = $json_role[$user_id] ?? '';
-} else {
-    $arr[$user_id]['meta']['role'] = '';
-}
+$user_list[] = $user_id;
 
 if ($arr[$user_id]['meta']['role'] && $team) {
     if ($arr[$user_id]['meta']['role'] === 'admin') {
@@ -103,42 +81,47 @@ if ($arr[$user_id]['meta']['role'] && $team) {
         } elseif ($team === 'mine') {
             $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
         } else {
-            $arr['error'] = 'Wrong team type: ' . $team;
-            header('Content-Type: application/json');
-            echo(json_encode($arr));
-            return;
+            $querystring_team_users = '';
+//            $arr['error'] = 'Wrong team type: ' . $team;
+//            header('Content-Type: application/json');
+//            echo(json_encode($arr));
+//            return;
         }
     } elseif ($arr[$user_id]['meta']['role'] === 'supervisor') {
         if ($team === 'mine') {
             $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
         } else {
-            $arr['error'] = 'Wrong team type: ' . $team;
-            header('Content-Type: application/json');
-            echo(json_encode($arr));
-            return;
+            $querystring_team_users = '';
+//            $arr['error'] = 'Wrong team type: ' . $team;
+//            header('Content-Type: application/json');
+//            echo(json_encode($arr));
+//            return;
         }
     } else {
-        $arr['error'] = 'Wrong role type: ' . $arr[$user_id]['meta']['role'];
-        header('Content-Type: application/json');
-        echo(json_encode($arr));
-        return;
+        $querystring_team_users = '';
+//        $arr['error'] = 'Wrong role type: ' . $arr[$user_id]['meta']['role'];
+//        header('Content-Type: application/json');
+//        echo(json_encode($arr));
+//        return;
     }
-    $db_arr_team_users = db_query($db_pdo, $querystring_team_users);
-    if ($db_arr_team_users) {
-        foreach ($db_arr_team_users as $data) {
-            $team_user = $data['samaccountname'] ?? '';
-            if ($team_user) {
-                $arr[$team_user]['meta']['employeetype2'] = $data['employeetype'] ?? '';
-                $arr[$team_user]['meta']['employeeid'] = $data['employeeid'] ?? '';
-                $arr[$team_user]['meta']['givenname'] = $data['givenname'] ?? '';
-                $arr[$team_user]['meta']['sn'] = $data['sn'] ?? '';
-                $arr[$team_user]['meta']['mail'] = $data['mail'] ?? '';
-                $arr[$team_user]['meta']['department'] = $data['department'] ?? '';
-                $arr[$team_user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
-                $arr[$team_user]['meta']['ipphone'] = $data['ipphone'] ?? '';
-                $arr[$team_user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+    if ($querystring_team_users) {
+        $db_arr_team_users = db_query($db_pdo, $querystring_team_users);
+        if ($db_arr_team_users) {
+            foreach ($db_arr_team_users as $data) {
+                $team_user = $data['samaccountname'] ?? '';
+                if ($team_user) {
+                    $arr[$team_user]['meta']['employeetype2'] = $data['employeetype'] ?? '';
+                    $arr[$team_user]['meta']['employeeid'] = $data['employeeid'] ?? '';
+                    $arr[$team_user]['meta']['givenname'] = $data['givenname'] ?? '';
+                    $arr[$team_user]['meta']['sn'] = $data['sn'] ?? '';
+                    $arr[$team_user]['meta']['mail'] = $data['mail'] ?? '';
+                    $arr[$team_user]['meta']['department'] = $data['department'] ?? '';
+                    $arr[$team_user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
+                    $arr[$team_user]['meta']['ipphone'] = $data['ipphone'] ?? '';
+                    $arr[$team_user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+                }
+                $user_list[] = $team_user;
             }
-            $user_list[] = $team_user;
         }
     }
 }
