@@ -132,11 +132,14 @@
 			unset($json_add_user_cert);
 		}
 
-        $apiUrl = '/JSON/JSON_rawdata.php?user_id=' . urlencode($requested_user['user_id'])
-                . '&mode=' . urlencode($_GET['mode'] ?? 'balanced')
-                . '&start=' . urlencode($_GET['start'] ?? date('Y-m-01'))
-                . '&end=' . urlencode($_GET['end'] ?? date('Y-m-d'));
-
+        $apiUrl = buildQueryUrl(
+                '/JSON/JSON_rawdata.php',
+                $requested_user['user_id'],
+                $_GET['mode']  ?? 'balanced',
+                $_GET['start'] ?? date('Y-m-01'),
+                $_GET['end']   ?? date('Y-m-d'),
+                $_GET['quickRange'] ?? 'custom'
+        );
         $json = json_decode(file_get_contents(request_json_api($apiUrl), false, getContextCookies()), true);
 
         $meta = $json[$requested_user['user_id']]['meta'] ?? null;
