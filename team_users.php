@@ -77,13 +77,21 @@ if ($authorized) {
         foreach ($json as $member => $value) {
             if ($member === $REMOTE_USER[1]) { continue; }
             echo('<tr>');
+            echo('<td>'.(++$count)."</td>");
 
-            echo('<td>'.(++$count)."</td>\n");
+            $params = [
+                    'uid'        => $member,
+                    'mode'       => $_GET['mode']       ?? 'balanced',
+                    'start'      => $_GET['start']      ?? date('Y-m-01'),
+                    'end'        => $_GET['end']        ?? date('Y-m-d'),
+                    'quickRange' => $_GET['quickRange'] ?? 'thisMonth',
+                    'team'       => '',
+            ];
+            $memberUrl = $mybaseurl . '/index.php?' . http_build_query($params);
+            echo('<td><a target="_blank" href="'.$memberUrl.'">'.$member.'</a></td>');
 
-            echo('<td><a target="_blank" href="'.$mybaseurl.'/index.php?uid='.$member.'">'.$member.'</a></td>');
-
-            echo('<td>'.($value['meta']['givenname'] ?? '')."</td>\n");
-            echo('<td>'.($value['meta']['sn'] ?? '')."</td>\n");
+            echo('<td>'.($value['meta']['givenname'] ?? '')."</td>");
+            echo('<td>'.($value['meta']['sn'] ?? '')."</td>");
             echo('<td><a href="mailto:'.$value['meta']['mail'].'">'.$value['meta']['mail'].'</a></td>');
 
             echo "<td>".($value['summary']['actual_workdays'] ?? 0)."</td>";
