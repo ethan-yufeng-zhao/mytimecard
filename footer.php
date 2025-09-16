@@ -20,7 +20,7 @@ $current_time = new DateTime();
 $refresh_time = convertTime($current_time);
 //$refresh_time = date('Y-m-d H:i:s', time());
 echo " | Refreshed: <b>".$refresh_time."</b>"; // microtime has more precision, time is enough
-echo " | Ver: <b>1.0#09/02/2025</b>";
+echo " | Ver: <b>1.1#09/16/2025</b>";
 if (isset($remoteUser)) {
     $current_user = $remoteUser . '@' . $remoteDomain . '#' . $remoteWorkstation;
     echo " | User: <b>".$current_user."</b>";
