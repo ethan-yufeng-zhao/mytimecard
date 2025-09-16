@@ -23,15 +23,16 @@ include_once('header.php');  // has everything up to the container div in the bo
 <?php
 $authorized = false;
 
-if (!$authorized && $user['user_is_admin']) { // Admin users can view anyone
+if(($requested_user_id === $loggedInUser) || $user['user_is_admin']){ // A user can always view themselves
     $authorized = true;
-}
-
-if (isset($_GET['user_supervisor_id']) && $user['user_is_admin']) {
-    $user_supervisor_id = $_GET['user_supervisor_id'];
 } else {
-    $user_supervisor_id = $user['user_id'];
-    $authorized = true;
+    if ($user['user_is_supervisor']) {
+        $req_meta = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_meta.php?uid='.$requested_user_id), false, getContextCookies()), true);
+        $user_supervisor_id = $req_meta[$requested_user_id]['meta']['manager'] ?? '';
+        if ($user_supervisor_id === $loggedInUser)  {
+            $authorized = true;
+        }
+    }
 }
 
 if ($authorized) {

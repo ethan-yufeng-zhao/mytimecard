@@ -83,77 +83,12 @@ if ($login_role === 'admin') {
     $user['user_is_supervisor'] = true;
 }
 
-$currentUser  = $_GET['uid'] ?? $REMOTE_USER[1];
-$currentMode  = $_GET['mode'] ?? 'balanced';
-$currentRange = $_GET['quickRange'] ?? 'thisMonth';   // NEW
-$currentStart = $_GET['start'] ?? date('Y-m-01');
-$currentEnd   = $_GET['end'] ?? date('Y-m-d');
-
-// Helper to build query URL
-switch ($currentRange) {
-    case 'thisWeek':
-        $currentStart = date('Y-m-d', strtotime('monday this week'));
-        $currentEnd   = date('Y-m-d');
-        break;
-    case 'lastWeek':
-        $currentStart = date('Y-m-d', strtotime('monday last week'));
-        $currentEnd   = date('Y-m-d', strtotime('sunday last week'));
-        break;
-    case 'thisMonth':
-        $currentStart = date('Y-m-01');
-        $currentEnd   = date('Y-m-d');
-        break;
-    case 'lastMonth':
-        $currentStart = date('Y-m-01', strtotime('first day of last month'));
-        $currentEnd   = date('Y-m-t', strtotime('last day of last month'));
-        break;
-    case 'thisQuarter':
-        $quarter = ceil(date('n') / 3);
-        $currentStart = date('Y-m-d', strtotime(date('Y').'-'.(($quarter-1)*3+1).'-01'));
-        $currentEnd   = date('Y-m-d'); //date('Y-m-t', strtotime($thisQuarterStart));
-        break;
-    case 'lastQuarter':
-        $quarter = ceil(date('n') / 3);
-        $lastQuarter = $quarter - 1;
-        if ($lastQuarter < 1) {
-            $lastQuarter = 4;
-            $lastQuarterYear = date('Y') - 1;
-        } else {
-            $lastQuarterYear = date('Y');
-        }
-
-        // Start of last quarter
-        $currentStart = date('Y-m-d', strtotime($lastQuarterYear.'-'.(($lastQuarter-1)*3+1).'-01'));
-
-        // End of last quarter: last day of the last month in that quarter
-        $lastQuarterEndMonth = $lastQuarter * 3; // March, June, Sep, Dec
-        $currentEnd = date('Y-m-t', strtotime($lastQuarterYear.'-'.$lastQuarterEndMonth.'-01'));
-        break;
-    case 'thisYear':
-        $currentStart = date('Y-01-01');
-        $currentEnd   = date('Y-m-d');
-        break;
-    case 'lastYear':
-        $currentStart = date('Y-01-01', strtotime('last year'));
-        $currentEnd   = date('Y-12-31', strtotime('last year'));
-        break;
-    case 'custom':
-    default:
-        // Respect user input if custom
-        $currentStart = $_GET['start'] ?? date('Y-m-01');
-        $currentEnd   = $_GET['end'] ?? date('Y-m-d');
-        break;
+if(isset($_GET['uid']) && strlen($_GET['uid']) > 0) {
+    $requested_user_id = $_GET['uid'];
+} else {
+    $requested_user_id = $loggedInUser;
 }
 
-$currentQueryUrl    = buildQueryUrl($mybaseurl.'/index.php?', $currentUser, $currentMode, $currentStart, $currentEnd, $currentRange); // default/current
-
-// Debug print
-    if (DEBUG) {
-        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
-        echo "DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a><br>";
-        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
-        echo "</div>";
-    }
 ?>
 
 <!DOCTYPE html>

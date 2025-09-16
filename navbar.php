@@ -29,7 +29,7 @@
                 if ($user['user_is_admin'] || $user['user_is_supervisor']) {
                     // Collect current toolbar params
                     $params = [
-                        'uid'        => $_GET['uid']        ?? $user['user_id'] ?? '',
+                        'uid'        => $_GET['uid']        ?? $requested_user_id ?? '',
                         'mode'       => $_GET['mode']       ?? 'balanced',
                         'start'      => $_GET['start']      ?? date('Y-m-01'),
                         'end'        => $_GET['end']        ?? date('Y-m-d'),

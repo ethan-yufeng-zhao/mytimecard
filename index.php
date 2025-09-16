@@ -76,19 +76,14 @@
 
 <?php
     $authorized = false;
-	if(isset($_GET['uid']) && strlen($_GET['uid']) > 0) {
-		$requested_user_id = $_GET['uid'];
-	} else {
-		$requested_user_id = $loggedInUser;
-	}
 
 	if(($requested_user_id === $loggedInUser) || $user['user_is_admin']){ // A user can always view themselves
 		$authorized = true;
 	} else {
         if ($user['user_is_supervisor']) {
             $req_meta = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_meta.php?uid='.$requested_user_id), false, getContextCookies()), true);
-            $req_manager = $req_meta[$requested_user_id]['meta']['manager'] ?? '';
-            if ($req_manager === $loggedInUser)  {
+            $user_supervisor_id = $req_meta[$requested_user_id]['meta']['manager'] ?? '';
+            if ($user_supervisor_id === $loggedInUser)  {
                 $authorized = true;
             }
         }
@@ -367,138 +362,10 @@
             echo("</div>\n");
 		} else {
 			echo('<div class="alert alert-danger">');
-			echo('<p>No data: "'.$requested_user['user_samaccountname'].'"  From '.$_GET['start'].' to '.$_GET['end'].'</p>');
+			echo('<p>No data: "'.$requested_user_id.'"  From '.$_GET['start'].' to '.$_GET['end'].'</p>');
 			echo('</div>');
 		}
 
-//        /**
-//         * Bootstrap Modals
-//         */
-//		echo("\n");
-//		echo('<div class="modal none" id="modal_cert_picker_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="font-size:80%">');
-//		echo('<div class="modal-dialog wider-modal">');
-//		echo('<div class="modal-content">');
-//		echo('<div class="modal-header">');
-//		echo('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>');
-//		echo('<h4 class="modal-title">Please click on a Cert Name to select it</h4>');
-//		echo('</div>');
-//		echo('<div class="modal-body">');
-//		echo("<table class='tablesorter'>");
-//		echo("<thead>");
-//		echo('<tr>');
-//
-//        echo('<th>');
-//        echo('No.');
-//        echo('</th>');
-//
-//		echo('<th>');
-//		echo('Cert Name');
-//		echo('</th>');
-//
-//		echo('<th>');
-//		echo('Description');
-//		echo('</th>');
-//
-//		echo('<th>');
-//		echo('Expires');
-//		echo('</th>');
-//
-//        echo('<th>');
-//        echo('Pts');
-//        echo('</th>');
-//
-//		echo('</tr>');
-//		echo("</thead>");
-//		echo("<tbody>");
-//		$json_all_certs = json_decode(file_get_contents(request_json_api('/JSON/JSON_all_certs.php') , false, getContextCookies()), true);
-//        $count_cert = 0;
-//		foreach ($json_all_certs as $key => $value) {
-//			echo('<tr>');
-//
-//            echo('<td>');
-//            echo(++$count_cert);
-//            echo('</td>');
-//
-//			echo('<td>');
-//			echo('<a href="javascript:void(0);" onclick="chooseCert('.$key.', \''.$value['cert_name'].'\');">'.$value['cert_name'].'</a>');
-//			echo('</td>');
-//
-//			echo('<td>');
-//			echo($value['cert_description']);
-//			echo('</td>');
-//
-//			echo('<td>');
-//			if($value['cert_never_expires'] == 1) {
-//				echo('Never');
-//			} else {
-//				echo($value['cert_days_active'].' Days');
-//			}
-//			echo('</td>');
-//
-//            echo('<td>');
-//            echo($value['cert_points']);
-//            echo('</td>');
-//
-//			echo('</tr>');
-//		}
-//		echo("</tbody>");
-//		echo('</table>');
-//		echo('</div>');
-//		echo('<div class="modal-footer">');
-//		echo('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>');
-//		echo('</div>');
-//		echo('</div>'); // end of modal-content
-//		echo('</div>'); // end of modal-dialog
-//		echo('</div>'); // end of modal
-
-        echo('<div class="modal none hidden-print" id="modal_date_picker_data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">');
-		echo('<div class="modal-dialog">');
-		echo('<div class="modal-content">');
-		echo('<form name="add_user_cert_form" id="add_user_cert_form" action="'.$mybaseurl.'/index.php?'.http_build_query($_GET).'" method="post" onsubmit="return validateAddCert();">');
-		echo('<div class="modal-header">');
-		echo('<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>');
-		echo('<h4 class="modal-title">Choose a starting date and press submit</h4>');
-		echo('</div>');
-		echo('<div class="modal-body">');
-		echo('<p>Cert: <span id="date_modal_cert"></span></p>');
-		echo('<p>User: '.$requested_user['user_samaccountname'].'</p>');
-		echo('<input name="add_user_cert" type="hidden" value="1">');
-		echo('<input name="cert_id" id="add_user_cert_cert_id" type="hidden" value="0">');
-		echo('<input name="add_user_cert_cert_name" id="add_user_cert_cert_name" type="hidden" value="">');
-		echo('<input name="add_user_cert_username" id="add_user_cert_username" type="hidden" value="'.$requested_user['user_samaccountname'].'">');
-		echo('<input name="user_id" type="hidden" value="'.$requested_user['user_id'].'">');
-		echo('<input name="user_cert_last_user" type="hidden" value="'.$user['user_samaccountname'].'">');
-		echo('<div class="form-group">');
-		echo('<label for="user_cert_date_granted">Date:</label>');
-		echo('<input type="text" class="form-control" id="user_cert_date_granted" name="user_cert_date_granted" placeholder="Enter Date">');
-		echo('</div>');
-		echo('<p>&nbsp;</p>');
-
-		if ($user['user_is_admin']) {
-			echo('<div class="form-group">');
-			echo('<div class="checkbox">');
-			echo('<label>');
-			echo('<input id="user_cert_exception" name="user_cert_exception" type="checkbox" /> ');
-			echo('This is not a Certification, this is an exception.');
-			echo('</label>');
-			echo('</div>');
-			echo('</div>');
-		} else {
-			echo('<input id="user_cert_exception" name="user_cert_exception" type="hidden" value="" /> ');
-		}
-
-		echo('<p>&nbsp;</p>');
-		echo('</div>'); // end of modal-body
-		echo('<div class="modal-footer">');
-		echo('<button type="submit" class="btn btn-default">Submit</button>');
-		echo('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>');
-		echo('</div>');
-		echo('</form>');
-		echo('</div>'); // end of modal-content
-		echo('</div>'); // end of modal-dialog
-		echo('</div>'); // end of modal
-
-		echo("\n");
         echo('<div id="edit-dialog" class="modal">');
         echo('<div class="modal-dialog">');
         echo('<div class="modal-content">');
@@ -519,13 +386,12 @@
         echo('</div>');
         echo('</div>');
 
-
         echo('<div class="modal fade" id="history-dialog" tabindex="-1" role="dialog">');
         echo('<div class="modal-dialog modal-lg wider-modal">');  // modal-lg for bigger size
         echo('<div class="modal-content">');
 
         echo('<div class="modal-header bg-secondary text-white d-flex align-items-center justify-content-between">');
-        echo('<h4 class="modal-title mb-0">'.$requested_user['user_samaccountname'].'</h4>');
+        echo('<h4 class="modal-title mb-0">'.$requested_user_id.'</h4>');
 //        echo('<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="font-size:2rem; line-height:1;">');
 //        echo('<span aria-hidden="true">&times;</span>');
 //        echo('</button>');
@@ -546,32 +412,13 @@
         echo('</div>'); // modal-content
         echo('</div>'); // modal-dialog
         echo('</div>'); // modal
-
-
-//        echo('<div id="history-dialog" class="modal">');
-//        echo('<div class="modal-dialog modal-lg" style="width: 60%">');
-//        echo('<div class="modal-content">');
-//        echo('<div class="modal-header">');
-//        echo("<h4 class='modal-title'>Change History </h4>");
-////        echo('<button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>');
-//        echo('</div>');
-//        echo('<div class="modal-body">');
-//        echo('<p>Loading history...</p>');
-//        echo('</div>');
-//        echo('<div class="modal-footer">');
-//        echo('<button type="button" id="close-history-btn">Close</button>');
-//        echo('</div>');
-//        echo('</div>');
-//        echo('</div>');
-//        echo('</div>');
-
     } else {
 		// echo('<div class="span-24 last" style="margin-top:1em;">');
 		// echo('<p>Authorization failed to view user id '.$requested_user['user_id'].'</p>');
 		// echo('</div>');
 		echo('<div class="alert alert-danger">');
 		// echo('<p>Authorization failed</p>');
-		echo('<p>Authorization failed to view user id '.$requested_user['user_id'].'</p>');
+		echo('<p>Authorization failed to view user id '.$requested_user_id.'</p>');
 		echo('</div>');
 	}
 ?>
@@ -585,8 +432,8 @@
         icon.addEventListener('click', function () {
             const dayOfMonth = this.getAttribute('data-day_of_month');
             const shiftType = this.getAttribute('data-shifttype');
-            const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
-            const modifiedUser = "<?php echo $user['user_samaccountname']; ?>";
+            const adAccount = "<?php echo $requested_user_id; ?>";
+            const modifiedUser = "<?php echo $loggedInUser; ?>";
             // console.log(dayOfMonth + " " + adAccount);
             if (!dayOfMonth || !adAccount) {
                 alert('Day of month or AD account is missing.');
@@ -703,8 +550,8 @@
             return;
         }
 
-        const adAccount = "<?php echo $requested_user['user_samaccountname']; ?>";
-        const modifiedUser = "<?php echo $user['user_samaccountname']; ?>";
+        const adAccount = "<?php echo $requested_user_id; ?>";
+        const modifiedUser = "<?php echo $loggedInUser; ?>";
         const currentRow = currentIcon.closest('tr'); // Find the parent row
         const day_of_month = currentRow.querySelector('.day-of-month')?.textContent.trim();
 
