@@ -23,6 +23,7 @@ $start_time = $_GET['start'] ?? date('Y-m-01', strtotime('first day of last mont
 $end_time   = $_GET['end']   ?? date('Y-m-d', strtotime('last day of last month'));
 $query_end_time = date("Y-m-d", strtotime($end_time . " +1 day"));
 $query_time = $query_end_time . " 23:59:59";
+$team = $_GET['team'] ?? '';
 
 $workdaysList = getWorkdays($start_time, $end_time);
 $workDays     = count($workdaysList);
@@ -95,27 +96,29 @@ if ($db_arr_admin) {
     $arr[$user_id]['meta']['role'] = '';
 }
 
-if ($arr[$user_id]['meta']['role'] === 'admin') {
-    $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
-} else {
-    $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
-}
-$db_arr_team_users = db_query($db_pdo, $querystring_team_users);
-if ($db_arr_team_users) {
-    foreach ($db_arr_team_users as $data) {
-        $team_user = $data['samaccountname'] ?? '';
-        if ($team_user) {
-            $arr[$team_user]['meta']['employeetype2'] = $data['employeetype'] ?? '';
-            $arr[$team_user]['meta']['employeeid'] = $data['employeeid'] ?? '';
-            $arr[$team_user]['meta']['givenname'] = $data['givenname'] ?? '';
-            $arr[$team_user]['meta']['sn'] = $data['sn'] ?? '';
-            $arr[$team_user]['meta']['mail'] = $data['mail'] ?? '';
-            $arr[$team_user]['meta']['department'] = $data['department'] ?? '';
-            $arr[$team_user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
-            $arr[$team_user]['meta']['ipphone'] = $data['ipphone'] ?? '';
-            $arr[$team_user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+if ($team) {
+    if ($arr[$user_id]['meta']['role'] === 'admin') {
+        $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
+    } else {
+        $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+    }
+    $db_arr_team_users = db_query($db_pdo, $querystring_team_users);
+    if ($db_arr_team_users) {
+        foreach ($db_arr_team_users as $data) {
+            $team_user = $data['samaccountname'] ?? '';
+            if ($team_user) {
+                $arr[$team_user]['meta']['employeetype2'] = $data['employeetype'] ?? '';
+                $arr[$team_user]['meta']['employeeid'] = $data['employeeid'] ?? '';
+                $arr[$team_user]['meta']['givenname'] = $data['givenname'] ?? '';
+                $arr[$team_user]['meta']['sn'] = $data['sn'] ?? '';
+                $arr[$team_user]['meta']['mail'] = $data['mail'] ?? '';
+                $arr[$team_user]['meta']['department'] = $data['department'] ?? '';
+                $arr[$team_user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
+                $arr[$team_user]['meta']['ipphone'] = $data['ipphone'] ?? '';
+                $arr[$team_user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+            }
+            $user_list[] = $team_user;
         }
-        $user_list[] = $team_user;
     }
 }
 

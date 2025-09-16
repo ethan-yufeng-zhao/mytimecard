@@ -42,7 +42,8 @@ if ($authorized) {
             $_GET['mode']  ?? 'balanced',
             $_GET['start'] ?? date('Y-m-01'),
             $_GET['end']   ?? date('Y-m-d'),
-            $_GET['quickRange'] ?? null
+            $_GET['quickRange'] ?? 'custom',
+            $_GET['team'] ?? 'team',
     );
 
     $json = json_decode(file_get_contents(request_json_api($apiUrl), false, getContextCookies()), true);
