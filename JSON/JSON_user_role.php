@@ -31,10 +31,8 @@ if ($db_arr_team_users && $db_arr_team_users[0]['count'] > 0) {
 
 $querystring_admin = "SELECT role FROM hr.timecard_admin WHERE username = '".$user_id."'";
 $db_arr_admin = db_query($db_pdo, $querystring_admin);
-if ($db_arr_admin) {
-    $arr[$user_id] = $db_arr_admin[0]['role'] ?? '';
-} else {
-    $arr[$user_id] = '';
+if ($db_arr_admin && isset($db_arr_admin[0]['role'])) {
+    $arr[$user_id] = $db_arr_admin[0]['role'];
 }
 
 $db_pdo = null;
