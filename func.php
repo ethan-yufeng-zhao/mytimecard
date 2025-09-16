@@ -335,3 +335,13 @@ function arrayToPgInList(array $arr): string {
 
     return "(" . implode(",", $escaped) . ")";
 }
+
+function buildQueryUrl($baseUrl, $user, $mode, $start, $end, $range) {
+    return $baseUrl.http_build_query([
+            'uid'   => $user,
+            'mode'  => $mode,
+            'quickRange' => $range,
+            'start' => $start,
+            'end'   => $end
+        ]);
+}
