@@ -75,66 +75,29 @@
 
 
 <?php
+    $authorized = false;
 	if(isset($_GET['uid']) && strlen($_GET['uid']) > 0) {
 		$requested_user_id = $_GET['uid'];
 	} else {
-		$requested_user_id = $user['user_id'];
+		$requested_user_id = $loggedInUser;
 	}
 
-	if($requested_user_id == $user['user_id']){ // A user can always view themselves
+	if(($requested_user_id === $loggedInUser) || $user['user_is_admin']){ // A user can always view themselves
 		$authorized = true;
-		$requested_user = $user;
 	} else {
-		$authorized = false;
-		$requested_user = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_id='.$requested_user_id) , false, getContextCookies()), true); // get the person in questions info
-	}
+        if ($user['user_is_supervisor']) {
+            $req_meta = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_meta.php?uid='.$requested_user_id), false, getContextCookies()), true);
+            $req_manager = $req_meta[$requested_user_id]['meta']['manager'] ?? '';
+            if ($req_manager === $loggedInUser)  {
+                $authorized = true;
+            }
+        }
+    }
 
-	if(!$authorized && $user['user_is_admin']){ // Admin users can view anyone
-		$authorized = true;
-	}
-
-	$running_manager_id = $requested_user['user_supervisor_id'];
-	if(!$authorized && $user['user_id'] == $running_manager_id){ // immediate supervisor
-		$authorized = true;
-	}
-
-	while(!$authorized && $running_manager_id != 0){ // Now check for supervisors of supervisor (and keep doing so until there is no supervisor)
-		$running_supervisor = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_id='.$running_manager_id) , false, getContextCookies()), true); // get the supervisors supervisor
-		$running_manager_id = $running_supervisor['user_supervisor_id'];
-		if($running_manager_id == $user['user_id']) { // the the requested persons suprvisor is the current user
-			$authorized = true;
-		}
-		unset($running_supervisor);
-	}
-
-	$requested_user_supervisor = json_decode(file_get_contents(request_json_api('/JSON/JSON_get_one_user_info.php?user_id='.$requested_user['user_supervisor_id']) , false, getContextCookies()), true); // get supervisor information
-
-	if($authorized){
-		if (isset($_POST['add_user_cert']) && $_POST['add_user_cert'] == 1) { // this is an update, add a user cert
-			// echo($mybaseurl.'/JSON/JSON_ACTION_add_user_cert.php?'.http_build_query($_POST)); // TODO: Remove this line when finished developing
-			$json_add_user_cert = json_decode(file_get_contents(request_json_api('/JSON/JSON_ACTION_add_user_cert.php?'.http_build_query($_POST)) , false, getContextCookies()), true);
-			if (isset($json_add_user_cert['success']) && $json_add_user_cert['success'] == true) {
-				echo('<div class="alert alert-dismissable alert-success">');
-				echo('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>');
-				echo('<strong>Success:</strong> User Cert has been added.');
-				echo('</div>');
-			} else {
-				echo('<div class="alert alert-dismissable alert-danger">');
-				echo('<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>');
-				echo('<p><strong>Error:</strong> User Cert was unable to be added.</p>');
-				if(isset($json_add_user_cert['error'])) {
-					echo('<p style="margin-left:2em;">'.$json_add_user_cert['error'].'</p>');
-				} else {
-					echo('<p style="margin-left:2em;">No error was returned from JSON model controller</p>');
-				}
-				echo('</div>');
-			}
-			unset($json_add_user_cert);
-		}
-
+	if ($authorized){
         $apiUrl = buildQueryUrl(
                 '/JSON/JSON_rawdata.php',
-                $requested_user['user_id'],
+                $requested_user_id,
                 $_GET['mode']  ?? 'balanced',
                 $_GET['start'] ?? date('Y-m-01'),
                 $_GET['end']   ?? date('Y-m-d'),
@@ -142,12 +105,12 @@
         );
         $json = json_decode(file_get_contents(request_json_api($apiUrl), false, getContextCookies()), true);
 
-        $meta = $json[$requested_user['user_id']]['meta'] ?? null;
-        $rawdata = $json[$requested_user['user_id']]['rawdata'] ?? null;
-        $vacations = $json[$requested_user['user_id']]['vacation'] ?? null;
-        $daydata = $json[$requested_user['user_id']]['data'] ?? null;
-        $noshow = $json[$requested_user['user_id']]['NoShow'] ?? null;
-        $summary = $json[$requested_user['user_id']]['summary'] ?? null;
+        $meta = $json[$requested_user_id]['meta'] ?? null;
+        $rawdata = $json[$requested_user_id]['rawdata'] ?? null;
+        $vacations = $json[$requested_user_id]['vacation'] ?? null;
+        $daydata = $json[$requested_user_id]['data'] ?? null;
+        $noshow = $json[$requested_user_id]['NoShow'] ?? null;
+        $summary = $json[$requested_user_id]['summary'] ?? null;
 
         /**
          * Begining of content -- certs
@@ -156,8 +119,8 @@
         echo('<table class="employee-info-table"><tr>');
 
 // User info with email
-        echo('<td><strong>User:</strong> <a href="mailto:' . $requested_user['user_email'] . '?subject=' . $current_url . '?uid=' . $requested_user['user_id'] . '">');
-        echo($requested_user['user_firstname'] . ' ' . $requested_user['user_lastname']);
+        echo('<td><strong>User:</strong> <a href="mailto:' . $meta['mail'] . '?subject=' . $current_url . '?uid=' . $requested_user_id . '">');
+        echo($meta['givenname'] . ' ' . $meta['sn']);
         echo('</a></td>');
 
 // Employee type

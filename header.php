@@ -66,25 +66,21 @@ if (DEBUG) {
 }
 $loggedInUser = $REMOTE_USER[1];
 
-$user_roles = json_decode(file_get_contents('https://hydrogen.jfab.aosmd.com/rptp/cache/authorization.json', false, getContextCookies()), true);
-//    logit($user_roles);
-//    $user_roles = json_decode(getHttpsContents('http://hydrogen.jfab.aosmd.com/rptp/api/get_authorization.php?user='.$REMOTE_USER[1]));
-//    echo($user_roles);
 $user['user_is_admin'] = false;
 $user['user_is_supervisor'] = false;
-if ($user_roles != null && count($user_roles) > 0) {
-    foreach( $user_roles as $uk => $uv) {
-        if ($uk == 'TCS Admin') {
-            if (in_array($REMOTE_USER[1], $uv)) {
-                $user['user_is_admin'] = true;
-            }
-        }
-        if ($uk == 'TCS Supervisor') {
-            if (in_array($REMOTE_USER[1], $uv)) {
-                $user['user_is_supervisor'] = true;
-            }
-        }
-    }
+
+$json_meta = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_meta.php?uid='.$loggedInUser), false, getContextCookies()), true);
+if ($json_meta) {
+    $login_role = $json_meta[$loggedInUser]['meta']['role'] ?? '';
+    $user['user_firstname'] = $json_meta[$loggedInUser]['meta']['givenname'] ?? '';
+    $user['user_lastname'] = $json_meta[$loggedInUser]['meta']['sn'] ?? '';
+} else {
+    $login_role = '';
+}
+if ($login_role === 'admin') {
+    $user['user_is_admin'] = true;
+} else if ($login_role === 'supervisor') {
+    $user['user_is_supervisor'] = true;
 }
 
 $currentUser  = $_GET['uid'] ?? $REMOTE_USER[1];
@@ -151,13 +147,13 @@ switch ($currentRange) {
 
 $currentQueryUrl    = buildQueryUrl($mybaseurl.'/index.php?', $currentUser, $currentMode, $currentStart, $currentEnd, $currentRange); // default/current
 
-//// Debug print
-//    if (DEBUG) {
-//        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
-//        echo "DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a><br>";
-//        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
-//        echo "</div>";
-//    }
+// Debug print
+    if (DEBUG) {
+        echo "<div style='padding:5px; background:#f0f0f0; border:1px solid #ccc;'>";
+        echo "DEBUG URL: <a href='$currentQueryUrl'>$currentQueryUrl</a><br>";
+        echo "GET Parameters: <pre>".htmlspecialchars(print_r($_GET,true))."</pre>";
+        echo "</div>";
+    }
 ?>
 
 <!DOCTYPE html>
