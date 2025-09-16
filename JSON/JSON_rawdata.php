@@ -96,13 +96,29 @@ if ($json_role) {
     $arr[$user_id]['meta']['role'] = '';
 }
 
-if ($team) {
-    if ($team === 'all') {
-        $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
-    } else if($team === 'team') {
-        $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+if ($arr[$user_id]['meta']['role'] && $team) {
+    if ($arr[$user_id]['meta']['role'] === 'admin') {
+        if ($team === 'all') {
+            $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
+        } elseif ($team === 'mine') {
+            $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+        } else {
+            $arr['error'] = 'Wrong team type: ' . $team;
+            header('Content-Type: application/json');
+            echo(json_encode($arr));
+            return;
+        }
+    } elseif ($arr[$user_id]['meta']['role'] === 'supervisor') {
+        if ($team === 'mine') {
+            $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+        } else {
+            $arr['error'] = 'Wrong team type: ' . $team;
+            header('Content-Type: application/json');
+            echo(json_encode($arr));
+            return;
+        }
     } else {
-        $arr['error'] = 'Wrong team type: ' . $team;
+        $arr['error'] = 'Wrong role type: ' . $arr[$user_id]['meta']['role'];
         header('Content-Type: application/json');
         echo(json_encode($arr));
         return;
@@ -130,7 +146,7 @@ if ($team) {
 // load vacation
 $querystring_vacation = "SELECT ad_account, day_of_month, vacation FROM hr.vacation ";
 $querystring_vacation .= " WHERE day_of_month >= '".$start_time."' AND day_of_month <= '".$end_time."' ";
-if ($arr[$user_id]['meta']['role'] === 'admin') {
+if ($arr[$user_id]['meta']['role'] === 'admin' && $team === 'all') {
     $querystring_vacation .= " ORDER BY modified_time ASC";
 } else {
     $querystring_vacation .= " AND ad_account in ".arrayToPgInList($user_list)." ORDER BY modified_time ASC";

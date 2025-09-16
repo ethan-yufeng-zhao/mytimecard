@@ -34,7 +34,7 @@
                         'start'      => $_GET['start']      ?? date('Y-m-01'),
                         'end'        => $_GET['end']        ?? date('Y-m-d'),
                         'quickRange' => $_GET['quickRange'] ?? 'thisMonth',
-                        'team'       => $_GET['team']       ?? 'team',
+                        'team'       => $_GET['team']       ?? 'mine',
                     ];
                     $teamUsersUrl = $mybaseurl . '/team_users.php?' . http_build_query($params);
 

@@ -43,7 +43,7 @@ if ($authorized) {
             $_GET['start'] ?? date('Y-m-01'),
             $_GET['end']   ?? date('Y-m-d'),
             $_GET['quickRange'] ?? 'thisMonth',
-            $_GET['team'] ?? 'team',
+            $_GET['team'] ?? 'mine',
     );
 
     $json = json_decode(file_get_contents(request_json_api($apiUrl), false, getContextCookies()), true);
