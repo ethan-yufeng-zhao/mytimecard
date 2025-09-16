@@ -314,3 +314,24 @@ if (!function_exists('str_starts_with')) {
         return substr($haystack, 0, $needle_len) === $needle;
     }
 }
+
+/**
+ * Convert a PHP array into a PostgreSQL IN (...) list.
+ *
+ * @param array $arr  Array of values (strings or numbers).
+ * @return string     A string like: ('alice','bob','charlie') or (1,2,3)
+ */
+function arrayToPgInList(array $arr): string {
+    if (empty($arr)) {
+        return "(NULL)"; // safe fallback, will never match
+    }
+
+    $escaped = array_map(function($item) {
+        if (is_numeric($item)) {
+            return $item; // numbers stay unquoted
+        }
+        return "'" . str_replace("'", "''", $item) . "'"; // escape single quotes
+    }, $arr);
+
+    return "(" . implode(",", $escaped) . ")";
+}

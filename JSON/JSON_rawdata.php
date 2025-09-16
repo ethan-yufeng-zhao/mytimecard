@@ -12,6 +12,13 @@ if(isset($_GET['uid']) && strlen($_GET['uid']) > 0) {
     $user_id     = $_GET['user_id'] ?? '';
 }
 
+if (empty($user_id)) {
+    $arr['error'] = 'Need user id';
+    header('Content-Type: application/json');
+    echo(json_encode($arr));
+    return;
+}
+
 $start_time = $_GET['start'] ?? date('Y-m-01', strtotime('first day of last month'));
 $end_time   = $_GET['end']   ?? date('Y-m-d', strtotime('last day of last month'));
 $query_end_time = date("Y-m-d", strtotime($end_time . " +1 day"));
@@ -54,7 +61,78 @@ const CUTOFF_NIGHTS  = "09:00:00"; // cutoff for night shift carryover
 const LATE_THRESHOLD = "18:00:00"; // last OUT time threshold for day shift
 const ASSUMED_1SEC = 1;
 
+$user_list = [];
+
 $db_pdo = db_connect();
+
+$querystring_current_user = "SELECT * FROM hr.employee WHERE samaccountname = '".$user_id."'";
+$db_arr_current_user = db_query($db_pdo, $querystring_current_user);
+if ($db_arr_current_user) {
+    foreach ($db_arr_current_user as $data) {
+        $arr[$user_id]['meta']['employeetype2'] = $data['employeetype'] ?? '';
+        $arr[$user_id]['meta']['employeeid'] = $data['employeeid'] ?? '';
+        $arr[$user_id]['meta']['givenname'] = $data['givenname'] ?? '';
+        $arr[$user_id]['meta']['sn'] = $data['sn'] ?? '';
+        $arr[$user_id]['meta']['mail'] = $data['mail'] ?? '';
+        $arr[$user_id]['meta']['department'] = $data['department'] ?? '';
+        $arr[$user_id]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
+        $arr[$user_id]['meta']['ipphone'] = $data['ipphone'] ?? '';
+        $arr[$user_id]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+    }
+    $user_list[] = $user_id;
+} else {
+    $arr['error'] = 'Cannot find the user: ' . $user_id;
+    header('Content-Type: application/json');
+    echo(json_encode($arr));
+    return;
+}
+
+$querystring_admin = "SELECT role FROM hr.timecard_admin WHERE username = '".$user_id."'";
+$db_arr_admin = db_query($db_pdo, $querystring_admin);
+if ($db_arr_admin) {
+    $arr[$user_id]['meta']['role'] = $db_arr_admin[0]['role'] ?? '';
+} else {
+    $arr[$user_id]['meta']['role'] = '';
+}
+
+if ($arr[$user_id]['meta']['role'] === 'admin') {
+    $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
+} else {
+    $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+}
+$db_arr_team_users = db_query($db_pdo, $querystring_team_users);
+if ($db_arr_team_users) {
+    foreach ($db_arr_team_users as $data) {
+        $team_user = $data['samaccountname'] ?? '';
+        if ($team_user) {
+            $arr[$team_user]['meta']['employeetype2'] = $data['employeetype'] ?? '';
+            $arr[$team_user]['meta']['employeeid'] = $data['employeeid'] ?? '';
+            $arr[$team_user]['meta']['givenname'] = $data['givenname'] ?? '';
+            $arr[$team_user]['meta']['sn'] = $data['sn'] ?? '';
+            $arr[$team_user]['meta']['mail'] = $data['mail'] ?? '';
+            $arr[$team_user]['meta']['department'] = $data['department'] ?? '';
+            $arr[$team_user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
+            $arr[$team_user]['meta']['ipphone'] = $data['ipphone'] ?? '';
+            $arr[$team_user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+        }
+        $user_list[] = $team_user;
+    }
+}
+
+// load vacation
+$querystring_vacation = "SELECT ad_account, day_of_month, vacation FROM hr.vacation ";
+$querystring_vacation .= " WHERE day_of_month >= '".$start_time."' AND day_of_month <= '".$end_time."' ";
+if ($arr[$user_id]['meta']['role'] === 'admin') {
+    $querystring_vacation .= " ORDER BY modified_time ASC";
+} else {
+    $querystring_vacation .= " AND ad_account in ".arrayToPgInList($user_list)." ORDER BY modified_time ASC";
+}
+$db_arr_vacation = db_query($db_pdo, $querystring_vacation);
+if ($db_arr_vacation) {
+    foreach ($db_arr_vacation as $data) {
+        $arr[$data['ad_account']]['vacation'][$data['day_of_month']] = $data['vacation'];
+    }
+}
 
 $querystring = "
     SELECT id, extsysid, identitytype, identitydivision, 
@@ -63,12 +141,17 @@ $querystring = "
     WHERE trx_timestamp >= '".$start_time."' 
       AND trx_timestamp < '".$query_time."'
 ";
-if ($user_id) {
-    $querystring .= " AND extsysid = '".$user_id."'";
+if ($user_list) {
+    $querystring .= " AND extsysid in ".arrayToPgInList($user_list)." ";
 }
 $querystring .= " ORDER BY trx_timestamp ASC, serialnumber ASC;";
 
 $db_arr = db_query($db_pdo, $querystring);
+if (!$db_arr) {
+    header('Content-Type: application/json');
+    echo(json_encode($arr));
+    return;
+}
 
 function assign_shift_day($ts, $shifttype, $cutoff_day = CUTOFF_DAYS, $cutoff_night = CUTOFF_NIGHTS) {
     global $start_time, $query_end_time;
@@ -301,9 +384,13 @@ foreach ($arr as $extsysid => &$person) {
 
 // data / summary
 foreach ($arr as $user => $value) {
-    $employeetype = $value['meta']['employeetype'];
-    $shifttype = $value['meta']['shifttype'];
-    $rawvalue = $value['rawdata'];
+    $employeetype = $value['meta']['employeetype'] ?? '';
+    $shifttype = $value['meta']['shifttype'] ?? '';
+    $rawvalue = $value['rawdata'] ?? null;
+
+    if ($rawvalue===null) {
+        continue;
+    }
 
     $totalTos = 0;
     $totalTib = 0;
@@ -318,30 +405,7 @@ foreach ($arr as $user => $value) {
     $weekendDays = [];
     $noShowDays = [];
 
-    // load vacation
-    $querystring2 = "SELECT day_of_month, vacation FROM hr.vacation WHERE ad_account = '".$user."' ORDER BY modified_time ASC";
-    $db_arr2 = db_query($db_pdo, $querystring2);
-    foreach ($db_arr2 as $data) {
-        $arr[$user]['vacation'][$data['day_of_month']] = $data['vacation'];
-    }
-
-    // department
-    $querystring3 = "SELECT * FROM hr.employee WHERE samaccountname = '".$user."'";
-    $db_arr3 = db_query($db_pdo, $querystring3);
-    foreach ($db_arr3 as $data) {
-        $arr[$user]['meta']['employeetype2'] = $data['employeetype'] ?? '';
-        $arr[$user]['meta']['employeeid'] = $data['employeeid'] ?? '';
-        $arr[$user]['meta']['givenname'] = $data['givenname'] ?? '';
-        $arr[$user]['meta']['sn'] = $data['sn'] ?? '';
-        $arr[$user]['meta']['mail'] = $data['mail'] ?? '';
-        $arr[$user]['meta']['department'] = $data['department'] ?? '';
-        $arr[$user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
-        $arr[$user]['meta']['ipphone'] = $data['ipphone'] ?? '';
-        $arr[$user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
-    }
-
     foreach ($rawvalue as $keyday => $eventvalue) {
-
         $firstInTs = null;
         $lastOutTs = null;
 
