@@ -114,7 +114,7 @@
         echo('<table class="employee-info-table"><tr>');
 
 // User info with email
-        echo('<td><strong>User:</strong> <a href="mailto:' . $meta['mail'] . '?subject=' . $current_url . '?uid=' . $requested_user_id . '">');
+        echo('<td><strong>User:</strong> <a href="mailto:' . $meta['mail'] . '?subject=' . $current_url . '">');
         echo($meta['givenname'] . ' ' . $meta['sn']);
         echo('</a></td>');
 
@@ -126,16 +126,8 @@
 
 // Supervisor
         echo('<td>');
-        if(!empty($requested_user['user_supervisor_id'])) {
-            echo('<strong>Supervisor:</strong> ');
-            if($user['user_is_admin'] || $user['user_is_supervisor']) {
-                echo('<a href="' . $mybaseurl . '/index.php?uid=' . $requested_user['user_supervisor_id'] . '">');
-            }
-            echo($requested_user_supervisor['user_firstname'].' '.$requested_user_supervisor['user_lastname']);
-            if($user['user_is_admin'] || $user['user_is_supervisor']) {
-                echo('</a>');
-            }
-        }
+        echo('<strong>Supervisor:</strong> ');
+        echo($meta['manager']);
         echo('</td>');
 
 // Department
