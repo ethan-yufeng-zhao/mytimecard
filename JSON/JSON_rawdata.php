@@ -79,6 +79,7 @@ if ($db_arr_current_user) {
         $arr[$user_id]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
         $arr[$user_id]['meta']['ipphone'] = $data['ipphone'] ?? '';
         $arr[$user_id]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+        $arr[$user_id]['meta']['manager'] = $data['manager_samaccountname'] ?? '';
     }
     $user_list[] = $user_id;
 } else {
@@ -88,19 +89,23 @@ if ($db_arr_current_user) {
     return;
 }
 
-$querystring_admin = "SELECT role FROM hr.timecard_admin WHERE username = '".$user_id."'";
-$db_arr_admin = db_query($db_pdo, $querystring_admin);
-if ($db_arr_admin) {
-    $arr[$user_id]['meta']['role'] = $db_arr_admin[0]['role'] ?? '';
+$json_role = json_decode(file_get_contents(request_json_api('/JSON/JSON_user_role.php?uid='.$user_id), false, getContextCookies()), true);
+if ($json_role) {
+    $arr[$user_id]['meta']['role'] = $json_role[$user_id] ?? '';
 } else {
     $arr[$user_id]['meta']['role'] = '';
 }
 
 if ($team) {
-    if ($arr[$user_id]['meta']['role'] === 'admin') {
+    if ($team === 'all') {
         $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
-    } else {
+    } else if($team === 'team') {
         $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+    } else {
+        $arr['error'] = 'Wrong team type: ' . $team;
+        header('Content-Type: application/json');
+        echo(json_encode($arr));
+        return;
     }
     $db_arr_team_users = db_query($db_pdo, $querystring_team_users);
     if ($db_arr_team_users) {
