@@ -27,9 +27,14 @@
                     $all_params = $team_params;
                     $all_params['team'] = 'all';
                     $allUsersUrl = $mybaseurl . '/team_users.php?' . http_build_query($all_params);
+
+                    $managers_params = $team_params;
+                    $managers_params['team'] = 'managers';
+                    $allManagersUrl = $mybaseurl . '/team_users.php?' . http_build_query($managers_params);
                     echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>');
                     echo('<ul class="dropdown-menu">');
-                    echo('<li><a href="'.$allUsersUrl.'">All Users</a></li>');
+                    echo('<li><a href="'.$allUsersUrl.'">All Employees</a></li>');
+                    echo('<li><a href="'.$allManagersUrl.'">All Managers</a></li>');
                     echo('</ul>');
                     echo('</li>');
                 }

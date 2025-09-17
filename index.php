@@ -354,7 +354,7 @@
             echo("</div>\n");
 		} else {
 			echo('<div class="alert alert-danger">');
-			echo('<p>No data: "'.$requested_user_id.'"  From '.$_GET['start'].' to '.$_GET['end'].'</p>');
+			echo('<p>No data: "'.$requested_user_id.'"  From '.$currentStart.' to '.$currentEnd.'</p>');
 			echo('</div>');
 		}
 

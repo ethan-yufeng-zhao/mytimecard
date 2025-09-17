@@ -39,8 +39,9 @@ if ($authorized) {
     echo("<div id='jfabtable'>\n");
     // title table
     echo('<table class="employee-info-table"><tr>');
-    echo("<td><b>".$department."(".$departmentnumber.")</b></td>");
-    echo("<td><b>Team Members: </b>".(count($json)-1 ?? 0)."</td>");
+//    echo("<td><b>".$department."(".$departmentnumber.")</b></td>");
+    $title_name = $_GET['team'] ?? '';
+    echo("<td><b>".strtoupper($title_name).": </b>".(count($json)-1 ?? 0)."</td>");
     echo("<td>".date('Y-m-d H:i:s')."</td>");
     echo("</tr></table>");
     // data table

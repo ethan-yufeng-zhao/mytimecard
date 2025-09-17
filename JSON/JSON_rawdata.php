@@ -78,6 +78,12 @@ if ($arr[$user_id]['meta']['role'] && $team) {
     if ($arr[$user_id]['meta']['role'] === 'admin') {
         if ($team === 'all') {
             $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
+        } elseif ($team === 'managers') {
+            $managers = json_decode(file_get_contents(request_json_api('/JSON/JSON_managers.php'), false, getContextCookies()), true);
+            foreach ($managers as $manager) {
+                $user_list[] = $manager;
+            }
+            $querystring_team_users = "SELECT * FROM hr.employee WHERE samaccountname in " . arrayToPgInList($user_list) . " order by samaccountname ASC";
         } elseif ($team === 'direct') {
             $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '" . $user_id . "' order by samaccountname ASC";
         } elseif ($team === 'recursive') {
@@ -142,7 +148,9 @@ if ($arr[$user_id]['meta']['role'] && $team) {
                     $arr[$team_user]['meta']['ipphone'] = $data['ipphone'] ?? '';
                     $arr[$team_user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
                 }
-                $user_list[] = $team_user;
+                if ($team !== 'managers') {
+                    $user_list[] = $team_user;
+                }
             }
         }
     }
