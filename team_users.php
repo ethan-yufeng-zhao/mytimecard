@@ -34,15 +34,16 @@ if ($authorized) {
     );
 
     $json = json_decode(file_get_contents(request_json_api($apiUrl), false, getContextCookies()), true);
-    $department = $json[$loggedInUser]['meta']['department'] ?? '';
-    $departmentnumber = $json[$loggedInUser]['meta']['departmentnumber'] ?? '';
+    $department = $json[$requested_user_id]['meta']['department'] ?? '';
+    $departmentnumber = $json[$requested_user_id]['meta']['departmentnumber'] ?? '';
     echo("<div id='jfabtable'>\n");
     // title table
     echo('<table class="employee-info-table"><tr>');
-//    echo("<td><b>".$department."(".$departmentnumber.")</b></td>");
+    echo("<td><b>Manager: </b>".$requested_user_id."</td>");
+    echo("<td><b>Department: </b>".$department."(".$departmentnumber.")</td>");
     $title_name = $_GET['team'] ?? '';
-    echo("<td><b>".strtoupper($title_name).": </b>".(count($json)-1 ?? 0)."</td>");
-    echo("<td>".date('Y-m-d H:i:s')."</td>");
+    echo("<td><b>".strtoupper($title_name)." Team: </b>".(count($json)-1 ?? 0)."</td>");
+    echo("<td><b>Time: </b>".date('Y-m-d H:i:s')."</td>");
     echo("</tr></table>");
     // data table
     echo("<table class='table_col_0_with_labels'>");
