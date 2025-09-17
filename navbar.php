@@ -68,7 +68,8 @@
                         <li><a href="http://web11.jfab.aosmd.com/mts" target="_blank">6S</a></li>
                         <li><a href="http://webx.jfab.aosmd.com/SPCx" target="_blank">SPCx</a></li>
                         <li><a href="http://jfabieapp1.jfab.aosmd.com/tps" target="_blank">TPS</a></li>
-                        <li><a href="http://jfabjunoapp.jfab.aosmd.com/juno/juno_data_search/" target="_blank">Juno</a></li>
+                        <li><a href="http://jfabjunoapp.jfab.aosmd.com/juno/reports/gen_report.php?start_datetime=Today&end_datetime=TOMORROW&lot_number=&program_name=" target="_blank">Juno</a></li>
+                        <li><a href="http://jfabgpt.jfab.aosmd.com:8080/" target="_blank">AI</a></li>
                     </ul>
                 </li>
             </ul>
