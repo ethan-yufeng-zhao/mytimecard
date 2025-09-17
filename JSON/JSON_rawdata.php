@@ -78,8 +78,19 @@ if ($arr[$user_id]['meta']['role'] && $team) {
     if ($arr[$user_id]['meta']['role'] === 'admin') {
         if ($team === 'all') {
             $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
-        } elseif ($team === 'mine') {
-            $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+        } elseif ($team === 'direct') {
+            $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '" . $user_id . "' order by samaccountname ASC";
+        } elseif ($team === 'recursive') {
+            $querystring_team_users = "
+                WITH RECURSIVE subordinates AS (
+                    SELECT *
+                    FROM hr.employee
+                    WHERE manager_samaccountname = '".$user_id."'
+                    UNION ALL
+                    SELECT e.*
+                    FROM hr.employee e
+                    INNER JOIN subordinates s ON e.manager_samaccountname = s.samaccountname
+                ) SELECT * FROM subordinates ORDER BY samaccountname ASC;";
         } else {
             $querystring_team_users = '';
 //            $arr['error'] = 'Wrong team type: ' . $team;
@@ -88,8 +99,19 @@ if ($arr[$user_id]['meta']['role'] && $team) {
 //            return;
         }
     } elseif ($arr[$user_id]['meta']['role'] === 'supervisor') {
-        if ($team === 'mine') {
+        if ($team === 'direct') {
             $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
+        } elseif ($team === 'recursive') {
+            $querystring_team_users = "
+                WITH RECURSIVE subordinates AS (
+                    SELECT *
+                    FROM hr.employee
+                    WHERE manager_samaccountname = '".$user_id."'
+                    UNION ALL
+                    SELECT e.*
+                    FROM hr.employee e
+                    INNER JOIN subordinates s ON e.manager_samaccountname = s.samaccountname
+                ) SELECT * FROM subordinates ORDER BY samaccountname ASC;";
         } else {
             $querystring_team_users = '';
 //            $arr['error'] = 'Wrong team type: ' . $team;

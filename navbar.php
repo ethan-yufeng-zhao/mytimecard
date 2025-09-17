@@ -16,44 +16,43 @@
             <ul class="nav navbar-nav">
                 <li><a href="<?php echo($mybaseurl); ?>/index.php"><?php echo($user['user_firstname'].' '.$user['user_lastname']); ?></a></li>
                 <?php
-                if($user['user_is_admin']) {
-                    $all_params = [
-                            'uid'        => $loggedInUser ?? '',
-                            'mode'       => $_GET['mode']       ?? 'balanced',
-                            'start'      => $_GET['start']      ?? date('Y-m-01'),
-                            'end'        => $_GET['end']        ?? date('Y-m-d'),
-                            'quickRange' => $_GET['quickRange'] ?? 'thisMonth',
-                            'team'       => 'all',
-                    ];
-                    $allUsersUrl = $mybaseurl . '/team_users.php?' . http_build_query($all_params);
-                    echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>');
-                    echo('<ul class="dropdown-menu">');
-                    echo('<li><a href="'.$allUsersUrl.'">All Users</a></li>');
-//                    echo('<li class="divider"></li>');
-//                    echo('<li><a target="_blank" href="https://hydrogen.jfab.aosmd.com/rptp/public/authorization_center/index.html?system=tcs">Manage Admin</a></li>');
-                    echo('</ul>');
-                    echo('</li>');
-                }
-
-                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
-                    // Collect current toolbar params
-                    $team_params = [
+                $team_params = [
                         'uid'        => $loggedInUser ?? '',
                         'mode'       => $_GET['mode']       ?? 'balanced',
                         'start'      => $_GET['start']      ?? date('Y-m-01'),
                         'end'        => $_GET['end']        ?? date('Y-m-d'),
                         'quickRange' => $_GET['quickRange'] ?? 'thisMonth',
-                        'team'       => 'mine',
-                    ];
-                    $teamUsersUrl = $mybaseurl . '/team_users.php?' . http_build_query($team_params);
+                ];
+                if ($user['user_is_admin']) {
+                    $all_params = $team_params;
+                    $all_params['team'] = 'all';
+                    $allUsersUrl = $mybaseurl . '/team_users.php?' . http_build_query($all_params);
+                    echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>');
+                    echo('<ul class="dropdown-menu">');
+                    echo('<li><a href="'.$allUsersUrl.'">All Users</a></li>');
+                    echo('</ul>');
+                    echo('</li>');
+                }
+                if ($user['user_is_admin'] || $user['user_is_supervisor']) {
+                    // Direct team
+                    $direct_params = $team_params;
+                    $direct_params['team'] = 'direct';
+                    $directTeamUrl = $mybaseurl . '/team_users.php?' . http_build_query($direct_params);
+
+                    // Recursive team
+                    $recursive_params = $team_params;
+                    $recursive_params['team'] = 'recursive';
+                    $recursiveTeamUrl = $mybaseurl . '/team_users.php?' . http_build_query($recursive_params);
 
                     echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Supervisor <b class="caret"></b></a>');
                     echo('<ul class="dropdown-menu">');
-                    echo('<li><a href="'.$teamUsersUrl.'">Team Users</a></li>');
+                    echo('<li><a href="'.$directTeamUrl.'">My Team</a></li>');
+                    echo('<li><a href="'.$recursiveTeamUrl.'">Full Team (Recursive)</a></li>');
                     echo('</ul>');
                     echo('</li>');
                 }
                 ?>
+
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Links <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a target="_blank" href="https://jireh.smarteru.com/remote-login/login.cfm">SmarterU</a></li>
