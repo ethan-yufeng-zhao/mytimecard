@@ -411,19 +411,19 @@ foreach ($arr as $extsysid => &$person) {
         foreach ($lastIn as $category => $inEvent) {
             if ($inEvent !== null) {
                 $lastInTs = strtotime($inEvent['trx_timestamp']);
-//                $cutoff = ($lastInTs <= $lateThresholdTs) ? $lateThresholdTs : $lastInTs + ASSUMED_GAP;
-                $cutoff = $lastInTs + ASSUMED_GAP;
+                $cutoff   = $lastInTs + ASSUMED_GAP;
 
                 $fixed[] = [
-                    'sourcename' => "Assumed Out",
-                    'sourcealtname' => "Assumed Out",
+                    'sourcename'     => "Assumed Out",
+                    'sourcealtname'  => "Assumed Out",
                     'normalizedname' => ucfirst($category) . " Out",
-                    'trx_timestamp' => date('Y-m-d H:i:sO', $cutoff),
-                    'assumed' => true
+                    'trx_timestamp'  => date('Y-m-d H:i:sO', $cutoff),
+                    'assumed'        => true
                 ];
             }
         }
 
+        usort($fixed, fn($a, $b) => strtotime($a['trx_timestamp']) <=> strtotime($b['trx_timestamp']));
         $events = $fixed;
     }
 }
