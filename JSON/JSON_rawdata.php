@@ -74,19 +74,23 @@ if ($arr && isset($arr['error'])) {
 }
 $user_list[] = $user_id;
 
+$managers = json_decode(file_get_contents(request_json_api('/JSON/JSON_managers.php'), false, getContextCookies()), true);
+if (in_array($user_id, $managers)) {
+    $arr[$user_id]['meta']['is_manager'] = true;
+}
+
 if ($arr[$user_id]['meta']['role'] && $team) {
     if ($arr[$user_id]['meta']['role'] === 'admin') {
         if ($team === 'all') {
             $querystring_team_users = "SELECT * FROM hr.employee order by samaccountname ASC";
         } elseif ($team === 'managers') {
-            $managers = json_decode(file_get_contents(request_json_api('/JSON/JSON_managers.php'), false, getContextCookies()), true);
             foreach ($managers as $manager) {
                 $user_list[] = $manager;
             }
             $querystring_team_users = "SELECT * FROM hr.employee WHERE samaccountname in " . arrayToPgInList($user_list) . " order by samaccountname ASC";
         } elseif ($team === 'direct') {
             $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '" . $user_id . "' order by samaccountname ASC";
-        } elseif ($team === 'recursive') {
+        } elseif ($team === 'full') {
             $querystring_team_users = "
                 WITH RECURSIVE subordinates AS (
                     SELECT *
@@ -107,7 +111,7 @@ if ($arr[$user_id]['meta']['role'] && $team) {
     } elseif ($arr[$user_id]['meta']['role'] === 'supervisor') {
         if ($team === 'direct') {
             $querystring_team_users = "SELECT * FROM hr.employee WHERE manager_samaccountname = '".$user_id."' order by samaccountname ASC";
-        } elseif ($team === 'recursive') {
+        } elseif ($team === 'full') {
             $querystring_team_users = "
                 WITH RECURSIVE subordinates AS (
                     SELECT *
@@ -147,6 +151,11 @@ if ($arr[$user_id]['meta']['role'] && $team) {
                     $arr[$team_user]['meta']['departmentnumber'] = $data['departmentnumber'] ?? '';
                     $arr[$team_user]['meta']['ipphone'] = $data['ipphone'] ?? '';
                     $arr[$team_user]['meta']['telephonenumber'] = $data['telephonenumber'] ?? '';
+                    if (in_array($team_user, $managers)) {
+                        $arr[$team_user]['meta']['is_manager'] = true;
+                    } else {
+                        $arr[$team_user]['meta']['is_manager'] = false;
+                    }
                 }
                 if ($team !== 'managers') {
                     $user_list[] = $team_user;

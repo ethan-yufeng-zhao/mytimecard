@@ -1,6 +1,6 @@
 <?php
 if (DEBUG) {
-    $_SERVER["REMOTE_USER"] = "\\csturgeo"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
+    $_SERVER["REMOTE_USER"] = "\\lei.zhang";
 //	if(!isset($_SERVER["REMOTE_USER"]) || $_SERVER["REMOTE_USER"] == '') {
 //		header('HTTP/1.1 401 Unauthorized');
 //		header('WWW-Authenticate: Negotiate');

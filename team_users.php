@@ -25,7 +25,7 @@ if ($authorized) {
     // --- Build API URL with helper ---
     $apiUrl = buildQueryUrl(
             '/JSON/JSON_rawdata.php',
-            $loggedInUser,
+            $_GET['uid'] ?? $_GET['user_id'] ?? $loggedInUser,
             $_GET['mode']  ?? 'balanced',
             $_GET['start'] ?? date('Y-m-01'),
             $_GET['end']   ?? date('Y-m-d'),
@@ -87,9 +87,17 @@ if ($authorized) {
                     'quickRange' => $_GET['quickRange'] ?? 'thisMonth',
                     'team'       => '',
             ];
-            $memberUrl = $mybaseurl . '/index.php?' . http_build_query($params);
-            echo('<td><a target="_blank" href="'.$memberUrl.'">'.$member.'</a></td>');
-
+            $member_params = $params;
+            $member_params['team'] = '';
+            $memberUrl = $mybaseurl . '/index.php?' . http_build_query($member_params);
+            $team_params = $params;
+            $team_params['team'] = 'direct';
+            $teamUrl = $mybaseurl . '/team_users.php?' . http_build_query($team_params);
+            echo('<td><a target="_blank" href="'.$memberUrl.'">'.$member.'</a>');
+            if ($value['meta']['is_manager']) {
+                echo('&nbsp;&nbsp;<a href="'.$teamUrl.'"><span class="show-team-icon glyphicon glyphicon-user text-primary" style="cursor: pointer;" data-team="'.$member.'"></span></a>');
+            }
+            echo('</td>');
 //            echo('<td>'.($value['meta']['givenname'] ?? '')."</td>");
 //            echo('<td>'.($value['meta']['sn'] ?? '')."</td>");
 //            echo('<td><a href="mailto:'.$value['meta']['mail'].'">'.$value['meta']['mail'].'</a></td>');

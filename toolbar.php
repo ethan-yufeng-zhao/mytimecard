@@ -64,16 +64,26 @@ switch ($currentRange) {
         break;
 }
 
-$currentQueryUrl = buildQueryUrl($mybaseurl.'/index.php?', $currentUser, $currentMode, $currentStart, $currentEnd, $currentRange, $currentTeam); // default/current
+$currentPage = basename($_SERVER['PHP_SELF']); // e.g. "index.php", "team_users.php"
+$currentQueryUrl = buildQueryUrl($mybaseurl.'/'.$currentPage, $currentUser, $currentMode, $currentStart, $currentEnd, $currentRange, $currentTeam); // default/current
 
 ?>
 
 <div class="container" style="margin-top:5px; margin-bottom:5px;">
-    <form method="get" action="<?php echo $mybaseurl; ?>/index.php" class="form-inline" role="form"
+    <form method="get" action="<?php echo ($mybaseurl.'/'.$currentPage); ?>" class="form-inline" role="form"
           style="display:flex; align-items:center; flex-wrap:nowrap; gap:10px;" id="toolbarForm">
 
         <!-- Keep user -->
         <input type="hidden" name="uid" value="<?php echo htmlspecialchars($currentUser); ?>">
+        <input type="hidden" name="team" value="<?php echo htmlspecialchars($_GET['team'] ?? ''); ?>">
+<!--        --><?php
+//        foreach ($_GET as $key => $value) {
+//            if (!in_array($key, ['start','end','mode','quickRange'])) {
+//                // these are handled by toolbar inputs
+//                echo '<input type="hidden" name="'.htmlspecialchars($key).'" value="'.htmlspecialchars($value).'">';
+//            }
+//        }
+//        ?>
 
         <!-- Mode Selector -->
         <label for="mode" class="mb-0">Mode:</label>

@@ -46,7 +46,7 @@
 
                     // Recursive team
                     $recursive_params = $team_params;
-                    $recursive_params['team'] = 'recursive';
+                    $recursive_params['team'] = 'full';
                     $recursiveTeamUrl = $mybaseurl . '/team_users.php?' . http_build_query($recursive_params);
 
                     echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Supervisor <b class="caret"></b></a>');
