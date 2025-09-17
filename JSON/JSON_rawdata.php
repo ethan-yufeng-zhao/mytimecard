@@ -373,7 +373,7 @@ foreach ($arr as $extsysid => &$person) {
 
                 // 🔴 Cascading closures — child before parent
                 if ($category === 'building') {
-                    // If building is closing, ensure mainfab/subfab close first
+                    $childClosed = false;
                     foreach (['mainfab','subfab'] as $child) {
                         if ($lastIn[$child] !== null) {
                             $fixed[] = [
@@ -384,13 +384,24 @@ foreach ($arr as $extsysid => &$person) {
                                 'assumed'        => true
                             ];
                             $lastIn[$child] = null;
+                            $childClosed = true;
                         }
                     }
-                    // now safe to close building
+                    if ($childClosed) {
+                        // place building out AFTER children
+                        $fixed[] = [
+                            'sourcename'     => "Assumed Out",
+                            'sourcealtname'  => "Assumed Out",
+                            'normalizedname' => "Building Out",
+                            'trx_timestamp'  => date('Y-m-d H:i:sO', $txs), // parent at actual ts
+                            'assumed'        => true
+                        ];
+                        $lastIn['building'] = null;
+                        continue; // skip normal close below
+                    }
                 }
 
                 if ($category === 'mainfab') {
-                    // If mainfab is closing, subfab must close first
                     if ($lastIn['subfab'] !== null) {
                         $fixed[] = [
                             'sourcename'     => "Assumed Out",
@@ -400,8 +411,18 @@ foreach ($arr as $extsysid => &$person) {
                             'assumed'        => true
                         ];
                         $lastIn['subfab'] = null;
+
+                        // now put mainfab out at +0s (later than subfab)
+                        $fixed[] = [
+                            'sourcename'     => "Assumed Out",
+                            'sourcealtname'  => "Assumed Out",
+                            'normalizedname' => "Mainfab Out",
+                            'trx_timestamp'  => date('Y-m-d H:i:sO', $txs),
+                            'assumed'        => true
+                        ];
+                        $lastIn['mainfab'] = null;
+                        continue; // skip normal close below
                     }
-                    // now safe to close mainfab
                 }
 
                 // finally close the category itself
