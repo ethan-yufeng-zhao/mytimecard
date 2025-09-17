@@ -225,6 +225,9 @@
 
                 echo("<td>");
                 echo('<span class="day-of-month">' . htmlspecialchars($day) . '</span>');
+                if ($day == date('Y-m-d')) {
+                    echo('<span class="show-today-icon glyphicon glyphicon-star text-success" style="cursor: pointer;"></span>');
+                }
                 echo("</td>");
 
                 echo("<td>");
