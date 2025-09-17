@@ -4,7 +4,7 @@ include_once('base.php');
 set_the_cookies();
 
 if (DEBUG) {
-    $_SERVER["REMOTE_USER"] = "\\lei.zhang"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
+    $_SERVER["REMOTE_USER"] = "\\csturgeo"; // "\\aj.ty"; // "\\aaliyah.harrison"; // "\\dnickles";
 //	if(!isset($_SERVER["REMOTE_USER"]) || $_SERVER["REMOTE_USER"] == '') {
 //		header('HTTP/1.1 401 Unauthorized');
 //		header('WWW-Authenticate: Negotiate');
@@ -251,6 +251,7 @@ if(isset($_GET['uid']) && strlen($_GET['uid']) > 0) {
 <?php endif; ?>
 <?php include('navbar.php'); ?>
 <?php include('toolbar.php'); ?>
+<?php include('auth.php'); ?>
 
 <div class="container">
 <hr style="border-top: 1px dotted lightgrey; background: none; height: 0; margin-top:5px; margin-bottom:10px;">
