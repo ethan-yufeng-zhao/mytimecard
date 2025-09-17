@@ -112,7 +112,20 @@
 // Supervisor
         echo('<td>');
         echo('<strong>Supervisor:</strong> ');
-        echo($meta['manager']);
+        if ($authorized && ($meta['manager'] != $user['manager'])) {
+            $params = [
+                    'uid'        => $meta['manager'],
+                    'mode'       => $_GET['mode']       ?? 'balanced',
+                    'start'      => $_GET['start']      ?? date('Y-m-01'),
+                    'end'        => $_GET['end']        ?? date('Y-m-d'),
+                    'quickRange' => $_GET['quickRange'] ?? 'thisMonth',
+                    'team'       => '',
+            ];
+            $memberUrl = $mybaseurl . '/index.php?' . http_build_query($params);
+            echo('<a href="'.$memberUrl.'">'.$meta['manager']."</a>");
+        } else {
+            echo($meta['manager']);
+        }
         echo('</td>');
 
 // Department

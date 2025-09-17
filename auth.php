@@ -70,6 +70,7 @@ if ($json_meta) {
     $login_role = $json_meta[$loggedInUser]['meta']['role'] ?? '';
     $user['user_firstname'] = $json_meta[$loggedInUser]['meta']['givenname'] ?? '';
     $user['user_lastname'] = $json_meta[$loggedInUser]['meta']['sn'] ?? '';
+    $user['manager'] = $json_meta[$loggedInUser]['meta']['manager'] ?? '';
 } else {
     $login_role = '';
 }
