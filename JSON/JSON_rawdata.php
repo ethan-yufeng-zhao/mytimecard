@@ -371,8 +371,9 @@ foreach ($arr as $extsysid => &$person) {
                     ];
                 }
 
-                // 🔴 Cascading closures
+                // 🔴 Cascading closures — child before parent
                 if ($category === 'building') {
+                    // If building is closing, ensure mainfab/subfab close first
                     foreach (['mainfab','subfab'] as $child) {
                         if ($lastIn[$child] !== null) {
                             $fixed[] = [
@@ -385,9 +386,11 @@ foreach ($arr as $extsysid => &$person) {
                             $lastIn[$child] = null;
                         }
                     }
+                    // now safe to close building
                 }
 
                 if ($category === 'mainfab') {
+                    // If mainfab is closing, subfab must close first
                     if ($lastIn['subfab'] !== null) {
                         $fixed[] = [
                             'sourcename'     => "Assumed Out",
@@ -398,8 +401,10 @@ foreach ($arr as $extsysid => &$person) {
                         ];
                         $lastIn['subfab'] = null;
                     }
+                    // now safe to close mainfab
                 }
 
+                // finally close the category itself
                 $lastIn[$category] = null;
             }
 
