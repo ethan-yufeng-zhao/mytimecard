@@ -371,38 +371,69 @@ foreach ($arr as $extsysid => &$person) {
                     ];
                 }
 
-                // 🔴 Cascading closures with staggered timestamps
+                // 🔴 Cascading closures — handle siblings by lastIn timestamp (most-recently opened closed first)
                 if ($category === 'building') {
-                    $offset = 2; // start children at -2s
-                    foreach (['subfab','mainfab'] as $child) {
+                    $openChildren = [];
+                    foreach (['mainfab','subfab'] as $child) {
                         if ($lastIn[$child] !== null) {
+                            $openChildren[$child] = strtotime($lastIn[$child]['trx_timestamp']);
+                        }
+                    }
+
+                    if (!empty($openChildren)) {
+                        // Close children first (most recent first)
+                        arsort($openChildren);
+                        $childOutTs = [];
+                        $offset = count($openChildren);
+                        foreach ($openChildren as $child => $childTs) {
+                            $tsChildOut = $txs - $offset;
                             $fixed[] = [
                                 'sourcename'     => "Assumed Out",
                                 'sourcealtname'  => "Assumed Out",
                                 'normalizedname' => ucfirst($child) . " Out",
-                                'trx_timestamp'  => date('Y-m-d H:i:sO', $txs - $offset),
+                                'trx_timestamp'  => date('Y-m-d H:i:sO', $tsChildOut),
                                 'assumed'        => true
                             ];
                             $lastIn[$child] = null;
-                            $offset--; // next child closer to parent
+                            $childOutTs[] = $tsChildOut;
+                            $offset--;
                         }
-                    }
 
-                    if ($offset < 2) {
-                        // put building at actual timestamp
+                        // Now place Building Out between LAST child out and next Building In
+                        $lastChildOut = max($childOutTs);
+
+                        // find the next building in after $txs (if any)
+                        $nextBuildingIn = null;
+                        foreach ($events as $future) {
+                            if (strtolower($future['normalizedname']) === 'building in'
+                                && strtotime($future['trx_timestamp']) > $txs) {
+                                $nextBuildingIn = strtotime($future['trx_timestamp']);
+                                break;
+                            }
+                        }
+
+                        if ($nextBuildingIn !== null) {
+                            $gap = $nextBuildingIn - $lastChildOut;
+                            $assumedTs = $lastChildOut + intval($gap * $FACTOR_SPLIT / 100);
+                        } else {
+                            // fallback: just use current $txs
+                            $assumedTs = $txs;
+                        }
+
                         $fixed[] = [
                             'sourcename'     => "Assumed Out",
                             'sourcealtname'  => "Assumed Out",
                             'normalizedname' => "Building Out",
-                            'trx_timestamp'  => date('Y-m-d H:i:sO', $txs),
+                            'trx_timestamp'  => date('Y-m-d H:i:sO', $assumedTs),
                             'assumed'        => true
                         ];
                         $lastIn['building'] = null;
-                        continue; // skip normal close
+                        continue;
                     }
                 }
 
                 if ($category === 'mainfab') {
+                    // If subfab is still open, close subfab first (at txs-1) then mainfab at txs.
                     if ($lastIn['subfab'] !== null) {
                         $fixed[] = [
                             'sourcename'     => "Assumed Out",
@@ -421,11 +452,11 @@ foreach ($arr as $extsysid => &$person) {
                             'assumed'        => true
                         ];
                         $lastIn['mainfab'] = null;
-                        continue; // skip normal close
+                        continue;
                     }
                 }
 
-                // normal case: close the category itself
+                // Default: just close the category itself
                 $lastIn[$category] = null;
             }
 
