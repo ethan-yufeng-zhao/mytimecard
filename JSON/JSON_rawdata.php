@@ -274,13 +274,14 @@ foreach ($arr as $extsysid => &$person) {
     if (!isset($person['rawdata'])) continue;
 
     foreach ($person['rawdata'] as $day => &$events) {
+        // sort original events by timestamp
         usort($events, fn($a, $b) => strtotime($a['trx_timestamp']) <=> strtotime($b['trx_timestamp']));
 
         $fixed = [];
         $lastIn = [
             'building' => null,
-            'mainfab' => null,
-            'subfab' => null,
+            'mainfab'  => null,
+            'subfab'   => null,
             'facility' => null
         ];
 
@@ -296,13 +297,11 @@ foreach ($arr as $extsysid => &$person) {
             }
 
             // Special case: parking lot muster → ignore duplicate building out
-            if (strtolower($e['sourcename']) === 'parking lot muster') {
-                if ($direction === 'out') {
-                    if (!empty($fixed) && strtolower(end($fixed)['normalizedname']) === 'building out') {
-                        $e['normalizedname'] = '';
-                        $fixed[] = $e;
-                        continue;
-                    }
+            if (strtolower($e['sourcename']) === 'parking lot muster' && $direction === 'out') {
+                if (!empty($fixed) && strtolower(end($fixed)['normalizedname']) === 'building out') {
+                    $e['normalizedname'] = '';
+                    $fixed[] = $e;
+                    continue;
                 }
             }
 
@@ -312,8 +311,35 @@ foreach ($arr as $extsysid => &$person) {
                 // If same category already inside → insert assumed Out
                 if ($lastIn[$category] !== null) {
                     $prevTs = strtotime($lastIn[$category]['trx_timestamp']);
-                    $gap = $txs - $prevTs;
-                    $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
+
+                    // Special handling for Building: prefer last child-out -> next building-in gap
+                    if ($category === 'building') {
+                        // find last child out (mainfab/subfab) between previous building-in and this building-in
+                        $lastChildOutTs = null;
+                        foreach ($events as $scan) {
+                            $sname = strtolower($scan['normalizedname']);
+                            $sparts = explode(' ', $sname);
+                            $scat = $sparts[0] ?? null;
+                            $sdir = $sparts[1] ?? null;
+                            $sts = strtotime($scan['trx_timestamp']);
+                            if ($sts > $prevTs && $sts < $txs && in_array($scat, ['mainfab','subfab']) && $sdir === 'out') {
+                                if ($lastChildOutTs === null || $sts > $lastChildOutTs) $lastChildOutTs = $sts;
+                            }
+                        }
+
+                        if ($lastChildOutTs !== null) {
+                            $gap = $txs - $lastChildOutTs;
+                            $assumedTs = $lastChildOutTs + intval($gap * $FACTOR_SPLIT / 100);
+                        } else {
+                            // fallback to previous behavior
+                            $gap = $txs - $prevTs;
+                            $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
+                        }
+                    } else {
+                        // default behavior (mainfab/subfab/facility)
+                        $gap = $txs - $prevTs;
+                        $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
+                    }
 
                     $fixed[] = [
                         'sourcename'     => "Assumed Out",
@@ -322,16 +348,18 @@ foreach ($arr as $extsysid => &$person) {
                         'trx_timestamp'  => date('Y-m-d H:i:sO', $assumedTs),
                         'assumed'        => true
                     ];
+                    // close that category logically
+                    $lastIn[$category] = null;
                 }
 
-                // Special: Facility In → close building/mainfab/subfab
+                // Special: Facility In → close building/mainfab/subfab (tiny offset)
                 if ($category === 'facility') {
                     foreach (['building','mainfab','subfab'] as $cat) {
                         if ($lastIn[$cat] !== null) {
                             $fixed[] = [
                                 'sourcename'     => "Assumed Out",
                                 'sourcealtname'  => "Assumed Out",
-                                'normalizedname' => ucfirst($cat)." Out",
+                                'normalizedname' => ucfirst($cat) . " Out",
                                 'trx_timestamp'  => date('Y-m-d H:i:sO', $txs - ASSUMED_1SEC),
                                 'assumed'        => true
                             ];
@@ -340,7 +368,7 @@ foreach ($arr as $extsysid => &$person) {
                     }
                 }
 
-                // Special: Building/Mainfab/Subfab In → close facility
+                // Special: Building/Mainfab/Subfab In → close facility (tiny offset)
                 if (in_array($category, ['building','mainfab','subfab'])) {
                     if ($lastIn['facility'] !== null) {
                         $fixed[] = [
@@ -354,10 +382,13 @@ foreach ($arr as $extsysid => &$person) {
                     }
                 }
 
+                // mark this category as inside now
                 $lastIn[$category] = $e;
+
             } else { // direction === "out"
+
+                // If we have no matching In for this category, insert an assumed In earlier
                 if ($lastIn[$category] === null) {
-                    // Insert assumed In before this Out
                     $prevTs = $fixed ? strtotime(end($fixed)['trx_timestamp']) : $txs - ASSUMED_GAP;
                     $gap = $txs - $prevTs;
                     $assumedTs = $prevTs + intval($gap * $FACTOR_SPLIT / 100);
@@ -369,9 +400,13 @@ foreach ($arr as $extsysid => &$person) {
                         'trx_timestamp'  => date('Y-m-d H:i:sO', $assumedTs),
                         'assumed'        => true
                     ];
+
+                    // and treat it as if it had been opened
+                    $lastIn[$category] = ['trx_timestamp' => date('Y-m-d H:i:sO', $assumedTs)];
                 }
 
-                // 🔴 Cascading closures — handle siblings by lastIn timestamp (most-recently opened closed first)
+                // Cascading closures — when closing a parent, close open children first,
+                // but compute child assumed-out anchored to child's last IN and current anchor time
                 if ($category === 'building') {
                     $openChildren = [];
                     foreach (['mainfab','subfab'] as $child) {
@@ -381,85 +416,93 @@ foreach ($arr as $extsysid => &$person) {
                     }
 
                     if (!empty($openChildren)) {
-                        // Close children first (most recent first)
-                        arsort($openChildren);
+                        // compute assumed out for each open child using child's last IN -> current building out timestamp ($txs)
                         $childOutTs = [];
-                        $offset = count($openChildren);
-                        foreach ($openChildren as $child => $childTs) {
-                            $tsChildOut = $txs - $offset;
+                        foreach ($openChildren as $child => $childInTs) {
+                            $gapChild = $txs - $childInTs;
+                            if ($gapChild <= 0) {
+                                $assChildOut = $childInTs + ASSUMED_1SEC;
+                            } else {
+                                $assChildOut = $childInTs + intval($gapChild * $FACTOR_SPLIT / 100);
+                            }
+
                             $fixed[] = [
                                 'sourcename'     => "Assumed Out",
                                 'sourcealtname'  => "Assumed Out",
                                 'normalizedname' => ucfirst($child) . " Out",
-                                'trx_timestamp'  => date('Y-m-d H:i:sO', $tsChildOut),
+                                'trx_timestamp'  => date('Y-m-d H:i:sO', $assChildOut),
                                 'assumed'        => true
                             ];
                             $lastIn[$child] = null;
-                            $childOutTs[] = $tsChildOut;
-                            $offset--;
+                            $childOutTs[] = $assChildOut;
                         }
 
-                        // Now place Building Out between LAST child out and next Building In
+                        // place Building Out between the last child out and the next building in (if any), otherwise just after last child out
                         $lastChildOut = max($childOutTs);
 
-                        // find the next building in after $txs (if any)
+                        // find the next Building In (original events) after current $txs
                         $nextBuildingIn = null;
                         foreach ($events as $future) {
-                            if (strtolower($future['normalizedname']) === 'building in'
-                                && strtotime($future['trx_timestamp']) > $txs) {
-                                $nextBuildingIn = strtotime($future['trx_timestamp']);
+                            $fparts = explode(' ', strtolower($future['normalizedname']));
+                            $fcat = $fparts[0] ?? null;
+                            $fdir = $fparts[1] ?? null;
+                            $fts = strtotime($future['trx_timestamp']);
+                            if ($fts > $txs && $fcat === 'building' && $fdir === 'in') {
+                                $nextBuildingIn = $fts;
                                 break;
                             }
                         }
 
-                        if ($nextBuildingIn !== null) {
+                        if ($nextBuildingIn !== null && $nextBuildingIn > $lastChildOut) {
                             $gap = $nextBuildingIn - $lastChildOut;
-                            $assumedTs = $lastChildOut + intval($gap * $FACTOR_SPLIT / 100);
+                            $assumedBuildingOut = $lastChildOut + intval($gap * $FACTOR_SPLIT / 100);
                         } else {
-                            // fallback: just use current $txs
-                            $assumedTs = $txs;
+                            // fallback: place just after last child out
+                            $assumedBuildingOut = $lastChildOut + ASSUMED_1SEC;
                         }
 
                         $fixed[] = [
                             'sourcename'     => "Assumed Out",
                             'sourcealtname'  => "Assumed Out",
                             'normalizedname' => "Building Out",
-                            'trx_timestamp'  => date('Y-m-d H:i:sO', $assumedTs),
+                            'trx_timestamp'  => date('Y-m-d H:i:sO', $assumedBuildingOut),
                             'assumed'        => true
                         ];
+
+                        // mark building closed
                         $lastIn['building'] = null;
-                        continue;
+
+                        // continue — keep processing original event appended later (we still append $e below)
                     }
                 }
 
-                if ($category === 'mainfab') {
-                    // If subfab is still open, close subfab first (at txs-1) then mainfab at txs.
-                    if ($lastIn['subfab'] !== null) {
-                        $fixed[] = [
-                            'sourcename'     => "Assumed Out",
-                            'sourcealtname'  => "Assumed Out",
-                            'normalizedname' => "Subfab Out",
-                            'trx_timestamp'  => date('Y-m-d H:i:sO', $txs - 1),
-                            'assumed'        => true
-                        ];
-                        $lastIn['subfab'] = null;
-
-                        $fixed[] = [
-                            'sourcename'     => "Assumed Out",
-                            'sourcealtname'  => "Assumed Out",
-                            'normalizedname' => "Mainfab Out",
-                            'trx_timestamp'  => date('Y-m-d H:i:sO', $txs),
-                            'assumed'        => true
-                        ];
-                        $lastIn['mainfab'] = null;
-                        continue;
+                // If closing mainfab and a subfab is still open — close subfab first anchored to subfab IN -> this mainfab out timestamp
+                if ($category === 'mainfab' && $lastIn['subfab'] !== null) {
+                    $prevSubIn = strtotime($lastIn['subfab']['trx_timestamp']);
+                    $gapSub = $txs - $prevSubIn;
+                    if ($gapSub <= 0) {
+                        $assSubOut = $prevSubIn + ASSUMED_1SEC;
+                    } else {
+                        $assSubOut = $prevSubIn + intval($gapSub * $FACTOR_SPLIT / 100);
                     }
+
+                    $fixed[] = [
+                        'sourcename'     => "Assumed Out",
+                        'sourcealtname'  => "Assumed Out",
+                        'normalizedname' => "Subfab Out",
+                        'trx_timestamp'  => date('Y-m-d H:i:sO', $assSubOut),
+                        'assumed'        => true
+                    ];
+
+                    // after inserting assumed subfab out, subfab closed logically
+                    $lastIn['subfab'] = null;
                 }
 
-                // Default: just close the category itself
+                // finally, close the category itself
                 $lastIn[$category] = null;
             }
 
+            // always append the real event afterwards
             $fixed[] = $e;
         }
 
@@ -480,6 +523,7 @@ foreach ($arr as $extsysid => &$person) {
             }
         }
 
+        // sort fixed events by timestamp to ensure correct order after inserts
         usort($fixed, fn($a, $b) => strtotime($a['trx_timestamp']) <=> strtotime($b['trx_timestamp']));
         $events = $fixed;
     }
