@@ -52,7 +52,7 @@
                     echo('<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Supervisor <b class="caret"></b></a>');
                     echo('<ul class="dropdown-menu">');
                     echo('<li><a href="'.$directTeamUrl.'">Direct Team</a></li>');
-                    echo('<li><a href="'.$recursiveTeamUrl.'">Full Team (Recursive)</a></li>');
+                    echo('<li><a href="'.$recursiveTeamUrl.'">Full Team</a></li>');
                     echo('</ul>');
                     echo('</li>');
                 }
